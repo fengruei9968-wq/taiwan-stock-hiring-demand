@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.stock.monthly.revenue.raw.emerging.updater</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>__HIRING_DIR__/run_stock_monthly_revenue_raw.sh</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>__HIRING_DIR__</string>
+
+    <!-- 每月 10 號 10:10，更新興櫃月營收 -->
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Day</key>
+        <integer>10</integer>
+        <key>Hour</key>
+        <integer>10</integer>
+        <key>Minute</key>
+        <integer>10</integer>
+    </dict>
+
+    <key>StandardOutPath</key>
+    <string>__HIRING_DIR__/launchd_stock_monthly_revenue_raw_emerging_stdout.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>__HIRING_DIR__/launchd_stock_monthly_revenue_raw_emerging_stderr.log</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+        <key>LANG</key>
+        <string>zh_TW.UTF-8</string>
+        <key>RAW_REVENUE_START_MONTH</key>
+        <string>2021-01</string>
+        <key>RAW_REVENUE_MARKET_TYPES</key>
+        <string>興櫃</string>
+        <key>RAW_MONTHLY_REVENUE_SKIP_GIT</key>
+        <string>1</string>
+    </dict>
+</dict>
+</plist>

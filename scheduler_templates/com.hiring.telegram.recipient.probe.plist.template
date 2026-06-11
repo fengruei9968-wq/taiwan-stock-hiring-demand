@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.hiring.telegram.recipient.probe</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>__HIRING_DIR__/run_telegram_recipient_probe.sh</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>__HIRING_DIR__</string>
+
+    <!-- 每 1 小時讀取一次 Telegram /start updates，只更新 telegram_recipients.json -->
+    <key>StartInterval</key>
+    <integer>3600</integer>
+
+    <key>StandardOutPath</key>
+    <string>__HIRING_DIR__/launchd_telegram_probe_stdout.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>__HIRING_DIR__/launchd_telegram_probe_stderr.log</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+        <key>LANG</key>
+        <string>zh_TW.UTF-8</string>
+    </dict>
+</dict>
+</plist>

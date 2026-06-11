@@ -1,0 +1,65 @@
+schema_version: hiring_data_contract_v1
+updated_at: 2026-06-11
+
+source_of_truth:
+  hiring_scrape:
+    primary_artifact: data/YYYYMMDD_hiring_demand.csv
+    manifest: data/runs/{run_id}/hiring_run_manifest.json
+    trace: data/runs/{run_id}/workflow_trace.jsonl
+    checker_receipt: data/runs/{run_id}/hiring_run_check_receipt.json
+  reports:
+    report_manifest: data/reports/{YYYYMMDD}/unlimited_hiring_revenue_report_manifest_{YYYYMMDD}.json
+    anomaly_summary: data/reports/{YYYYMMDD}/anomaly_summary_{YYYYMMDD}.json
+    media_receipt: data/reports/{YYYYMMDD}/unlimited_hiring_revenue_media_receipt_{YYYYMMDD}.json
+  monthly_revenue:
+    snapshot_csv: data/revenue_snapshots/monthly_revenue_summary_{YYYYMMDD}.csv
+    snapshot_manifest: data/revenue_snapshots/monthly_revenue_snapshot_manifest_{YYYYMMDD}.json
+
+local_db_contract:
+  db_path: stage3_web/investment.db
+  role: local_source_and_fallback_only
+  deploy_policy: do_not_commit_for_daily_publish
+  tables:
+    - hiring_demand
+    - hiring_demand_jobs
+    - monthly_revenue_summary
+    - stock_monthly_revenue
+
+web_artifact_contract:
+  role: deployable_copy_not_source_of_truth
+  required_latest_files:
+    - stage3_web/hiring_reports/latest_hiring_demand_web_data.json
+    - stage3_web/hiring_reports/latest_hiring_revenue_batch.json
+    - stage3_web/hiring_reports/latest_anomaly_summary.json
+    - stage3_web/hiring_reports/latest_unlimited_hiring_revenue_report_manifest.json
+    - stage3_web/hiring_reports/latest_unlimited_hiring_revenue_media_receipt.json
+  mirrored_legacy_files:
+    - stage3_web/data/hiring_reports/latest_hiring_demand_web_data.json
+    - stage3_web/data/hiring_reports/latest_hiring_revenue_batch.json
+
+freshness_expectations:
+  latest_hiring_demand_web_data:
+    max_age_days_for_daily_closeout: 2
+    must_have_positive_count: true
+  latest_hiring_revenue_batch:
+    must_have_window_months: 6
+    must_have_positive_count: true
+
+forbidden_value_sources:
+  - old_parent_stage3_web_db_as_primary
+  - chat_summary
+  - backup_folder
+  - launchd_log_only
+  - protected_db_commit
+
+telegram_contract:
+  live_send_requires:
+    - HIRING_TELEGRAM_SEND_MODE=enabled
+    - explicit_user_authorization
+    - telegram_send_receipt_with_document_sent_true
+  protected_secrets:
+    - TELEGRAM_BOT_TOKEN
+    - TELEGRAM_CHAT_ID
+  local_recipient_file: telegram_recipients.json
+  commit_allowed_recipient_schema: telegram_recipients.example.json
+

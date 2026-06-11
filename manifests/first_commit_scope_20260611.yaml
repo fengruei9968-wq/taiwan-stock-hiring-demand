@@ -1,0 +1,241 @@
+schema_version: hiring_first_commit_scope_v1
+generated_at: 2026-06-11T19:05:00+08:00
+scope: dry_run_only_no_stage_no_commit_no_push
+
+decision_summary:
+  repo_root: /Volumes/Extreme SSD/Python/台股子公司投資資訊擷取與展示/台股投資資訊系統_完整專案/上市櫃公司徵人需求度
+  railway_root_directory: stage3_web
+  commit_strategy: first_commit_high_confidence_core_only
+  forbidden_git_command: git add .
+  next_authorization_required: precise_staging_file_list_review
+
+current_git_state:
+  git_root: /Volumes/Extreme SSD/Python/台股子公司投資資訊擷取與展示/台股投資資訊系統_完整專案/上市櫃公司徵人需求度
+  staged_files: []
+  protected_status_lines: []
+  note: >
+    All files are still untracked because this is a newly initialized independent
+    repo rehearsal. This manifest is the review source for a future precise git
+    add list; it is not a staging authorization.
+
+include_in_first_commit:
+  repo_governance:
+    - .gitignore
+    - AGENTS.md
+    - CLAUDE_hiring_demand.md
+    - CURRENT_HIRING_DEMAND_EXECUTION.md
+    - HIRING_DEPLOY_BOUNDARY.md
+    - HIRING_DEMAND_PITFALLS.md
+    - SSD_MIGRATION_STATUS_20260610.md
+    - 20260606_HIRING_DEMAND_CURRENT_STATE.md
+  docs:
+    - docs/CURRENT_EXECUTION.md
+    - docs/COMMANDS.md
+    - docs/ADR/ADR-001-governance-import-policy.md
+    - docs/ai_runtime_governance/governance_reference_mapping.md
+    - docs/ai_runtime_governance/proposed_file_change_list.md
+    - docs/ai_runtime_governance/workflow_closed_loop_plan.md
+    - docs/ai_runtime_governance/workflow_hardening_checklist.md
+    - docs/ai_runtime_governance/workflow_three_layer_architecture.md
+    - docs/history/README.md
+    - docs/history/config_20260412_v1.yaml
+    - docs/history/run_hiring_demand_20260412_v1.sh
+    - docs/reviews/hiring_git_init_rehearsal_result_20260611.md
+    - docs/reviews/hiring_git_root_decision_20260611.md
+    - docs/reviews/hiring_pre_git_init_review_20260611.md
+    - docs/reviews/hiring_precise_staging_review_20260611.md
+    - docs/reviews/hiring_scheduler_template_review_20260611.md
+    - docs/reviews/hiring_template_readonly_review_20260611.md
+  manifests:
+    - manifests/repo_manifest.yaml
+    - manifests/data_contract.yaml
+    - manifests/allowed_entrypoints.yaml
+    - manifests/first_commit_precise_staging_list_20260611.txt
+    - manifests/git_include_exclude_dry_run_20260611.yaml
+    - manifests/git_init_rehearsal_plan_20260611.yaml
+    - manifests/first_commit_scope_20260611.yaml
+  source_code:
+    - fetch_hiring_demand.py
+    - probe_104_search_api.py
+    - fetch_monthly_revenue.py
+    - fetch_emerging_revenue.py
+    - fetch_stock_monthly_revenue_raw.py
+    - generate_unlimited_hiring_revenue_report.py
+    - render_unlimited_hiring_revenue_media.py
+    - hiring_anomaly_detector.py
+    - sync_hiring_anomaly_web_artifacts.py
+    - telegram_sender.py
+    - telegram_recipient_probe.py
+    - hiring_workflow_governance.py
+  checkers:
+    - check_hiring_demand_run.py
+    - check_hiring_deploy_boundary.py
+    - check_hiring_runtime_governance.py
+    - check_release_readiness.py
+    - check_unlimited_hiring_revenue_report.py
+  local_test_tools:
+    - run_tests.sh
+    - cleanup_test_runtime.py
+  scheduler_templates:
+    - install_scheduler.sh
+    - scheduler_templates/com.hiring.daily.artifacts.backup.plist.template
+    - scheduler_templates/com.hiring.demand.updater.plist.template
+    - scheduler_templates/com.hiring.telegram.recipient.probe.plist.template
+    - scheduler_templates/com.hiring.test-runtime.cleanup.plist.template
+    - scheduler_templates/com.monthly.revenue.updater.plist.template
+    - scheduler_templates/com.stock.monthly.revenue.raw.emerging.updater.plist.template
+    - scheduler_templates/com.stock.monthly.revenue.raw.missing.retry.plist.template
+    - scheduler_templates/com.stock.monthly.revenue.raw.updater.plist.template
+  scripts:
+    - run_hiring_demand.sh
+    - run_monthly_revenue.sh
+    - run_stock_monthly_revenue_raw.sh
+    - run_telegram_recipient_probe.sh
+    - backup_hiring_daily_artifacts.sh
+  config_and_templates:
+    - config.yaml
+    - hiring_recovery_policy.json
+    - telegram_recipients.example.json
+  tests:
+    - tests/test_cleanup_test_runtime.py
+    - tests/test_hiring_demand_checker.py
+    - tests/test_hiring_deploy_boundary.py
+    - tests/test_hiring_harness_runtime.py
+    - tests/test_hiring_manifest.py
+    - tests/test_hiring_pipeline_path_contract.py
+    - tests/test_hiring_runtime_governance.py
+    - tests/test_hiring_workflow_governance.py
+    - tests/test_monthly_revenue_six_months.py
+    - tests/test_release_readiness.py
+    - tests/test_stock_monthly_revenue_raw.py
+    - tests/test_telegram_recipient_probe.py
+    - tests/test_telegram_sender.py
+    - tests/test_unlimited_hiring_revenue_report.py
+  railway_web_runtime:
+    - stage3_web/.gitignore
+    - stage3_web/Procfile
+    - stage3_web/app.py
+    - stage3_web/requirements.txt
+    - stage3_web/templates/hiring_demand.html
+    - stage3_web/static/css/style.css
+  deployable_latest_web_json:
+    - stage3_web/hiring_reports/latest_anomaly_summary.json
+    - stage3_web/hiring_reports/latest_hiring_demand_web_data.json
+    - stage3_web/hiring_reports/latest_hiring_revenue_batch.json
+    - stage3_web/hiring_reports/latest_unlimited_hiring_revenue_media_receipt.json
+    - stage3_web/hiring_reports/latest_unlimited_hiring_revenue_report_manifest.json
+    - stage3_web/data/hiring_reports/latest_anomaly_summary.json
+    - stage3_web/data/hiring_reports/latest_hiring_demand_web_data.json
+    - stage3_web/data/hiring_reports/latest_hiring_revenue_batch.json
+    - stage3_web/data/hiring_reports/latest_unlimited_hiring_revenue_media_receipt.json
+    - stage3_web/data/hiring_reports/latest_unlimited_hiring_revenue_report_manifest.json
+
+include_requires_manual_review:
+  launchd_and_local_scheduler_files:
+    reason: >
+      Resolved for first commit by adding portable scheduler_templates and
+      keeping root-level raw com.*.plist files local-only. Do not stage raw local
+      plist render/install outputs.
+    files:
+      - com.hiring.daily.artifacts.backup.plist
+      - com.hiring.demand.updater.plist
+      - com.hiring.telegram.recipient.probe.plist
+      - com.monthly.revenue.updater.plist
+      - com.stock.monthly.revenue.raw.emerging.updater.plist
+      - com.stock.monthly.revenue.raw.missing.retry.plist
+      - com.stock.monthly.revenue.raw.updater.plist
+  historical_or_legacy_local_paths:
+    reason: >
+      Resolved on 2026-06-11 by moving the old files into docs/history and
+      marking them as non-active historical references. They may be staged as
+      documentation only, not as executable active entrypoints.
+    files: []
+
+exclude_hard:
+  secrets:
+    - .env
+    - .env.*
+    - .env.txt
+    - telegram_recipients.json
+    - telegram_recipients.*.json
+  protected_db:
+    - stage3_web/investment.db
+    - stage3_web/data/investment.db
+    - stage3_web/fixed_assets.db
+    - stage3_web/data/users.db
+  local_runtime:
+    - venv/**
+    - _test_runtime/**
+    - __pycache__/**
+    - "*/__pycache__/**"
+    - "*.pyc"
+    - "*.log"
+    - logs/**
+    - Backup/**
+    - _local_runtime/**
+    - .DS_Store
+    - com.*.plist
+    - stage3_web/__pycache__/**
+    - stage3_web/instance/**
+  historical_bulk_artifacts:
+    - data/YYYYMMDD_hiring_demand.csv
+    - data/reports/**
+    - data/runs/**
+    - data/revenue_snapshots/**
+    - data/stock_monthly_revenue_raw/**
+    - stage3_web/hiring_reports/YYYYMMDD/**
+    - stage3_web/data/hiring_reports/YYYYMMDD/**
+
+dry_run_evidence:
+  repo_size:
+    root_total: 488M
+    data: 129M
+    stage3_web: 124M
+    stage3_web_hiring_reports: 3.5M
+    stage3_web_data_hiring_reports: 3.5M
+  ignored_probe_passed:
+    - .env
+    - telegram_recipients.json
+    - stage3_web/investment.db
+    - stage3_web/data/investment.db
+    - stage3_web/fixed_assets.db
+    - stage3_web/data/users.db
+    - _test_runtime/tmp
+    - venv
+    - logs/fetch_monthly_revenue.log
+    - data/20260610_hiring_demand.csv
+    - data/reports/20260610
+    - stage3_web/hiring_reports/20260610/anomaly_summary_20260610.json
+    - stage3_web/data/hiring_reports/20260610/anomaly_summary_20260610.json
+  not_ignored_probe_passed:
+    - AGENTS.md
+    - cleanup_test_runtime.py
+    - run_tests.sh
+    - stage3_web/app.py
+    - stage3_web/hiring_reports/latest_hiring_demand_web_data.json
+    - stage3_web/data/hiring_reports/latest_hiring_demand_web_data.json
+    - tests/test_release_readiness.py
+    - manifests/allowed_entrypoints.yaml
+
+required_pre_stage_gates:
+  - git status --short --untracked-files=all
+  - git check-ignore -v protected_and_local_only_paths
+  - git check-ignore -v include_candidate_paths_must_return_nonzero
+  - ./run_tests.sh
+  - venv/bin/python3 check_release_readiness.py --root . --output-dir data/runs/release_readiness_first_commit_scope
+  - venv/bin/python3 check_hiring_deploy_boundary.py --hiring-dir . --stage3-dir stage3_web --output-dir data/runs/deploy_boundary_first_commit_scope
+
+required_post_stage_gates:
+  - git diff --cached --name-only
+  - cached_files_must_be_subset_of_include_in_first_commit
+  - cached_files_must_exclude_all_exclude_hard_paths
+  - ./run_tests.sh
+  - venv/bin/python3 check_release_readiness.py --root . --output-dir data/runs/release_readiness_post_stage
+
+stop_conditions:
+  - any_protected_db_in_status_or_cached_diff
+  - any_secret_or_telegram_recipients_json_in_status_or_cached_diff
+  - any_history_bulk_artifact_in_cached_diff
+  - any_launchd_or_legacy_path_file_staged_without_manual_review
+  - release_readiness_blocker_count_nonzero
+  - deploy_boundary_typed_blocker_count_nonzero

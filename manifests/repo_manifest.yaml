@@ -1,0 +1,85 @@
+schema_version: hiring_repo_manifest_v1
+updated_at: 2026-06-11
+project_name: 上市櫃公司徵人需求度
+project_role: independent_topic_repo_template
+user_confirmed_repo_root: true
+user_confirmed_repo_root_at: 2026-06-11
+user_confirmed_railway_root_directory: stage3_web
+
+active_truth:
+  primary:
+    - AGENTS.md
+    - docs/CURRENT_EXECUTION.md
+    - docs/COMMANDS.md
+  manifests:
+    - manifests/repo_manifest.yaml
+    - manifests/data_contract.yaml
+    - manifests/allowed_entrypoints.yaml
+    - manifests/git_include_exclude_dry_run_20260611.yaml
+    - manifests/git_init_rehearsal_plan_20260611.yaml
+  compatibility:
+    - CURRENT_HIRING_DEMAND_EXECUTION.md
+    - HIRING_DEPLOY_BOUNDARY.md
+    - CLAUDE_hiring_demand.md
+    - HIRING_DEMAND_PITFALLS.md
+
+railway:
+  root_directory: stage3_web
+  start_command_source: stage3_web/Procfile
+  requirements: stage3_web/requirements.txt
+  runtime_required_files:
+    - stage3_web/app.py
+    - stage3_web/templates/hiring_demand.html
+    - stage3_web/static/css/style.css
+    - stage3_web/Procfile
+    - stage3_web/requirements.txt
+
+source_surfaces:
+  pipeline:
+    - fetch_hiring_demand.py
+    - fetch_monthly_revenue.py
+    - fetch_emerging_revenue.py
+    - fetch_stock_monthly_revenue_raw.py
+    - generate_unlimited_hiring_revenue_report.py
+    - render_unlimited_hiring_revenue_media.py
+    - sync_hiring_anomaly_web_artifacts.py
+  governance:
+    - check_hiring_demand_run.py
+    - check_hiring_deploy_boundary.py
+    - check_hiring_runtime_governance.py
+    - check_release_readiness.py
+    - hiring_workflow_governance.py
+  scheduler:
+    - run_hiring_demand.sh
+    - run_monthly_revenue.sh
+    - run_stock_monthly_revenue_raw.sh
+    - install_scheduler.sh
+
+daily_publish_allowed_paths:
+  - stage3_web/hiring_reports/**
+  - stage3_web/data/hiring_reports/**
+
+protected_paths:
+  - .env
+  - .env.*
+  - telegram_recipients.json
+  - stage3_web/investment.db
+  - stage3_web/data/investment.db
+  - stage3_web/fixed_assets.db
+  - stage3_web/data/users.db
+
+local_only_paths:
+  - venv/**
+  - __pycache__/**
+  - tests/__pycache__/**
+  - stage3_web/__pycache__/**
+  - logs/**
+  - "*.log"
+  - Backup/**
+
+release_readiness:
+  checker: check_release_readiness.py
+  dry_run_only_by_default: true
+  git_initialization_authorized: false
+  live_scrape_authorized_by_default: false
+  telegram_send_authorized_by_default: false

@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#080D18">
+    <meta name="color-scheme" content="dark">
+    <title>上市櫃公司徵人需求度 - 台股投資資訊系統</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <!-- Dark Investment Platform Theme - body/html backdrop -->
+    <style>
+        html, body {
+            background-color: #080D18 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container hiring-demand-page">
+        <header>
+            <div class="header-top">
+                <a href="/" class="back-link" target="_top">← 返回投資架構</a>
+                <h1 class="hiring-title">上市櫃公司徵人需求度</h1>
+                <span id="updateTime" class="header-update-time">載入中...</span>
+                <div class="user-info">
+                    {% if user %}
+                    <span class="user-name">{{ user.name }}</span>
+                    <a href="/logout" class="logout-btn">登出</a>
+                    {% endif %}
+                </div>
+            </div>
+        </header>
+
+        <main class="hiring-demand-main">
+            <!-- 篩選控制列 -->
+            <div class="hiring-filters">
+                <div class="filter-group">
+                    <label for="marketFilter">市場類別：</label>
+                    <select id="marketFilter">
+                        <option value="all">全部</option>
+                        <option value="上市">上市</option>
+                        <option value="上櫃">上櫃</option>
+                        <option value="興櫃">興櫃</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="demandFilter">最低需求度：</label>
+                    <select id="demandFilter">
+                        <option value="0">全部</option>
+                        <option value="5">≥ 5%</option>
+                        <option value="10">≥ 10%</option>
+                        <option value="15" selected>≥ 15%</option>
+                        <option value="20">≥ 20%</option>
+                        <option value="30">≥ 30%</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <input type="text" id="searchCompany" placeholder="搜尋公司名稱或代碼...">
+                </div>
+                <div class="filter-group favorite-filter-group" role="group" aria-label="我的最愛篩選">
+                    <button type="button" class="favorite-filter-btn active" data-favorite-mode="all" aria-pressed="true">全部</button>
+                    <button type="button" class="favorite-filter-btn" data-favorite-mode="favorites" aria-pressed="false">
+                        我的最愛 <span id="favoriteCountBadge" class="favorite-count-badge">0</span>
+                    </button>
+                </div>
+                <div class="filter-group anomaly-summary-group">
+                    <button type="button" id="dailyAnomalySummaryBtn" class="anomaly-summary-btn">每日異常偵測摘要</button>
+                </div>
+                <div class="filter-group">
+                    <span id="resultCount" class="result-count">載入中...</span>
+                </div>
+            </div>
+
+            <!-- 摘要卡片 -->
+            <div class="hiring-summary" id="hiringSummary"></div>
+
+            <!-- 資料表格 -->
+            <div class="hiring-table-container">
+                <table class="hiring-table" id="hiringTable">
+                    <thead>
+                        <tr>
+                            <th class="favorite-header" aria-label="我的最愛">★</th>
+                            <th data-sort="stock_code">代碼</th>
+                            <th data-sort="company_short_name">公司</th>
+                            <th data-sort="market_type">市場</th>
+                            <th data-sort="employee_count" class="number-header">員工人數</th>
+                            <th data-sort="explicit_need" class="number-header">明確需求人數</th>
+                            <th data-sort="unlimited_job_count" class="number-header">不限職缺數</th>
+                            <th class="number-header rev-th">近六月MoM%<span class="th-hint">月增率</span></th>
+                            <th class="number-header rev-th">近六月YoY%<span class="th-hint">年增率</span></th>
+                            <th data-sort="demand_ratio" class="number-header sort-active sort-desc">需求度(%)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="hiringTableBody">
+                        <tr><td colspan="10" class="loading-cell">載入中...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 資料來源 -->
+            <div class="hiring-footer">
+                <span class="data-source">資料來源：104 人力銀行</span>
+            </div>
+        </main>
+    </div>
+
+    <!-- 公司詳情彈出視窗 -->
+    <div id="companyModal" class="company-modal" style="display:none;">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">&times;</button>
+
+            <!-- 頂部：公司資訊 + 職缺 -->
+            <div class="modal-header-section">
+                <h2 id="modalCompanyName" class="modal-company-name"></h2>
+                <div class="modal-info-tags" id="modalInfo"></div>
+                <div class="modal-jobs-section" id="modalJobs">
+                    <div class="sub-loading">載入職缺明細...</div>
+                </div>
+            </div>
+
+            <!-- 中間：股價走勢圖 -->
+            <div class="modal-chart-section">
+                <h3 class="modal-section-title">📈 近六個月股價走勢</h3>
+                <div class="chart-container" id="priceChartContainer">
+                    <div class="chart-loading">載入股價資料...</div>
+                    <canvas id="priceChart"></canvas>
+                </div>
+            </div>
+
+            <!-- 底部：月營收圖 -->
+            <div class="modal-chart-section">
+                <h3 class="modal-section-title">📊 每月營收</h3>
+                <div class="chart-container" id="revenueChartContainer">
+                    <div class="chart-loading">載入營收資料...</div>
+                    <canvas id="revenueChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 每日異常偵測摘要視窗：用結構化資料重建 PNG 內容，不直接嵌入圖片 -->
+    <div id="anomalySummaryModal" class="company-modal anomaly-summary-modal" style="display:none;">
+        <div class="modal-content anomaly-summary-content">
+            <button class="modal-close" id="anomalySummaryModalClose">&times;</button>
+            <div class="modal-header-section anomaly-summary-header">
+                <h2 class="modal-company-name">每日異常偵測摘要</h2>
+                <div class="modal-info-tags" id="anomalySummaryInfo">
+                    <span class="modal-tag">載入中</span>
+                </div>
+            </div>
+            <div class="anomaly-summary-shell">
+                <div class="anomaly-summary-sidebar">
+                    <div class="anomaly-summary-sidebar-title">摘要檔案</div>
+                    <div id="anomalySummaryList" class="anomaly-summary-list">
+                        <div class="sub-loading">載入中...</div>
+                    </div>
+                </div>
+                <div id="anomalySummaryDetail" class="anomaly-summary-detail">
+                    <div class="sub-loading">載入中...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let allData = [];
+        let sortField = 'demand_ratio';
+        let sortAsc = false;
+        let favoriteCodes = new Set();
+        let favoriteMode = 'all';
+        let favoriteBusyCodes = new Set();
+        var _revBatch = {};  // 預載月營收摘要 { stock_code: {months, mom, yoy} }
+        var _anomalySummaryCache = null;
+        var _anomalyDetailCache = {};
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadHiringData();
+            setupFilters();
+            setupFavoriteFilter();
+            setupSorting();
+            setupSubTableToggle();
+            setupAnomalySummaryModal();
+        });
+
+        async function loadHiringData() {
+            try {
+                // 並行載入徵人需求 + 月營收摘要 + 個人收藏
+                const [hiringResp, revResp, favResp] = await Promise.all([
+                    fetch('/api/hiring-demand'),
+                    fetch('/api/hiring-demand/revenue-batch'),
+                    fetch('/api/hiring-demand/favorites'),
+                ]);
+                const result = await hiringResp.json();
+                const revResult = await revResp.json();
+                const favResult = favResp.ok ? await favResp.json() : { favorites: [] };
+
+                // 存月營收摘要（供 renderTable 直接使用）
+                _revBatch = revResult.data || {};
+                favoriteCodes = new Set((favResult.favorites || []).map(function(code) {
+                    return String(code);
+                }));
+                updateFavoriteFilterButtons();
+
+                if (!result.data || result.data.length === 0) {
+                    document.getElementById('hiringTableBody').innerHTML =
+                        '<tr><td colspan="10" class="loading-cell">尚無資料，請先執行 fetch_hiring_demand.py</td></tr>';
+                    document.getElementById('resultCount').textContent = '共 0 家公司';
+                    return;
+                }
+
+                allData = result.data;
+                document.getElementById('updateTime').textContent =
+                    (result.fetch_datetime || result.fetch_date || '未知') + ' 已更新';
+                applyFilters();
+            } catch (error) {
+                console.error('載入失敗:', error);
+                document.getElementById('hiringTableBody').innerHTML =
+                    '<tr><td colspan="10" class="loading-cell">載入失敗，請重試</td></tr>';
+            }
+        }
+
+        function setupFilters() {
+            document.getElementById('marketFilter').addEventListener('change', applyFilters);
+            document.getElementById('demandFilter').addEventListener('change', applyFilters);
+            document.getElementById('searchCompany').addEventListener('input', applyFilters);
+        }
+
+        function setupFavoriteFilter() {
+            document.querySelectorAll('.favorite-filter-btn').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    favoriteMode = this.getAttribute('data-favorite-mode') || 'all';
+                    updateFavoriteFilterButtons();
+                    applyFilters();
+                });
+            });
+        }
+
+        function updateFavoriteFilterButtons() {
+            document.querySelectorAll('.favorite-filter-btn').forEach(function(button) {
+                var mode = button.getAttribute('data-favorite-mode') || 'all';
+                button.classList.toggle('active', mode === favoriteMode);
+                button.setAttribute('aria-pressed', mode === favoriteMode ? 'true' : 'false');
+            });
+            var badge = document.getElementById('favoriteCountBadge');
+            if (badge) badge.textContent = favoriteCodes.size;
+        }
+
+        function setupSorting() {
+            document.querySelectorAll('.hiring-table th[data-sort]').forEach(function(th) {
+                th.addEventListener('click', function() {
+                    var field = this.getAttribute('data-sort');
+
+                    // 切換排序方向
+                    if (sortField === field) {
+                        sortAsc = !sortAsc;
+                    } else {
+                        sortField = field;
+                        // 數字欄位預設降序，文字欄位預設升序
+                        sortAsc = ['stock_code', 'company_short_name', 'market_type'].includes(field);
+                    }
+
+                    // 更新表頭樣式
+                    document.querySelectorAll('.hiring-table th').forEach(function(t) {
+                        t.classList.remove('sort-active', 'sort-asc', 'sort-desc');
+                    });
+                    this.classList.add('sort-active', sortAsc ? 'sort-asc' : 'sort-desc');
+
+                    applyFilters();
+                });
+            });
+        }
+
+        function applyFilters() {
+            var market = document.getElementById('marketFilter').value;
+            var minDemand = parseFloat(document.getElementById('demandFilter').value);
+            var search = document.getElementById('searchCompany').value.toLowerCase();
+
+            var filtered = allData.filter(function(row) {
+                // 市場篩選
+                if (market !== 'all' && row.market_type !== market) return false;
+
+                // 我的最愛篩選
+                if (favoriteMode === 'favorites' && !favoriteCodes.has(String(row.stock_code))) return false;
+
+                // 需求度篩選：999.0 = 人數不限、998.0 = 未標示需求人數，一律顯示
+                if (row.demand_ratio !== 999.0 && row.demand_ratio !== 998.0 && row.demand_ratio < minDemand) return false;
+
+                // 搜尋篩選
+                if (search) {
+                    var matchName = row.company_short_name.toLowerCase().includes(search);
+                    var matchCode = row.stock_code.includes(search);
+                    var matchFull = row.company_full_name && row.company_full_name.toLowerCase().includes(search);
+                    if (!matchName && !matchCode && !matchFull) return false;
+                }
+
+                return true;
+            });
+
+            // 排序
+            filtered.sort(function(a, b) {
+                var valA = a[sortField];
+                var valB = b[sortField];
+
+                if (typeof valA === 'string') valA = valA.toLowerCase();
+                if (typeof valB === 'string') valB = valB.toLowerCase();
+
+                if (valA < valB) return sortAsc ? -1 : 1;
+                if (valA > valB) return sortAsc ? 1 : -1;
+                return 0;
+            });
+
+            renderTable(filtered);
+            renderSummary(filtered);
+        }
+
+        function renderTable(data) {
+            var tbody = document.getElementById('hiringTableBody');
+            document.getElementById('resultCount').textContent = '共 ' + data.length + ' 家公司';
+
+            if (data.length === 0) {
+                var emptyMessage = '無符合條件的資料';
+                if (favoriteMode === 'favorites') {
+                    emptyMessage = favoriteCodes.size === 0 ? '尚未加入我的最愛公司' : '我的最愛中沒有符合目前篩選的公司';
+                }
+                tbody.innerHTML = '<tr><td colspan="10" class="loading-cell">' + emptyMessage + '</td></tr>';
+                return;
+            }
+
+            var html = '';
+            for (var i = 0; i < data.length; i++) {
+                var row = data[i];
+                var isUnlimited = row.demand_ratio === 999.0;
+                var isUnspecified = row.demand_ratio === 998.0;
+                var isHighDemand = !isUnlimited && !isUnspecified && row.demand_ratio >= 15;
+
+                var demandDisplay;
+                if (isUnlimited) {
+                    demandDisplay = '<span class="unlimited-demand">人數不限</span>';
+                } else if (isUnspecified) {
+                    demandDisplay = '<span class="unspecified-demand">未標示需求人數</span>';
+                } else {
+                    demandDisplay = row.demand_ratio.toFixed(2) + '%';
+                }
+
+                var unlimitedDisplay;
+                if (row.unlimited_job_count > 0) {
+                    unlimitedDisplay = row.unlimited_job_count + ' <span class="unlimited-tag">不限</span>';
+                } else {
+                    unlimitedDisplay = '0';
+                }
+
+                var marketClass = row.market_type === '上市' ? 'badge-listed' :
+                                  row.market_type === '上櫃' ? 'badge-otc' : 'badge-emerging';
+                var stockCode = String(row.stock_code);
+                var isFavorite = favoriteCodes.has(stockCode);
+                var favoriteTitle = isFavorite ? '從我的最愛移除' : '加入我的最愛';
+
+                html += '<tr class="main-row" data-stock="' + stockCode + '">' +
+                    '<td class="favorite-cell">' +
+                        '<button type="button" class="favorite-toggle' + (isFavorite ? ' is-favorite' : '') + '" data-stock="' + stockCode + '" aria-label="' + favoriteTitle + '" aria-pressed="' + (isFavorite ? 'true' : 'false') + '" title="' + favoriteTitle + '">' +
+                            (isFavorite ? '★' : '☆') +
+                        '</button>' +
+                    '</td>' +
+                    '<td class="mono">' + row.stock_code + '</td>' +
+                    '<td>' + row.company_short_name + '</td>' +
+                    '<td><span class="market-badge ' + marketClass + '">' + row.market_type + '</span></td>' +
+                    '<td class="number">' + (row.employee_count > 0 ? row.employee_count.toLocaleString() : '-') + '</td>' +
+                    '<td class="number">' + row.explicit_need.toLocaleString() + '</td>' +
+                    '<td class="number">' + unlimitedDisplay + '</td>' +
+                    '<td class="rev-cell">' + buildRevCell(row.stock_code, 'mom') + '</td>' +
+                    '<td class="rev-cell">' + buildRevCell(row.stock_code, 'yoy') + '</td>' +
+                    '<td class="number ' + (isHighDemand ? 'high-demand' : '') + (isUnlimited ? ' unlimited-cell' : '') + (isUnspecified ? ' unspecified-cell' : '') + '">' + demandDisplay + '</td>' +
+                    '</tr>';
+            }
+
+            tbody.innerHTML = html;
+        }
+
+        async function toggleFavorite(stockCode) {
+            stockCode = String(stockCode);
+            if (!stockCode || favoriteBusyCodes.has(stockCode)) return;
+
+            favoriteBusyCodes.add(stockCode);
+            var wasFavorite = favoriteCodes.has(stockCode);
+
+            try {
+                var response = await fetch('/api/hiring-demand/favorites/' + encodeURIComponent(stockCode), {
+                    method: wasFavorite ? 'DELETE' : 'POST'
+                });
+                var result = await response.json();
+                if (!response.ok) {
+                    throw new Error(result.message || 'favorite update failed');
+                }
+
+                if (result.is_favorite) {
+                    favoriteCodes.add(result.stock_code);
+                } else {
+                    favoriteCodes.delete(result.stock_code);
+                }
+                updateFavoriteFilterButtons();
+                applyFilters();
+            } catch (error) {
+                console.error('我的最愛更新失敗:', error);
+                alert('我的最愛更新失敗，請稍後再試');
+            } finally {
+                favoriteBusyCodes.delete(stockCode);
+            }
+        }
+
+        function buildRevCell(code, type) {
+            var rev = _revBatch[code];
+            if (!rev) return '<span style="color:#CBD5E1;font-size:0.72rem">無資料</span>';
+            var values = type === 'mom' ? rev.mom : rev.yoy;
+            var months = rev.months;
+            return renderMiniBar(values, months, type);
+        }
+
+        function renderSummary(data) {
+            var totalCompanies = data.length;
+            var highDemand = 0;
+            var unlimitedCount = 0;
+            var unspecifiedCount = 0;
+            var totalNeed = 0;
+
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].demand_ratio === 999.0) {
+                    unlimitedCount++;
+                } else if (data[i].demand_ratio === 998.0) {
+                    unspecifiedCount++;
+                } else if (data[i].demand_ratio >= 15) {
+                    highDemand++;
+                }
+                totalNeed += data[i].explicit_need;
+            }
+
+            document.getElementById('hiringSummary').innerHTML =
+                '<div class="summary-card">' +
+                    '<div class="summary-value">' + totalCompanies + '</div>' +
+                    '<div class="summary-label">符合條件公司</div>' +
+                '</div>' +
+                '<div class="summary-card summary-high">' +
+                    '<div class="summary-value">' + highDemand + '</div>' +
+                    '<div class="summary-label">需求度 ≥15%</div>' +
+                '</div>' +
+                '<div class="summary-card summary-unlimited">' +
+                    '<div class="summary-value">' + unlimitedCount + '</div>' +
+                    '<div class="summary-label">人數不限</div>' +
+                '</div>' +
+                '<div class="summary-card">' +
+                    '<div class="summary-value">' + totalNeed.toLocaleString() + '</div>' +
+                    '<div class="summary-label">明確需求總人數</div>' +
+                '</div>' +
+                '<div class="summary-card summary-rev-legend">' +
+                    '<div class="summary-rev-legend-title">近六月營收成長顏色說明</div>' +
+                    '<div class="summary-rev-legend-grid">' +
+                        '<span class="rev-legend-item" style="border-left-color:#FBBFCA;background:rgba(251,191,202,0.1)">淡紅 正成長</span>' +
+                        '<span class="rev-legend-item" style="border-left-color:#FF6B6B;background:rgba(255,107,107,0.1)">深紅 快速成長</span>' +
+                        '<span class="rev-legend-item" style="border-left-color:#CCFBF1;background:rgba(204,251,241,0.08)">淡翡翠 衰退</span>' +
+                        '<span class="rev-legend-item" style="border-left-color:#2DD4BF;background:rgba(45,212,191,0.1)">翡翠 快速衰退</span>' +
+                    '</div>' +
+                    '<div class="summary-rev-legend-hint">MoM&gt;20% / YoY&gt;30% 為快速</div>' +
+                '</div>';
+        }
+
+        // ==================== Modal 彈出視窗 ====================
+
+        var _stockCache = {};  // 前端快取（10 分鐘有效）
+        var _priceChart = null;
+        var _revenueChart = null;
+        var CACHE_TTL = 10 * 60 * 1000;  // 10 分鐘
+
+        function getCached(key) {
+            var c = _stockCache[key];
+            if (c && (Date.now() - c.ts < CACHE_TTL)) return c.data;
+            return null;
+        }
+
+        function setCache(key, data) {
+            _stockCache[key] = { data: data, ts: Date.now() };
+        }
+
+        function setupSubTableToggle() {
+            var modal = document.getElementById('companyModal');
+            var closeBtn = document.getElementById('modalClose');
+
+            // 關閉 Modal
+            closeBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) closeModal();
+            });
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') closeModal();
+            });
+
+            // 點擊表格列 → 開啟 Modal
+            document.getElementById('hiringTable').addEventListener('click', function(e) {
+                var favoriteBtn = e.target.closest('.favorite-toggle');
+                if (favoriteBtn) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toggleFavorite(favoriteBtn.getAttribute('data-stock'));
+                    return;
+                }
+
+                var row = e.target.closest('tr.main-row');
+                if (!row || e.target.closest('a')) return;
+
+                var stockCode = row.getAttribute('data-stock');
+
+                // 從 allData 取得該公司的完整資料
+                var companyData = allData.find(function(d) { return d.stock_code === stockCode; });
+                if (!companyData) return;
+
+                openModal(stockCode, companyData);
+            });
+        }
+
+        function openModal(stockCode, companyData) {
+            var modal = document.getElementById('companyModal');
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+
+            // 頂部：公司名稱
+            var nameText = companyData.company_full_name || companyData.company_short_name;
+            document.getElementById('modalCompanyName').textContent =
+                nameText + ' (' + stockCode + ')';
+
+            // 公司資訊標籤
+            var infoHtml = '<span class="modal-tag">' + companyData.market_type + '</span>';
+            if (companyData.employee_count > 0) {
+                infoHtml += '<span class="modal-tag">員工 ' + companyData.employee_count.toLocaleString() + ' 人</span>';
+            }
+            infoHtml += '<span class="modal-tag">職缺 ' + companyData.total_job_count + ' 筆</span>';
+            if (companyData.demand_ratio === 999.0) {
+                infoHtml += '<span class="modal-tag modal-tag-unlimited">人數不限</span>';
+            } else if (companyData.demand_ratio === 998.0) {
+                infoHtml += '<span class="modal-tag modal-tag-unspecified">未標示需求人數</span>';
+            } else {
+                infoHtml += '<span class="modal-tag modal-tag-demand">需求度 ' + companyData.demand_ratio.toFixed(2) + '%</span>';
+            }
+            document.getElementById('modalInfo').innerHTML = infoHtml;
+
+            // 職缺明細（載入中）
+            document.getElementById('modalJobs').innerHTML = '<div class="sub-loading">載入職缺明細...</div>';
+
+            // 圖表載入中
+            document.querySelector('#priceChartContainer .chart-loading').style.display = 'block';
+            document.getElementById('priceChart').style.display = 'none';
+            document.querySelector('#revenueChartContainer .chart-loading').style.display = 'block';
+            document.getElementById('revenueChart').style.display = 'none';
+
+            // 銷毀舊圖表
+            if (_priceChart) { _priceChart.destroy(); _priceChart = null; }
+            if (_revenueChart) { _revenueChart.destroy(); _revenueChart = null; }
+
+            // 並行載入 3 組資料
+            loadModalJobs(stockCode);
+            loadModalPrice(stockCode);
+            loadModalRevenue(stockCode);
+        }
+
+        function closeModal() {
+            document.getElementById('companyModal').style.display = 'none';
+            document.body.style.overflow = '';
+        }
+
+        // ---- 每日異常偵測摘要 ----
+        function setupAnomalySummaryModal() {
+            var openBtn = document.getElementById('dailyAnomalySummaryBtn');
+            var modal = document.getElementById('anomalySummaryModal');
+            var closeBtn = document.getElementById('anomalySummaryModalClose');
+            if (!openBtn || !modal || !closeBtn) return;
+
+            openBtn.addEventListener('click', openAnomalySummaryModal);
+            closeBtn.addEventListener('click', closeAnomalySummaryModal);
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) closeAnomalySummaryModal();
+            });
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modal.style.display !== 'none') closeAnomalySummaryModal();
+            });
+        }
+
+        function openAnomalySummaryModal() {
+            var modal = document.getElementById('anomalySummaryModal');
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            loadAnomalySummaryList();
+        }
+
+        function closeAnomalySummaryModal() {
+            document.getElementById('anomalySummaryModal').style.display = 'none';
+            document.body.style.overflow = '';
+        }
+
+        async function loadAnomalySummaryList() {
+            if (_anomalySummaryCache) {
+                renderAnomalySummaryList(_anomalySummaryCache.summaries || []);
+                if ((_anomalySummaryCache.summaries || []).length > 0) {
+                    loadAnomalySummaryDetail(_anomalySummaryCache.summaries[0].report_key);
+                }
+                return;
+            }
+
+            try {
+                var response = await fetch('/api/hiring-demand/anomaly-summaries');
+                var payload = await response.json();
+                if (!response.ok) throw new Error(payload.error || 'load anomaly summaries failed');
+                _anomalySummaryCache = payload;
+                renderAnomalySummaryList(payload.summaries || []);
+                if ((payload.summaries || []).length > 0) {
+                    loadAnomalySummaryDetail(payload.summaries[0].report_key);
+                } else {
+                    document.getElementById('anomalySummaryInfo').innerHTML = '<span class="modal-tag">尚無摘要</span>';
+                    document.getElementById('anomalySummaryDetail').innerHTML = '<div class="sub-empty">尚無每日異常偵測摘要</div>';
+                }
+            } catch (error) {
+                console.error('載入異常偵測摘要失敗:', error);
+                document.getElementById('anomalySummaryList').innerHTML = '<div class="sub-empty">載入失敗</div>';
+                document.getElementById('anomalySummaryDetail').innerHTML = '<div class="sub-empty">載入失敗</div>';
+            }
+        }
+
+        function renderAnomalySummaryList(summaries, activeKey) {
+            var list = document.getElementById('anomalySummaryList');
+            if (!summaries || summaries.length === 0) {
+                list.innerHTML = '<div class="sub-empty">尚無摘要</div>';
+                return;
+            }
+
+            var html = '';
+            summaries.forEach(function(item, index) {
+                var isActive = activeKey ? item.report_key === activeKey : index === 0;
+                var totalCount = (item.counts.today_new_unlimited_count || 0)
+                    + (item.counts.current_month_revenue_increase_count || 0)
+                    + (item.counts.revenue_turnaround_count || 0)
+                    + (item.counts.three_month_revenue_growth_count || 0);
+                html += '<div class="anomaly-file-row">' +
+                    '<button type="button" class="anomaly-file-btn' + (isActive ? ' active' : '') + '" data-report-key="' + escapeHtml(item.report_key) + '">' +
+                        '<span class="anomaly-file-name">' + escapeHtml(item.filename) + '</span>' +
+                        '<span class="anomaly-file-meta">' + totalCount + ' 件告警</span>' +
+                    '</button>' +
+                    '<button type="button" class="anomaly-file-delete" data-report-key="' + escapeHtml(item.report_key) + '" aria-label="刪除 ' + escapeHtml(item.filename) + '" title="刪除">&times;</button>' +
+                '</div>';
+            });
+            list.innerHTML = html;
+            list.querySelectorAll('.anomaly-file-btn').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    var reportKey = this.getAttribute('data-report-key');
+                    loadAnomalySummaryDetail(reportKey);
+                });
+            });
+            list.querySelectorAll('.anomaly-file-delete').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    deleteAnomalySummary(this.getAttribute('data-report-key'));
+                });
+            });
+        }
+
+        async function deleteAnomalySummary(reportKey) {
+            if (!reportKey) return;
+            var summaries = (_anomalySummaryCache || {}).summaries || [];
+            var target = summaries.find(function(item) { return item.report_key === reportKey; });
+            var filename = target ? target.filename : reportKey;
+            if (!window.confirm('刪除 ' + filename + '？')) return;
+
+            try {
+                var response = await fetch('/api/hiring-demand/anomaly-summaries/' + encodeURIComponent(reportKey), {
+                    method: 'DELETE'
+                });
+                var payload = await response.json();
+                if (!response.ok) throw new Error(payload.error || 'delete anomaly summary failed');
+                delete _anomalyDetailCache[reportKey];
+                _anomalySummaryCache = null;
+                document.getElementById('anomalySummaryInfo').innerHTML = '<span class="modal-tag">已刪除</span>';
+                document.getElementById('anomalySummaryDetail').innerHTML = '<div class="sub-loading">載入中...</div>';
+                loadAnomalySummaryList();
+            } catch (error) {
+                console.error('刪除異常偵測摘要失敗:', error);
+                window.alert('刪除失敗，請稍後再試');
+            }
+        }
+
+        async function loadAnomalySummaryDetail(reportKey) {
+            if (!reportKey) return;
+            renderAnomalySummaryList((_anomalySummaryCache || {}).summaries || [], reportKey);
+
+            if (_anomalyDetailCache[reportKey]) {
+                renderAnomalySummaryDetail(_anomalyDetailCache[reportKey]);
+                return;
+            }
+
+            document.getElementById('anomalySummaryDetail').innerHTML = '<div class="sub-loading">載入中...</div>';
+            try {
+                var response = await fetch('/api/hiring-demand/anomaly-summaries/' + encodeURIComponent(reportKey));
+                var payload = await response.json();
+                if (!response.ok) throw new Error(payload.error || 'load anomaly summary detail failed');
+                _anomalyDetailCache[reportKey] = payload;
+                renderAnomalySummaryDetail(payload);
+            } catch (error) {
+                console.error('載入異常偵測摘要明細失敗:', error);
+                document.getElementById('anomalySummaryDetail').innerHTML = '<div class="sub-empty">載入失敗</div>';
+            }
+        }
+
+        function renderAnomalySummaryDetail(payload) {
+            var counts = payload.counts || {};
+            document.getElementById('anomalySummaryInfo').innerHTML =
+                '<span class="modal-tag">' + escapeHtml(payload.filename) + '</span>' +
+                '<span class="modal-tag">產生時間 ' + escapeHtml(payload.generated_at || '-') + '</span>' +
+                '<span class="modal-tag modal-tag-unlimited">近六月</span>';
+
+            var html = '<div class="anomaly-count-grid">' +
+                buildAnomalyCountCard('今日新增', counts.today_new_unlimited_count || 0, 'amber') +
+                buildAnomalyCountCard('營收轉正', counts.revenue_turnaround_count || 0, 'blue') +
+                buildAnomalyCountCard('雙指標改善', counts.current_month_revenue_increase_count || 0, 'rose') +
+                buildAnomalyCountCard('強勢延續', counts.three_month_revenue_growth_count || 0, 'teal') +
+            '</div>';
+
+            (payload.sections || []).forEach(function(section) {
+                html += renderAnomalySection(section);
+            });
+
+            document.getElementById('anomalySummaryDetail').innerHTML = html;
+        }
+
+        function buildAnomalyCountCard(label, value, tone) {
+            return '<div class="anomaly-count-card anomaly-count-' + tone + '">' +
+                '<div class="anomaly-count-value">' + value + '</div>' +
+                '<div class="anomaly-count-label">' + escapeHtml(label) + '</div>' +
+            '</div>';
+        }
+
+        function renderAnomalySection(section) {
+            var companies = section.companies || [];
+            var html = '<section class="anomaly-section">' +
+                '<div class="anomaly-section-head">' +
+                    '<div>' +
+                        '<h3>' + escapeHtml(section.title || '') + '</h3>' +
+                        '<p>' + escapeHtml(section.description || section.rule_id || '') + '</p>' +
+                    '</div>' +
+                    '<span class="anomaly-section-count">' + (section.count || companies.length || 0) + ' 家</span>' +
+                '</div>';
+
+            if (companies.length === 0) {
+                html += '<div class="sub-empty">此分類目前無公司</div></section>';
+                return html;
+            }
+
+            html += '<div class="anomaly-table-wrap"><table class="anomaly-table">' +
+                '<thead><tr><th>代碼</th><th>公司</th><th>市場</th><th>不限職缺</th><th>MoM%</th><th>YoY%</th></tr></thead><tbody>';
+            companies.forEach(function(company) {
+                html += '<tr>' +
+                    '<td class="mono">' + escapeHtml(company.stock_code) + '</td>' +
+                    '<td>' + escapeHtml(company.company_short_name) + '</td>' +
+                    '<td>' + escapeHtml(company.market || '-') + '</td>' +
+                    '<td class="number">' + escapeHtml(company.unlimited_job_count || '-') + '</td>' +
+                    '<td class="rev-cell">' + renderAnomalyRevenue(company.revenue, 'mom') + '</td>' +
+                    '<td class="rev-cell">' + renderAnomalyRevenue(company.revenue, 'yoy') + '</td>' +
+                '</tr>';
+            });
+            html += '</tbody></table></div></section>';
+            return html;
+        }
+
+        function renderAnomalyRevenue(revenue, type) {
+            if (!revenue) return '<span class="rev-loading">無資料</span>';
+            var values = type === 'mom' ? revenue.mom : revenue.yoy;
+            return renderMiniBar(values || [], revenue.months || [], type);
+        }
+
+        function escapeHtml(value) {
+            return String(value === null || value === undefined ? '' : value)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        // ---- 職缺明細 ----
+        function loadModalJobs(stockCode) {
+            var cached = getCached(stockCode + '_jobs');
+            if (cached) { renderModalJobs(cached); return; }
+
+            fetch('/api/hiring-demand/jobs/' + stockCode)
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    setCache(stockCode + '_jobs', data);
+                    renderModalJobs(data);
+                })
+                .catch(function() {
+                    document.getElementById('modalJobs').innerHTML =
+                        '<div class="sub-empty">載入職缺失敗</div>';
+                });
+        }
+
+        function renderModalJobs(data) {
+            var container = document.getElementById('modalJobs');
+            if (!data.jobs || data.jobs.length === 0) {
+                container.innerHTML = '<div class="sub-empty">此公司目前無符合條件的職缺</div>';
+                return;
+            }
+            var html = '<table class="sub-table modal-jobs-table">' +
+                '<thead><tr><th>職缺名稱</th><th>需求人數</th><th>104 連結</th></tr></thead><tbody>';
+            for (var j = 0; j < data.jobs.length; j++) {
+                var job = data.jobs[j];
+                var needClass = job.is_unlimited ? 'unlimited-demand' : (job.is_unspecified ? 'unspecified-demand' : '');
+                var linkHtml = job.job_url
+                    ? '<a href="' + job.job_url + '" target="_blank" class="link-104">查看</a>' : '-';
+                html += '<tr><td>' + job.job_name + '</td>' +
+                    '<td class="' + needClass + '">' + job.need_display + '</td>' +
+                    '<td class="url-cell">' + linkHtml + '</td></tr>';
+            }
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        // ---- 股價走勢圖 ----
+        function loadModalPrice(stockCode) {
+            var cached = getCached(stockCode + '_price');
+            if (cached) { renderPriceChart(cached); return; }
+
+            fetch('/api/stock-price/' + stockCode)
+                .then(function(r) { return r.json(); })
+                .then(function(result) {
+                    if (result.error) {
+                        document.querySelector('#priceChartContainer .chart-loading').textContent = result.error;
+                        return;
+                    }
+                    setCache(stockCode + '_price', result.data);
+                    renderPriceChart(result.data);
+                })
+                .catch(function() {
+                    document.querySelector('#priceChartContainer .chart-loading').textContent = '載入股價失敗';
+                });
+        }
+
+        function renderPriceChart(data) {
+            if (!data || data.length === 0) {
+                document.querySelector('#priceChartContainer .chart-loading').textContent = '無股價資料';
+                return;
+            }
+
+            document.querySelector('#priceChartContainer .chart-loading').style.display = 'none';
+            var canvas = document.getElementById('priceChart');
+            canvas.style.display = 'block';
+
+            var labels = data.map(function(d) { return d.date; });
+            var closes = data.map(function(d) { return d.close; });
+            var volumes = data.map(function(d) { return d.volume; });
+
+            // 深色 canvas 背景 plugin（Chart.js 本身 canvas 是白底，需手動填色）
+            var darkBgPlugin = {
+                id: 'darkBg',
+                beforeDraw: function(chart) {
+                    var ctx = chart.canvas.getContext('2d');
+                    ctx.save();
+                    ctx.globalCompositeOperation = 'destination-over';
+                    ctx.fillStyle = '#0E1E36';
+                    ctx.fillRect(0, 0, chart.width, chart.height);
+                    ctx.restore();
+                }
+            };
+
+            var darkTick  = { color: '#94A3B8', font: { size: 12 } };
+            var darkTitle = { color: '#94A3B8', font: { size: 12 } };
+            var darkGrid  = { color: 'rgba(255,255,255,0.08)' };
+            var darkTooltip = {
+                backgroundColor: '#0F172A',
+                borderColor: 'rgba(59,130,246,0.35)',
+                borderWidth: 1,
+                titleColor: '#CBD5E1',
+                bodyColor: '#94A3B8',
+                padding: 10,
+                cornerRadius: 8
+            };
+
+            // gradient helpers（MoM/YoY 同色系）
+            function mkGrad(ctx, chart, c0, c1) {
+                var a = chart.chartArea;
+                if (!a) return c0;
+                var g = ctx.createLinearGradient(0, a.top, 0, a.bottom);
+                g.addColorStop(0, c0); g.addColorStop(1, c1);
+                return g;
+            }
+
+            _priceChart = new Chart(canvas, {
+                plugins: [darkBgPlugin],
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: '收盤價',
+                            type: 'line',
+                            data: closes,
+                            borderColor: '#FF6B6B',
+                            backgroundColor: function(ctx) {
+                                return mkGrad(ctx.chart.ctx, ctx.chart,
+                                    'rgba(255,107,107,0.35)', 'rgba(155,28,28,0.04)');
+                            },
+                            borderWidth: 2.5,
+                            pointRadius: 0,
+                            pointHoverRadius: 5,
+                            pointHoverBackgroundColor: '#FF6B6B',
+                            fill: true,
+                            yAxisID: 'y',
+                            tension: 0.3,
+                            order: 1,
+                        },
+                        {
+                            label: '成交量',
+                            type: 'bar',
+                            data: volumes,
+                            backgroundColor: function(ctx) {
+                                return mkGrad(ctx.chart.ctx, ctx.chart,
+                                    'rgba(251,191,36,0.75)', 'rgba(180,83,9,0.4)');
+                            },
+                            borderColor: 'rgba(252,211,77,0.6)',
+                            borderWidth: 1,
+                            borderRadius: 3,
+                            yAxisID: 'y1',
+                            order: 2,
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: {
+                        legend: {
+                            display: true, position: 'top',
+                            labels: { color: '#CBD5E1', font: { size: 12 }, boxWidth: 14, padding: 16,
+                                generateLabels: function(chart) {
+                                    var labels = Chart.defaults.plugins.legend.labels.generateLabels(chart);
+                                    labels[0].fillStyle = '#FF6B6B';
+                                    labels[1].fillStyle = '#FBD24C';
+                                    return labels;
+                                }
+                            }
+                        },
+                        tooltip: Object.assign({ callbacks: {
+                            label: function(ctx) {
+                                if (ctx.dataset.label === '成交量') return '成交量: ' + (ctx.raw / 1000).toFixed(0) + ' 張';
+                                return '收盤價: ' + ctx.raw + ' 元';
+                            }
+                        }}, darkTooltip)
+                    },
+                    scales: {
+                        x: {
+                            display: true,
+                            ticks: Object.assign({ maxTicksLimit: 12, maxRotation: 0,
+                                callback: function(val) {
+                                    var l = this.getLabelForValue(val);
+                                    return l ? l.substring(5) : '';
+                                }
+                            }, darkTick),
+                            grid: { display: false },
+                            border: { color: 'rgba(255,255,255,0.08)' }
+                        },
+                        y: {
+                            type: 'linear', position: 'left',
+                            title: Object.assign({ display: true, text: '收盤價 (元)' }, darkTitle),
+                            ticks: darkTick,
+                            grid: darkGrid,
+                            border: { color: 'rgba(255,255,255,0.08)' }
+                        },
+                        y1: {
+                            type: 'linear', position: 'right',
+                            title: Object.assign({ display: true, text: '成交量 (張)' }, darkTitle),
+                            ticks: Object.assign({ callback: function(val) { return (val/1000).toFixed(0); } }, darkTick),
+                            grid: { drawOnChartArea: false },
+                            border: { color: 'rgba(255,255,255,0.08)' }
+                        }
+                    }
+                }
+            });
+        }
+
+        // ---- 月營收圖 ----
+        function loadModalRevenue(stockCode) {
+            var cached = getCached(stockCode + '_revenue');
+            if (cached) { renderRevenueChart(cached); return; }
+
+            fetch('/api/stock-revenue/' + stockCode)
+                .then(function(r) { return r.json(); })
+                .then(function(result) {
+                    if (result.error) {
+                        document.querySelector('#revenueChartContainer .chart-loading').textContent = result.error;
+                        return;
+                    }
+                    setCache(stockCode + '_revenue', result.data);
+                    renderRevenueChart(result.data);
+                })
+                .catch(function() {
+                    document.querySelector('#revenueChartContainer .chart-loading').textContent = '載入營收失敗';
+                });
+        }
+
+        // ==================== 近六月營收 MoM%/YoY% ====================
+        // 資料由 _revBatch 預載（頁面載入時與徵人需求並行 fetch），
+        // buildRevCell 同步填入，不需懶載入。
+
+        var _mcId = 0; // SVG 漸層 ID 唯一前綴計數器
+
+        function renderMiniBar(values, months, type) {
+            // ── Zone-based layout（三區嚴格不重疊）──────────────────────────
+            // Zone A [0   – 13]: 正值標籤
+            // Zone B [14  – 57]: 柱狀圖繪製區（44px），baseline 在中心 y=35
+            // Zone C [58  – 80]: 負值標籤（y=60~68）＋月份標籤（y=76）
+            var barW = 18, gap = 8;
+            var W = Math.max(196, values.length * barW + (values.length - 1) * gap + 28);
+            var H = 80;
+            var BAR_TOP = 14, BAR_BOT = 57;
+            var BASE_Y  = Math.round((BAR_TOP + BAR_BOT) / 2); // = 35
+            var HALF    = BASE_Y - BAR_TOP;                     // = 21
+            var POS_LABEL_Y = 10;
+            var NEG_LABEL_Y = 64;
+            var MONTH_Y     = 76;
+
+            var maxScale  = type === 'mom' ? 25 : 35;
+            var threshold = type === 'mom' ? 20 : 30;
+            var uid = 'mc' + (++_mcId);
+
+            var hasRapid     = values.some(function(v){ return v !== null && v >  threshold; });
+            var hasRapidDrop = values.some(function(v){ return v !== null && v < -threshold; });
+
+            var totalW = values.length * barW + (values.length - 1) * gap;
+            var startX = Math.round((W - totalW) / 2);
+
+            var svg = '<svg width="' + W + '" height="' + H
+                    + '" style="overflow:hidden;display:block;margin:auto;vertical-align:middle">';
+
+            // ── 漸層與光暈濾鏡定義 ─────────────────────────────────────────
+            svg += '<defs>';
+            // 正值極端（快速成長）：珊瑚紅 → 深緋紅
+            svg += '<linearGradient id="' + uid + '_pe" x1="0" y1="0" x2="0" y2="1">'
+                 + '<stop offset="0%" stop-color="#FF6B6B"/>'
+                 + '<stop offset="100%" stop-color="#9B1C1C"/>'
+                 + '</linearGradient>';
+            // 正值一般（正成長）：淺粉 → 中紅
+            svg += '<linearGradient id="' + uid + '_pn" x1="0" y1="0" x2="0" y2="1">'
+                 + '<stop offset="0%" stop-color="#FBBFCA"/>'
+                 + '<stop offset="100%" stop-color="#DC2626"/>'
+                 + '</linearGradient>';
+            // 負值極端（快速衰退）：翡翠青 → 深翡翠
+            svg += '<linearGradient id="' + uid + '_ne" x1="0" y1="0" x2="0" y2="1">'
+                 + '<stop offset="0%" stop-color="#99F6E4"/>'
+                 + '<stop offset="100%" stop-color="#0D9488"/>'
+                 + '</linearGradient>';
+            // 負值一般（衰退）：淡薄荷 → 翡翠
+            svg += '<linearGradient id="' + uid + '_nn" x1="0" y1="0" x2="0" y2="1">'
+                 + '<stop offset="0%" stop-color="#CCFBF1"/>'
+                 + '<stop offset="100%" stop-color="#14B8A6"/>'
+                 + '</linearGradient>';
+            // 光暈濾鏡（極端值專用）
+            svg += '<filter id="' + uid + '_glow" x="-50%" y="-50%" width="200%" height="200%">'
+                 + '<feGaussianBlur stdDeviation="2.5" result="blur"/>'
+                 + '<feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>'
+                 + '</filter>';
+            svg += '</defs>';
+
+            // ── Baseline ──────────────────────────────────────────────────
+            svg += '<line x1="' + (startX - 4) + '" y1="' + BASE_Y
+                 + '" x2="' + (startX + totalW + 4) + '" y2="' + BASE_Y
+                 + '" stroke="#334155" stroke-width="1" stroke-dasharray="3,3" stroke-linecap="round"/>';
+
+            values.forEach(function(v, i) {
+                var x  = startX + i * (barW + gap);
+                var cx = x + barW / 2;
+                var monthLabel = months[i] ? months[i].split('/')[1] + '月' : '';
+
+                // ── 無資料 ──────────────────────────────────────────────────
+                if (v === null) {
+                    svg += '<rect x="' + (cx - 2) + '" y="' + (BASE_Y - 3)
+                         + '" width="4" height="6" fill="#334155" rx="2">'
+                         + '<title>' + (months[i] || '') + ': 無資料</title></rect>';
+                    svg += '<text x="' + cx + '" y="' + MONTH_Y + '" text-anchor="middle"'
+                         + ' font-size="8" font-weight="500" fill="#64748B" font-family="system-ui,sans-serif">-</text>';
+                    return;
+                }
+
+                var capped    = Math.max(-maxScale, Math.min(maxScale, v));
+                var barH      = Math.max(Math.round(Math.abs(capped) / maxScale * HALF), 3);
+                var isPos     = v >= 0;
+                var isExtreme = Math.abs(v) > threshold;
+                var sign      = v > 0 ? '+' : '';
+
+                // 漸層 ID 選擇（台股慣例：紅=成長，翡翠=衰退）
+                var gradId = uid + (isPos ? (isExtreme ? '_pe' : '_pn') : (isExtreme ? '_ne' : '_nn'));
+                // 數值標籤顏色（極端用亮色，一般用灰）
+                var labelColor = isExtreme
+                    ? (isPos ? '#FF8080' : '#2DD4BF')
+                    : '#94A3B8';
+
+                var barY = isPos ? (BASE_Y - barH) : BASE_Y;
+
+                // ── 光暈擴散層（極端值）─────────────────────────────────────
+                if (isExtreme) {
+                    var glowColor = isPos ? 'rgba(239,68,68,0.22)' : 'rgba(20,184,166,0.22)';
+                    svg += '<rect x="' + (x - 4) + '" y="' + (barY - 3) + '"'
+                         + ' width="' + (barW + 8) + '" height="' + (barH + 6) + '"'
+                         + ' fill="' + glowColor + '" rx="7"/>';
+                }
+
+                // ── 主柱（漸層填色 + 光暈濾鏡）──────────────────────────────
+                var filterAttr = isExtreme ? ' filter="url(#' + uid + '_glow)"' : '';
+                svg += '<rect x="' + x + '" y="' + barY
+                     + '" width="' + barW + '" height="' + barH + '"'
+                     + ' fill="url(#' + gradId + ')" rx="4"' + filterAttr + '>'
+                     + '<title>' + (months[i] || '') + ': ' + sign + v.toFixed(1) + '%</title></rect>';
+
+                // ── 頂部反光條（柱子亮度層次）──────────────────────────────
+                if (barH >= 8) {
+                    var hlY = isPos ? barY : (barY + barH - 3);
+                    svg += '<rect x="' + (x + 3) + '" y="' + hlY
+                         + '" width="' + (barW - 6) + '" height="3"'
+                         + ' fill="rgba(255,255,255,0.25)" rx="2"/>';
+                }
+
+                // ── 數值標籤（固定 Zone，不入柱內）─────────────────────────
+                if (Math.abs(v) >= 3) {
+                    var fSize   = isExtreme ? 8.5 : 7.5;
+                    var fWeight = isExtreme ? '700' : '600';
+                    var textY   = isPos ? POS_LABEL_Y : NEG_LABEL_Y;
+
+                    svg += '<text x="' + cx + '" y="' + textY + '" text-anchor="middle"'
+                         + ' font-size="' + fSize + '" font-weight="' + fWeight + '"'
+                         + ' fill="' + labelColor + '" font-family="system-ui,-apple-system,sans-serif"'
+                         + ' letter-spacing="0">'
+                         + sign + v.toFixed(0) + '%</text>';
+                }
+
+                // ── 月份標籤（固定底部）──────────────────────────────────────
+                svg += '<text x="' + cx + '" y="' + MONTH_Y + '" text-anchor="middle"'
+                     + ' font-size="8.5" font-weight="500" fill="#94A3B8"'
+                     + ' font-family="system-ui,-apple-system,sans-serif">'
+                     + monthLabel + '</text>';
+            });
+
+            // ── 角標：快速成長▲ / 快速衰退▼ ───────────────────────────────
+            if (hasRapid) {
+                svg += '<text x="' + (W - 2) + '" y="11" text-anchor="end"'
+                     + ' font-size="9" fill="#FF6B6B" font-weight="700" opacity="0.9">▲</text>';
+            } else if (hasRapidDrop) {
+                svg += '<text x="' + (W - 2) + '" y="11" text-anchor="end"'
+                     + ' font-size="9" fill="#2DD4BF" font-weight="700" opacity="0.9">▼</text>';
+            }
+
+            svg += '</svg>';
+            return svg;
+        }
+
+        function renderRevenueChart(data) {
+            if (!data || data.length === 0) {
+                document.querySelector('#revenueChartContainer .chart-loading').textContent = '無營收資料';
+                return;
+            }
+
+            document.querySelector('#revenueChartContainer .chart-loading').style.display = 'none';
+            var canvas = document.getElementById('revenueChart');
+            canvas.style.display = 'block';
+
+            var now = new Date();
+            var thisYear = now.getFullYear();
+            var lastYear = thisYear - 1;
+            var twoYearsAgo = thisYear - 2;
+
+            // 組織資料：按月份分組（近三年）
+            var months = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+            var twoYearsAgoData = new Array(12).fill(null);
+            var lastYearData = new Array(12).fill(null);
+            var thisYearData = new Array(12).fill(null);
+
+            for (var i = 0; i < data.length; i++) {
+                var d = data[i];
+                var m = d.revenue_month - 1;  // 0-indexed
+                if (d.revenue_year === twoYearsAgo && m >= 0 && m < 12) {
+                    twoYearsAgoData[m] = d.revenue / 100000000;
+                } else if (d.revenue_year === lastYear && m >= 0 && m < 12) {
+                    lastYearData[m] = d.revenue / 100000000;
+                } else if (d.revenue_year === thisYear && m >= 0 && m < 12) {
+                    thisYearData[m] = d.revenue / 100000000;
+                }
+            }
+
+            var _darkBgPlugin = {
+                id: 'darkBg2',
+                beforeDraw: function(chart) {
+                    var ctx = chart.canvas.getContext('2d');
+                    ctx.save();
+                    ctx.globalCompositeOperation = 'destination-over';
+                    ctx.fillStyle = '#0E1E36';
+                    ctx.fillRect(0, 0, chart.width, chart.height);
+                    ctx.restore();
+                }
+            };
+
+            var _darkTick  = { color: '#94A3B8', font: { size: 12 } };
+            var _darkTitle = { color: '#94A3B8', font: { size: 12 } };
+            var _darkGrid  = { color: 'rgba(255,255,255,0.08)' };
+            var _darkTooltip = {
+                backgroundColor: '#0F172A',
+                borderColor: 'rgba(59,130,246,0.35)',
+                borderWidth: 1,
+                titleColor: '#CBD5E1',
+                bodyColor: '#94A3B8',
+                padding: 10,
+                cornerRadius: 8
+            };
+
+            function _mkGrad(ctx, chart, c0, c1) {
+                var a = chart.chartArea;
+                if (!a) return c0;
+                var g = ctx.createLinearGradient(0, a.top, 0, a.bottom);
+                g.addColorStop(0, c0); g.addColorStop(1, c1);
+                return g;
+            }
+
+            _revenueChart = new Chart(canvas, {
+                plugins: [_darkBgPlugin],
+                type: 'bar',
+                data: {
+                    labels: months,
+                    datasets: [
+                        {
+                            // 兩年前：石板灰（最舊，最暗）
+                            label: twoYearsAgo + ' 年',
+                            data: twoYearsAgoData,
+                            backgroundColor: function(ctx) {
+                                return _mkGrad(ctx.chart.ctx, ctx.chart,
+                                    'rgba(148,163,184,0.55)', 'rgba(71,85,105,0.3)');
+                            },
+                            borderColor: 'rgba(203,213,225,0.5)',
+                            borderWidth: 1,
+                            borderRadius: 3,
+                        },
+                        {
+                            // 去年：翡翠色（MoM/YoY 衰退色，作為對比基準）
+                            label: lastYear + ' 年',
+                            data: lastYearData,
+                            backgroundColor: function(ctx) {
+                                return _mkGrad(ctx.chart.ctx, ctx.chart,
+                                    'rgba(153,246,228,0.75)', 'rgba(13,148,136,0.45)');
+                            },
+                            borderColor: 'rgba(45,212,191,0.65)',
+                            borderWidth: 1,
+                            borderRadius: 3,
+                        },
+                        {
+                            // 今年：珊瑚紅（MoM/YoY 成長色，最突出）
+                            label: thisYear + ' 年',
+                            data: thisYearData,
+                            backgroundColor: function(ctx) {
+                                return _mkGrad(ctx.chart.ctx, ctx.chart,
+                                    'rgba(255,107,107,0.9)', 'rgba(155,28,28,0.6)');
+                            },
+                            borderColor: 'rgba(255,107,107,0.8)',
+                            borderWidth: 1,
+                            borderRadius: 3,
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true, position: 'top',
+                            labels: { color: '#94A3B8', font: { size: 12 }, boxWidth: 14, padding: 16 }
+                        },
+                        tooltip: Object.assign({ callbacks: {
+                            label: function(ctx) {
+                                if (ctx.raw === null) return ctx.dataset.label + ': 無資料';
+                                return ctx.dataset.label + ': ' + ctx.raw.toFixed(2) + ' 億';
+                            }
+                        }}, _darkTooltip)
+                    },
+                    scales: {
+                        x: {
+                            ticks: _darkTick,
+                            grid: { display: false },
+                            border: { color: 'rgba(255,255,255,0.08)' }
+                        },
+                        y: {
+                            title: Object.assign({ display: true, text: '營收 (億元)' }, _darkTitle),
+                            ticks: Object.assign({ callback: function(val) { return val.toFixed(1); } }, _darkTick),
+                            grid: _darkGrid,
+                            border: { color: 'rgba(255,255,255,0.08)' }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

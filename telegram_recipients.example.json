@@ -1,0 +1,15 @@
+{
+  "schema_version": "2026-05-16",
+  "file_type": "telegram_recipient_list",
+  "updated_at": "",
+  "recipients": [
+    {
+      "label": "friend_example",
+      "name": "Friend Example",
+      "username": "friend_username",
+      "chat_id": "123456789",
+      "enabled": true,
+      "source": "telegram_getUpdates_start"
+    }
+  ]
+}

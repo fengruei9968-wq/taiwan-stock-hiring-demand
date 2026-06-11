@@ -1,0 +1,62 @@
+{
+  "network_timeout": {
+    "action": "wait_and_retry",
+    "plain_description": "Transient timeout. Wait and probe again before running the scraper."
+  },
+  "dns_failure": {
+    "action": "wait_and_retry",
+    "plain_description": "DNS lookup failed. Wait and probe again before running the scraper."
+  },
+  "connection_error": {
+    "action": "wait_and_retry",
+    "plain_description": "Connection failed. Wait and probe again before running the scraper."
+  },
+  "request_exception": {
+    "action": "wait_and_retry",
+    "plain_description": "HTTP client failed before receiving a usable response."
+  },
+  "http_403": {
+    "action": "wait_and_retry",
+    "plain_description": "104 rejected the request. Do not increase request volume."
+  },
+  "http_429": {
+    "action": "wait_and_retry",
+    "plain_description": "104 rate limited the request. Slow down and retry later."
+  },
+  "http_5xx": {
+    "action": "wait_and_retry",
+    "plain_description": "104 server-side error. Retry later."
+  },
+  "http_unexpected_status": {
+    "action": "wait_and_retry",
+    "plain_description": "Unexpected HTTP status. Retry later before scraping."
+  },
+  "cloudflare_challenge": {
+    "action": "wait_and_retry",
+    "plain_description": "Cloudflare challenge detected. Do not bypass it; wait and retry."
+  },
+  "non_json_response": {
+    "action": "wait_and_retry",
+    "plain_description": "104 returned a non-JSON response. Wait and probe again."
+  },
+  "unexpected_json_schema": {
+    "action": "stop_for_code_review",
+    "plain_description": "104 JSON schema changed and needs code review."
+  },
+  "empty_jobs": {
+    "action": "keyword_probe_then_retry",
+    "plain_description": "The API is reachable but returned no jobs. Probe another keyword before stopping."
+  },
+  "checker_fail": {
+    "action": "rerun_checker_after_artifact_fix",
+    "plain_description": "The run completed but local artifacts did not pass checker."
+  },
+  "deploy_scope_violation": {
+    "action": "stop_without_mutating_user_files",
+    "plain_description": "Deploy scope is unsafe. Do not restore, stage, commit, or push unrelated files."
+  },
+  "unknown_failure": {
+    "action": "stop_for_code_review",
+    "plain_description": "Unknown failure type. Stop and inspect before retrying."
+  }
+}

@@ -1,0 +1,61 @@
+# 歷史參考檔案（2026-06-11 移入 docs/history）
+# 狀態：非 active truth，不可直接用於正式執行或排程。
+# 原因：此檔保留 2026-04-12 舊版路徑假設，包含本機 D 槽絕對路徑。
+# 現行設定以 repo root 的 config.yaml 與 manifests/data_contract.yaml 為準。
+
+# 上市櫃公司徵人需求度設定檔
+
+# 104 人力銀行搜尋關鍵字（用於全域搜尋職缺）
+search_keywords:
+  - "作業員"
+  - "包裝員"
+  - "產線作業員"
+  - "技術員"
+
+# 職缺名稱二次過濾：職稱必須包含「員」字
+# 例如：作業員、包裝員、檢驗員、倉管員、操作員等
+# 排除邏輯：工程師、經理等管理/技術職稱不含「員」字，自然被排除
+job_title_filter_char: "員"
+
+# 排除的職缺名稱關鍵字（額外排除）
+exclude_keywords:
+  # 管理/非基層職稱
+  - "主管"
+  - "組長"
+  - "課長"
+  - "經理"
+  - "副理"
+  - "襄理"
+  - "專員"
+  - "業務員"
+  - "研究員"
+  # 非製造產線相關
+  - "電商"
+  - "網拍"
+  - "理貨"
+  - "撿貨"
+  - "司機"
+  - "門市"
+  - "洗衣"
+  - "洗滌"
+  - "物流"
+  - "職安"
+
+# 104 API 設定
+api:
+  search_url: "https://www.104.com.tw/jobs/search/api/jobs"
+  job_detail_url: "https://www.104.com.tw/job/ajax/content/"
+  company_url: "https://www.104.com.tw/company/ajax/content/"
+  delay_min: 1.0
+  delay_max: 2.5
+  detail_delay_min: 0.5
+  detail_delay_max: 1.5
+  max_retries: 3
+  timeout: 30
+  page_size: 20
+
+# 路徑設定
+paths:
+  stock_codes_dir: "/Users/chiufengjui/D槽/Python/台股子公司投資資訊擷取與展示/台股上市櫃公司名稱確認與自動定時更新/Stock_codes"
+  db_path: "/Users/chiufengjui/D槽/Python/台股子公司投資資訊擷取與展示/台股投資資訊系統_完整專案/stage3_web/data/investment.db"
+  output_dir: "/Users/chiufengjui/D槽/Python/台股子公司投資資訊擷取與展示/上市櫃公司徵人需求度/data"

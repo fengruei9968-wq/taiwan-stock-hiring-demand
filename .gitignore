@@ -1,0 +1,55 @@
+# Governance evidence exceptions (2026-05-15).
+# The parent repository ignores *.json globally; keep local receipts committable.
+.env
+.env.*
+.env.txt
+telegram_recipients.json
+telegram_recipients.*.json
+Backup/hiring_artifacts/
+Backup/
+_test_runtime/
+_local_runtime/
+logs/
+venv/
+__pycache__/
+*/__pycache__/
+*.pyc
+*.log
+.DS_Store
+com.*.plist
+!scheduler_templates/*.plist.template
+stage3_web/investment.db
+stage3_web/data/investment.db
+stage3_web/fixed_assets.db
+stage3_web/data/users.db
+stage3_web/instance/
+!hiring_recovery_policy.json
+!telegram_recipients.example.json
+!data/runs/*/workflow_manifest.json
+!data/runs/*/workflow_trace_receipt.json
+!data/runs/api_probe_*/api_probe_receipt_attempt_*.json
+!data/reports/*/unlimited_hiring_revenue_report_manifest_*.json
+!data/reports/*/anomaly_summary_*.json
+!data/reports/*/unlimited_hiring_revenue_media_receipt_*.json
+!data/reports/report_check_*/unlimited_hiring_revenue_report_check_receipt.json
+!data/reports/report_media_check_*/unlimited_hiring_revenue_report_check_receipt.json
+!data/reports/*/telegram_send_receipt_*.json
+
+# Latest runtime pointers are regenerated on every run and stay local-only.
+data/runs/latest_workflow_manifest.json
+data/runs/latest_workflow_trace.jsonl
+data/runs/latest_workflow_trace_receipt.json
+data/reports/latest_unlimited_hiring_revenue_report_manifest.json
+
+# First independent-repo commit excludes historical bulk artifacts by default.
+# Keep latest web JSON under stage3_web tracked; keep raw history on SSD unless
+# the user explicitly chooses data-history-in-Git.
+data/[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]_hiring_demand.csv
+data/reports/
+data/runs/
+data/revenue_snapshots/
+data/stock_monthly_revenue_raw/
+
+# Web deploy keeps latest JSON visible; dated web report history stays local.
+stage3_web/hiring_reports/[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/
+stage3_web/data/hiring_reports/[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/

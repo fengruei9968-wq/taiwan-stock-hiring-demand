@@ -1,0 +1,183 @@
+schema_version: hiring_git_include_exclude_dry_run_v1
+generated_at: 2026-06-11
+scope: dry_run_only_no_git_init_no_stage_no_commit_no_push
+project_root: /Volumes/Extreme SSD/Python/台股子公司投資資訊擷取與展示/台股投資資訊系統_完整專案/上市櫃公司徵人需求度
+
+plain_summary: >
+  This manifest defines what should and should not enter a future independent
+  GitHub repo for the hiring-demand project. It is not a git action. It does
+  not authorize git init, git add, commit, push, Railway deploy, Telegram send,
+  protected DB movement, or file deletion.
+
+current_git_state:
+  current_git_root: /Volumes/Extreme SSD/Python
+  root_is_independent_repo: false
+  warning: >
+    The folder is still under the parent SSD Git worktree. Parent ignore rules
+    currently hide stage3_web, so parent git status/check-ignore cannot be used
+    as the final independent repo truth.
+
+future_repo_recommendation:
+  repo_root: /Volumes/Extreme SSD/Python/台股子公司投資資訊擷取與展示/台股投資資訊系統_完整專案/上市櫃公司徵人需求度
+  railway_root_directory: stage3_web
+  repo_strategy: one_topic_one_complete_repo
+  daily_publish_strategy: json_artifacts_only_no_db_commit
+
+include_required:
+  governance:
+    - AGENTS.md
+    - docs/CURRENT_EXECUTION.md
+    - docs/COMMANDS.md
+    - docs/ADR/ADR-001-governance-import-policy.md
+    - docs/reviews/hiring_template_readonly_review_20260611.md
+    - manifests/repo_manifest.yaml
+    - manifests/data_contract.yaml
+    - manifests/allowed_entrypoints.yaml
+    - manifests/git_include_exclude_dry_run_20260611.yaml
+  compatibility_docs:
+    - CLAUDE_hiring_demand.md
+    - CURRENT_HIRING_DEMAND_EXECUTION.md
+    - HIRING_DEPLOY_BOUNDARY.md
+    - HIRING_DEMAND_PITFALLS.md
+    - SSD_MIGRATION_STATUS_20260610.md
+    - 20260606_HIRING_DEMAND_CURRENT_STATE.md
+    - docs/history/README.md
+    - docs/history/config_20260412_v1.yaml
+    - docs/history/run_hiring_demand_20260412_v1.sh
+  source_code:
+    - fetch_hiring_demand.py
+    - probe_104_search_api.py
+    - fetch_monthly_revenue.py
+    - fetch_emerging_revenue.py
+    - fetch_stock_monthly_revenue_raw.py
+    - generate_unlimited_hiring_revenue_report.py
+    - render_unlimited_hiring_revenue_media.py
+    - hiring_anomaly_detector.py
+    - sync_hiring_anomaly_web_artifacts.py
+    - telegram_sender.py
+    - telegram_recipient_probe.py
+    - hiring_workflow_governance.py
+    - check_hiring_demand_run.py
+    - check_hiring_deploy_boundary.py
+    - check_hiring_runtime_governance.py
+    - check_unlimited_hiring_revenue_report.py
+    - check_release_readiness.py
+  scripts_and_schedulers:
+    - run_hiring_demand.sh
+    - run_monthly_revenue.sh
+    - run_stock_monthly_revenue_raw.sh
+    - run_telegram_recipient_probe.sh
+    - backup_hiring_daily_artifacts.sh
+    - install_scheduler.sh
+    - scheduler_templates/*.plist.template
+  config_templates:
+    - config.yaml
+    - hiring_recovery_policy.json
+    - telegram_recipients.example.json
+  tests:
+    - tests/**/*.py
+  railway_web_runtime:
+    - stage3_web/app.py
+    - stage3_web/Procfile
+    - stage3_web/requirements.txt
+    - stage3_web/templates/**
+    - stage3_web/static/**
+    - stage3_web/.gitignore
+  deployable_web_json:
+    - stage3_web/hiring_reports/latest_anomaly_summary.json
+    - stage3_web/hiring_reports/latest_hiring_demand_web_data.json
+    - stage3_web/hiring_reports/latest_hiring_revenue_batch.json
+    - stage3_web/hiring_reports/latest_unlimited_hiring_revenue_media_receipt.json
+    - stage3_web/hiring_reports/latest_unlimited_hiring_revenue_report_manifest.json
+    - stage3_web/data/hiring_reports/latest_anomaly_summary.json
+    - stage3_web/data/hiring_reports/latest_hiring_demand_web_data.json
+    - stage3_web/data/hiring_reports/latest_hiring_revenue_batch.json
+    - stage3_web/data/hiring_reports/latest_unlimited_hiring_revenue_media_receipt.json
+    - stage3_web/data/hiring_reports/latest_unlimited_hiring_revenue_report_manifest.json
+
+include_requires_manual_review:
+  data_history:
+    reason: >
+      Historical daily CSV and report artifacts are useful for recovery and
+      audit, but they increase repo size and may be better kept in SSD backup
+      or release artifacts rather than Git history.
+    examples:
+      - data/YYYYMMDD_hiring_demand.csv
+      - data/reports/**
+      - data/revenue_snapshots/**
+      - data/stock_monthly_revenue_raw/**
+      - data/runs/**
+  launchd_local_files:
+    reason: >
+      Scheduler plist files are source-like, but machine-specific paths may
+      need templates before committing.
+    examples:
+      - com.hiring.demand.updater.plist
+      - com.monthly.revenue.updater.plist
+      - com.hiring.daily.artifacts.backup.plist
+
+exclude_hard:
+  secrets:
+    - .env
+    - .env.*
+    - .env.txt
+    - telegram_recipients.json
+    - telegram_recipients.*.json
+  protected_db:
+    - stage3_web/investment.db
+    - stage3_web/data/investment.db
+    - stage3_web/fixed_assets.db
+    - stage3_web/data/users.db
+  local_runtime:
+    - venv/**
+    - __pycache__/**
+    - "*/__pycache__/**"
+    - "*.pyc"
+    - "*.log"
+    - logs/**
+    - _local_runtime/**
+    - Backup/**
+    - .DS_Store
+    - com.*.plist
+    - stage3_web/__pycache__/**
+    - stage3_web/instance/**
+  local_runtime_pointers:
+    - data/runs/latest_workflow_manifest.json
+    - data/runs/latest_workflow_trace.jsonl
+    - data/runs/latest_workflow_trace_receipt.json
+    - data/reports/latest_unlimited_hiring_revenue_report_manifest.json
+
+observed_size_notes:
+  venv: 145M
+  stage3_web_investment_db: 117M
+  data_reports: 92M
+  backup: 31M
+  data_stock_monthly_revenue_raw: 24M
+  stage3_web_hiring_reports: 3.5M
+  stage3_web_data_hiring_reports: 3.5M
+
+observed_file_count_scan:
+  total_files_seen: 8364
+  hard_exclude_like_files: 6374
+  include_candidate_like_files: 1388
+  data_artifact_review_like_files: 601
+  unclassified_examples:
+    - stage3_web/.gitignore
+
+pre_git_init_required_checks:
+  - venv/bin/python3 -m unittest discover -s tests
+  - venv/bin/python3 check_hiring_deploy_boundary.py --hiring-dir . --stage3-dir stage3_web --output-dir data/runs/deploy_boundary_check_pre_git_init
+  - venv/bin/python3 check_release_readiness.py --root . --output-dir data/runs/release_readiness_pre_git_init
+
+post_git_init_required_checks:
+  - git status --short
+  - git check-ignore -v .env telegram_recipients.json stage3_web/investment.db logs/fetch_monthly_revenue.log venv
+  - git check-ignore -v stage3_web/app.py stage3_web/hiring_reports/latest_hiring_demand_web_data.json || true
+  - venv/bin/python3 check_release_readiness.py --root . --output-dir data/runs/release_readiness_post_git_init
+
+stop_conditions:
+  - protected_db_appears_in_candidate_commit
+  - secret_or_recipient_file_appears_in_candidate_commit
+  - stage3_web_runtime_files_are_ignored_after_independent_git_init
+  - daily_publish_candidate_includes_paths_outside_hiring_reports
+  - release_readiness_checker_has_blockers

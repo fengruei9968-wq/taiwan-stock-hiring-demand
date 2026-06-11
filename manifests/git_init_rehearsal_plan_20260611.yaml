@@ -1,0 +1,124 @@
+schema_version: hiring_git_init_rehearsal_plan_v1
+generated_at: 2026-06-11
+status: git_init_rehearsal_completed_pass_no_stage_no_commit_no_push
+
+confirmed_by_user:
+  git_repo_root: /Volumes/Extreme SSD/Python/台股子公司投資資訊擷取與展示/台股投資資訊系統_完整專案/上市櫃公司徵人需求度
+  railway_root_directory: stage3_web
+  repo_strategy: one_topic_one_complete_repo
+
+not_authorized_in_this_step:
+  - git_add
+  - git_commit
+  - git_push
+  - github_repo_creation
+  - railway_service_creation
+  - protected_db_move_or_stage
+  - telegram_live_send
+  - formal_scraper_run
+
+rehearsal_goal: >
+  Execute an independent git init rehearsal and verify ignore/status boundaries
+  without staging, committing, pushing, creating GitHub/Railway resources, running
+  live scrapers, or sending Telegram messages.
+
+pre_init_checks_required:
+  - command: venv/bin/python3 -m unittest tests/test_release_readiness.py
+    required_result: PASS
+  - command: venv/bin/python3 check_release_readiness.py --root . --output-dir data/runs/release_readiness_pre_git_init_confirmed_root
+    required_result: PASS_WITH_WARNING_NOT_INDEPENDENT_GIT_ROOT_ONLY
+  - command: venv/bin/python3 check_hiring_deploy_boundary.py --hiring-dir . --stage3-dir stage3_web --output-dir data/runs/deploy_boundary_pre_git_init_confirmed_root
+    required_result: PASS
+  - command: git status --short -- .gitignore AGENTS.md docs manifests check_release_readiness.py tests/test_release_readiness.py stage3_web/investment.db .env telegram_recipients.json
+    required_result: only_governance_files_visible_no_protected_paths
+
+independent_gitignore_requirements:
+  must_include:
+    - .env
+    - .env.*
+    - .env.txt
+    - telegram_recipients.json
+    - telegram_recipients.*.json
+    - venv/
+    - __pycache__/
+    - "*/__pycache__/"
+    - "*.pyc"
+    - "*.log"
+    - logs/
+    - Backup/
+    - .DS_Store
+    - stage3_web/investment.db
+    - stage3_web/data/investment.db
+    - stage3_web/fixed_assets.db
+    - stage3_web/data/users.db
+    - stage3_web/instance/
+    - stage3_web/hiring_reports/YYYYMMDD/
+    - stage3_web/data/hiring_reports/YYYYMMDD/
+  must_not_ignore:
+    - AGENTS.md
+    - docs/**
+    - manifests/**
+    - tests/**/*.py
+    - stage3_web/app.py
+    - stage3_web/Procfile
+    - stage3_web/requirements.txt
+    - stage3_web/templates/**
+    - stage3_web/static/**
+    - stage3_web/hiring_reports/*.json
+    - stage3_web/data/hiring_reports/*.json
+
+post_init_checks_required:
+  - command: git rev-parse --show-toplevel
+    required_result: path_equals_confirmed_git_repo_root
+  - command: git check-ignore -v .env telegram_recipients.json stage3_web/investment.db logs/fetch_monthly_revenue.log venv
+    required_result: all_are_ignored
+  - command: git check-ignore -v stage3_web/app.py stage3_web/templates/hiring_demand.html stage3_web/static/css/style.css stage3_web/hiring_reports/latest_hiring_demand_web_data.json
+    required_result: none_are_ignored
+  - command: venv/bin/python3 check_release_readiness.py --root . --output-dir data/runs/release_readiness_post_git_init_confirmed_root
+    required_result: PASS_WITH_ROOT_IS_GIT_ROOT_TRUE
+
+initial_commit_policy_recommendation:
+  include:
+    - source_code
+    - governance_docs
+    - manifests
+    - tests
+    - web_runtime
+    - latest_deployable_web_json
+  exclude:
+    - secrets
+    - protected_db
+    - venv
+    - logs
+    - cache
+    - Backup
+  manual_review_before_include:
+    - historical_data_csv
+    - data_reports
+    - data_runs
+    - data_revenue_snapshots
+    - data_stock_monthly_revenue_raw
+    - machine_specific_launchd_plists
+
+next_authorization_needed: >
+  After this rehearsal, explicitly authorize staging/first commit scope or stop.
+  Git add, commit, push, GitHub repo creation, Railway service creation, live
+  scraper runs, and Telegram sends remain unauthorized.
+
+post_init_rehearsal_result:
+  executed_at: 2026-06-11T16:29:40+08:00
+  git_root_result: /Volumes/Extreme SSD/Python/台股子公司投資資訊擷取與展示/台股投資資訊系統_完整專案/上市櫃公司徵人需求度
+  git_cached_files: []
+  release_readiness:
+    result: PASS
+    blocker_count: 0
+    warning_count: 0
+    receipt: data/runs/release_readiness_post_init_rehearsal2_20260611_162940/hiring_release_readiness_receipt.json
+  deploy_boundary:
+    result: PASS
+    typed_blocker_count: 0
+    receipt: data/runs/deploy_boundary_post_init_rehearsal2_20260611_162940/hiring_deploy_boundary_receipt.json
+  unittest:
+    command: TMPDIR="$PWD/data/runs/tmp_unittest_rehearsal_20260611" venv/bin/python3 -m unittest tests/test_release_readiness.py
+    result: PASS
+    note: Default macOS TMPDIR was on the nearly full internal disk; SSD TMPDIR was used for the fresh verification rerun.

@@ -1,0 +1,133 @@
+schema_version: hiring_allowed_entrypoints_v1
+updated_at: 2026-06-11
+contract_name: hiring_demand_independent_repo_contract
+contract_version: 2026-06-11
+
+entrypoints:
+  - id: release_readiness_check
+    type: checker_only
+    path: check_release_readiness.py
+    command: python3 check_release_readiness.py --root . --output-dir data/runs/release_readiness_manual
+    live_external_effects: false
+    git_effects: false
+    expected_outputs:
+      - hiring_release_readiness_receipt.json
+      - typed_blockers.csv
+
+  - id: deploy_boundary_check
+    type: checker_only
+    path: check_hiring_deploy_boundary.py
+    command: python3 check_hiring_deploy_boundary.py --hiring-dir . --stage3-dir stage3_web --output-dir data/runs/deploy_boundary_check_manual
+    live_external_effects: false
+    git_effects: false
+    expected_outputs:
+      - hiring_deploy_boundary_receipt.json
+      - typed_blockers.csv
+
+  - id: runtime_governance_check
+    type: checker_only
+    path: check_hiring_runtime_governance.py
+    command: python3 check_hiring_runtime_governance.py --root . --output-dir data/runs/runtime_governance_check_manual
+    live_external_effects: false
+    git_effects: false
+
+  - id: local_unit_test_wrapper
+    type: test_only
+    path: run_tests.sh
+    command: ./run_tests.sh
+    live_external_effects: false
+    git_effects: false
+    temp_dir: _test_runtime/tmp
+
+  - id: test_runtime_cleanup_dry_run
+    type: local_cleanup_review_request
+    path: cleanup_test_runtime.py
+    command: python3 cleanup_test_runtime.py --older-than-days 7 --review-file _test_runtime/cleanup_review_required.md
+    live_external_effects: false
+    git_effects: false
+    default_delete: false
+    allowed_target: _test_runtime/tmp
+    user_confirmation_required_on_candidates: true
+
+  - id: test_runtime_cleanup_delete
+    type: local_cleanup
+    path: cleanup_test_runtime.py
+    command: python3 cleanup_test_runtime.py --older-than-days 7 --delete
+    live_external_effects: false
+    git_effects: false
+    requires_explicit_authorization_for_manual_run: true
+    allowed_target: _test_runtime/tmp
+
+  - id: scheduler_template_render_only
+    type: local_scheduler_render_dry_run
+    path: install_scheduler.sh
+    command: ./install_scheduler.sh --render-only install
+    live_external_effects: false
+    git_effects: false
+    launchd_effects: false
+    output_dir: _local_runtime/launchd_rendered
+
+  - id: scheduler_install
+    type: local_scheduler_install
+    path: install_scheduler.sh
+    command: ./install_scheduler.sh install
+    live_external_effects: false
+    git_effects: false
+    launchd_effects: true
+    requires_explicit_authorization_for_manual_run: true
+    source_templates: scheduler_templates/*.plist.template
+
+  - id: hiring_scraper_wrapper
+    type: scheduled_pipeline
+    path: run_hiring_demand.sh
+    command: ./run_hiring_demand.sh
+    live_external_effects: true
+    git_effects: possible_only_when_deploy_mode_enabled
+    requires_explicit_authorization_for_manual_run: true
+
+  - id: monthly_revenue_wrapper
+    type: scheduled_pipeline
+    path: run_monthly_revenue.sh
+    command: ./run_monthly_revenue.sh
+    live_external_effects: true
+    git_effects: false
+    requires_explicit_authorization_for_manual_run: true
+
+  - id: stock_monthly_revenue_raw_wrapper
+    type: scheduled_pipeline
+    path: run_stock_monthly_revenue_raw.sh
+    command: ./run_stock_monthly_revenue_raw.sh
+    live_external_effects: true
+    git_effects: false
+    requires_explicit_authorization_for_manual_run: true
+
+  - id: telegram_sender
+    type: live_notification
+    path: telegram_sender.py
+    command: python3 telegram_sender.py --send-document ...
+    live_external_effects: true
+    git_effects: false
+    requires_explicit_authorization_for_manual_run: true
+    secret_inputs:
+      - TELEGRAM_BOT_TOKEN
+      - TELEGRAM_CHAT_ID
+
+  - id: web_artifact_sync
+    type: artifact_materialization
+    path: sync_hiring_anomaly_web_artifacts.py
+    command: python3 sync_hiring_anomaly_web_artifacts.py ...
+    live_external_effects: false
+    git_effects: false
+    allowed_outputs:
+      - stage3_web/hiring_reports/**
+      - stage3_web/data/hiring_reports/**
+
+forbidden_entrypoint_patterns:
+  - git add .
+  - git commit
+  - git push
+  - git reset
+  - git restore
+  - rm -rf
+  - stage3_web/investment.db daily publish
+  - stage3_web/data/users.db daily publish

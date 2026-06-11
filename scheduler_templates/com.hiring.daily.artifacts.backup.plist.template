@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.hiring.daily.artifacts.backup</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>__HIRING_DIR__/backup_hiring_daily_artifacts.sh</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>__HIRING_DIR__</string>
+
+    <!-- 每月 5 號 20:00，copy-only 備份一個月前每日產物到 SSD -->
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Day</key>
+        <integer>5</integer>
+        <key>Hour</key>
+        <integer>20</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
+
+    <key>StandardOutPath</key>
+    <string>__HIRING_DIR__/launchd_hiring_daily_artifacts_backup_stdout.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>__HIRING_DIR__/launchd_hiring_daily_artifacts_backup_stderr.log</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+        <key>LANG</key>
+        <string>zh_TW.UTF-8</string>
+        <key>HIRING_ARTIFACT_BACKUP_ROOT</key>
+        <string>__ARTIFACT_BACKUP_ROOT__</string>
+        <key>HIRING_ARTIFACT_BACKUP_RETENTION_DAYS</key>
+        <string>30</string>
+    </dict>
+</dict>
+</plist>
