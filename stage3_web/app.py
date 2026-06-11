@@ -24,6 +24,10 @@ from flask_cors import CORS
 
 BASE_DIR = Path(__file__).resolve().parent
 DB_PATH = Path(os.environ.get("DB_PATH", BASE_DIR / "investment.db")).expanduser()
+INVESTMENT_HOME_URL = os.environ.get(
+    "INVESTMENT_HOME_URL",
+    "https://financial-report-data-processing.up.railway.app/",
+)
 HIRING_REVENUE_WINDOW_MONTHS = 6
 HIRING_WEB_DATA_FILENAME = "latest_hiring_demand_web_data.json"
 HIRING_REVENUE_BATCH_FILENAME = "latest_hiring_revenue_batch.json"
@@ -311,7 +315,7 @@ def logout():
 
 @app.route("/hiring-demand")
 def hiring_demand():
-    return render_template("hiring_demand.html", user=None)
+    return render_template("hiring_demand.html", user=None, investment_home_url=INVESTMENT_HOME_URL)
 
 
 @app.route("/api/health")
