@@ -437,20 +437,20 @@ def delete_hiring_anomaly_summary(report_key: str):
 @app.route("/api/stock-price/<stock_code>")
 def get_stock_price(stock_code: str):
     token = os.environ.get("FINMIND_TOKEN")
-    if not token:
-        return jsonify({"data": [], "note": "FINMIND_TOKEN not configured"})
     try:
         end_date = datetime.now().strftime("%Y-%m-%d")
         start_date = (datetime.now() - timedelta(days=180)).strftime("%Y-%m-%d")
+        params = {
+            "dataset": "TaiwanStockPrice",
+            "data_id": stock_code,
+            "start_date": start_date,
+            "end_date": end_date,
+        }
+        if token:
+            params["token"] = token
         response = requests.get(
             FINMIND_API_URL,
-            params={
-                "dataset": "TaiwanStockPrice",
-                "data_id": stock_code,
-                "start_date": start_date,
-                "end_date": end_date,
-                "token": token,
-            },
+            params=params,
             timeout=15,
         )
         result = response.json()

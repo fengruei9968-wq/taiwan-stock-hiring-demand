@@ -3328,6 +3328,44 @@ input:focus-visible {
     font-size: 0.88rem;
 }
 
+.chart-loading.chart-fallback-panel {
+    inset: 8px;
+    position: absolute;
+    transform: none;
+    color: #94A3B8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.revenue-growth-panel {
+    width: 100%;
+    display: grid;
+    gap: 10px;
+}
+
+.revenue-growth-row {
+    display: grid;
+    grid-template-columns: 58px minmax(0, 1fr);
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.025);
+}
+
+.revenue-growth-label {
+    color: #CBD5E1;
+    font-size: 0.82rem;
+    font-weight: 800;
+}
+
+.revenue-growth-chart {
+    min-width: 0;
+    overflow: hidden;
+}
+
 /* ── Modal 職缺表格字體（company-modal，非 hiring-demand-page）────── */
 /* Modal 是 body 直接子元素，不在 .hiring-demand-page 內，需用 .company-modal 父選擇器 */
 .company-modal .modal-company-name  { font-size: 1.5rem; }

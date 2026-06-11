@@ -549,9 +549,9 @@
             document.getElementById('modalJobs').innerHTML = '<div class="sub-loading">載入職缺明細...</div>';
 
             // 圖表載入中
-            document.querySelector('#priceChartContainer .chart-loading').style.display = 'block';
+            resetChartLoading('#priceChartContainer', '載入股價資料...');
             document.getElementById('priceChart').style.display = 'none';
-            document.querySelector('#revenueChartContainer .chart-loading').style.display = 'block';
+            resetChartLoading('#revenueChartContainer', '載入營收資料...');
             document.getElementById('revenueChart').style.display = 'none';
 
             // 銷毀舊圖表
@@ -562,6 +562,13 @@
             loadModalJobs(stockCode);
             loadModalPrice(stockCode);
             loadModalRevenue(stockCode);
+        }
+
+        function resetChartLoading(containerSelector, text) {
+            var loading = document.querySelector(containerSelector + ' .chart-loading');
+            loading.classList.remove('chart-fallback-panel');
+            loading.style.display = 'block';
+            loading.textContent = text;
         }
 
         function closeModal() {
@@ -987,21 +994,71 @@
         // ---- 月營收圖 ----
         function loadModalRevenue(stockCode) {
             var cached = getCached(stockCode + '_revenue');
-            if (cached) { renderRevenueChart(cached); return; }
+            if (cached) { renderModalRevenuePayload(stockCode, cached); return; }
 
             fetch('/api/stock-revenue/' + stockCode)
                 .then(function(r) { return r.json(); })
                 .then(function(result) {
+                    if (result.data && result.data.length > 0) {
+                        var chartPayload = { kind: 'chart', data: result.data };
+                        setCache(stockCode + '_revenue', chartPayload);
+                        renderModalRevenuePayload(stockCode, chartPayload);
+                        return;
+                    }
+                    var fallback = _revBatch[String(stockCode)];
+                    if (fallback) {
+                        var growthPayload = { kind: 'growth', data: fallback };
+                        setCache(stockCode + '_revenue', growthPayload);
+                        renderModalRevenuePayload(stockCode, growthPayload);
+                        return;
+                    }
                     if (result.error) {
                         document.querySelector('#revenueChartContainer .chart-loading').textContent = result.error;
                         return;
                     }
-                    setCache(stockCode + '_revenue', result.data);
-                    renderRevenueChart(result.data);
+                    document.querySelector('#revenueChartContainer .chart-loading').textContent = '無營收資料';
                 })
                 .catch(function() {
-                    document.querySelector('#revenueChartContainer .chart-loading').textContent = '載入營收失敗';
+                    var fallback = _revBatch[String(stockCode)];
+                    if (fallback) {
+                        var growthPayload = { kind: 'growth', data: fallback };
+                        setCache(stockCode + '_revenue', growthPayload);
+                        renderModalRevenuePayload(stockCode, growthPayload);
+                    } else {
+                        document.querySelector('#revenueChartContainer .chart-loading').textContent = '載入營收失敗';
+                    }
                 });
+        }
+
+        function renderModalRevenuePayload(stockCode, payload) {
+            if (payload && payload.kind === 'growth') {
+                renderRevenueGrowthPanel(payload.data);
+                return;
+            }
+            renderRevenueChart(payload ? payload.data : []);
+        }
+
+        function renderRevenueGrowthPanel(revenue) {
+            var loading = document.querySelector('#revenueChartContainer .chart-loading');
+            document.getElementById('revenueChart').style.display = 'none';
+            if (!revenue || !revenue.months) {
+                loading.classList.remove('chart-fallback-panel');
+                loading.textContent = '無營收資料';
+                return;
+            }
+            loading.classList.add('chart-fallback-panel');
+            loading.style.display = 'block';
+            loading.innerHTML =
+                '<div class="revenue-growth-panel">' +
+                    '<div class="revenue-growth-row">' +
+                        '<div class="revenue-growth-label">MoM%</div>' +
+                        '<div class="revenue-growth-chart">' + renderMiniBar(revenue.mom || [], revenue.months || [], 'mom') + '</div>' +
+                    '</div>' +
+                    '<div class="revenue-growth-row">' +
+                        '<div class="revenue-growth-label">YoY%</div>' +
+                        '<div class="revenue-growth-chart">' + renderMiniBar(revenue.yoy || [], revenue.months || [], 'yoy') + '</div>' +
+                    '</div>' +
+                '</div>';
         }
 
         // ==================== 近六月營收 MoM%/YoY% ====================
@@ -1164,7 +1221,9 @@
                 return;
             }
 
-            document.querySelector('#revenueChartContainer .chart-loading').style.display = 'none';
+            var loading = document.querySelector('#revenueChartContainer .chart-loading');
+            loading.classList.remove('chart-fallback-panel');
+            loading.style.display = 'none';
             var canvas = document.getElementById('revenueChart');
             canvas.style.display = 'block';
 

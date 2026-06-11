@@ -53,3 +53,8 @@ data/stock_monthly_revenue_raw/
 # Web deploy keeps latest JSON visible; dated web report history stays local.
 stage3_web/hiring_reports/[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/
 stage3_web/data/hiring_reports/[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/
+
+# Daily anomaly summary history is part of the web UI, but keep other dated
+# report artifacts local unless explicitly promoted.
+!stage3_web/hiring_reports/[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/
+!stage3_web/hiring_reports/[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/anomaly_summary_*.json
