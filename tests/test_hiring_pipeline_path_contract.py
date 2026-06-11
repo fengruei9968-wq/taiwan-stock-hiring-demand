@@ -72,6 +72,12 @@ class HiringPipelinePathContractTest(unittest.TestCase):
         self.assertIn("paths.get('db_path', 'stage3_web/investment.db')", text)
         self.assertIn("paths.get('output_dir', 'data')", text)
 
+    def test_config_includes_quality_inspector_and_technician_keywords(self):
+        config = (EXPECTED_HIRING_DIR / "config.yaml").read_text(encoding="utf-8")
+
+        self.assertIn('- "品檢員"', config)
+        self.assertIn('- "技術士"', config)
+
     def test_installer_rewrites_plists_to_current_project_root(self):
         text = (EXPECTED_HIRING_DIR / "install_scheduler.sh").read_text(encoding="utf-8")
         self.assertIn("render_plist_template", text)

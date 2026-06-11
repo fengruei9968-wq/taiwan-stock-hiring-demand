@@ -8,6 +8,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -15,9 +16,88 @@ sys.path.insert(0, str(ROOT))
 
 import fetch_emerging_revenue  # noqa: E402
 import fetch_monthly_revenue  # noqa: E402
+import fetch_stock_monthly_revenue_raw as raw_revenue  # noqa: E402
 
 
 class MonthlyRevenueSixMonthTests(unittest.TestCase):
+    def test_emerging_mops_rotc_parser_computes_mom_yoy_from_amounts(self) -> None:
+        html = """
+        <html>
+          <head><title>興櫃公司115年4月份(累計與當月)營業收入統計表</title></head>
+          <body>
+            <table>
+              <tr>
+                <th>公司 代號</th><th>公司名稱</th><th>當月營收</th><th>上月營收</th>
+                <th>去年當月營收</th><th>上月比較 增減(%)</th><th>去年同月 增減(%)</th>
+              </tr>
+              <tr>
+                <td>1260</td><td>富味鄉</td><td>120,000</td><td>100,000</td>
+                <td>80,000</td><td>0.00</td><td>0.00</td>
+              </tr>
+              <tr>
+                <td>合計</td><td></td><td>120,000</td><td>100,000</td><td>80,000</td>
+              </tr>
+            </table>
+          </body>
+        </html>
+        """
+
+        label, data = fetch_emerging_revenue.parse_mops_rotc_page(html.encode("big5"))
+
+        self.assertEqual(label, "2026/4")
+        self.assertEqual(data["1260"], {"mom": 20.0, "yoy": 50.0})
+        self.assertNotIn("合計", data)
+
+    def test_emerging_mops_rotc_url_uses_twse_rotc_monthly_page(self) -> None:
+        url = fetch_emerging_revenue.build_mops_rotc_url(2026, 4)
+
+        self.assertEqual(
+            url,
+            "https://mopsov.twse.com.tw/nas/t21/rotc/t21sc03_115_4_0.html",
+        )
+
+    def test_monthly_revenue_mops_fallback_returns_finmind_shaped_records(self) -> None:
+        meta = {
+            "2211": raw_revenue.StockMeta(
+                stock_code="2211",
+                short_name="長榮鋼",
+                market_type="上市",
+            )
+        }
+        mops_record = raw_revenue.RevenueRecord(
+            stock_code="2211",
+            revenue_year=2026,
+            revenue_month=5,
+            revenue_amount=123456,
+            revenue_unit="thousand_twd",
+            source="mops_sii",
+            source_url="https://mops.example/t21sc03_115_5.csv",
+            market_type_at_fetch="上市",
+            company_short_name="長榮鋼",
+            company_full_name="",
+            fetched_at="2026-06-12T00:00:00",
+            run_id="unit",
+        )
+
+        with patch("fetch_stock_monthly_revenue_raw.latest_stock_codes_csv", return_value=Path("stock_codes.csv")), \
+             patch("fetch_stock_monthly_revenue_raw.load_stock_codes", return_value=meta), \
+             patch("fetch_stock_monthly_revenue_raw.iter_months", return_value=[(2026, 5)]), \
+             patch("fetch_stock_monthly_revenue_raw.fetch_mops_market_month_records", return_value=([mops_record], {"status": "ok"})):
+            records = fetch_monthly_revenue.fetch_mops_official_revenue(
+                requested_codes=["2211"],
+                start_month=(2026, 5),
+                end_month=(2026, 5),
+            )
+
+        self.assertEqual(records, [
+            {
+                "stock_id": "2211",
+                "revenue_year": 2026,
+                "revenue_month": 5,
+                "revenue": 123456,
+            }
+        ])
+
     def test_finmind_summary_outputs_latest_six_months_old_to_new(self) -> None:
         records = []
         for year, month, revenue in [

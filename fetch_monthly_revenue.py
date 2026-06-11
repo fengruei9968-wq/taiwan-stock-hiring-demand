@@ -189,6 +189,60 @@ def fetch_all_revenue(token: str, start_date: str, requested_codes: list[str] | 
     return all_records
 
 
+def fetch_mops_official_revenue(
+    *,
+    requested_codes: list[str],
+    start_month: tuple[int, int],
+    end_month: tuple[int, int],
+) -> list[dict]:
+    """
+    使用公開資訊觀測站月營收資料作為沒有 FINMIND_TOKEN 時的 fallback。
+    回傳欄位與 FinMind 對齊：stock_id, revenue_year, revenue_month, revenue。
+    """
+    import fetch_stock_monthly_revenue_raw as raw
+
+    codes = requested_codes or get_stock_codes_from_db()
+    if not codes:
+        logger.warning('沒有可抓取的股票代碼；MOPS fallback 無資料可抓')
+        return []
+
+    stock_codes_csv = raw.latest_stock_codes_csv(raw.STOCK_CODES_DIR)
+    stock_meta = raw.load_stock_codes(stock_codes_csv, codes, market_types={'上市', '上櫃', '興櫃'})
+    grouped: dict[str, dict[str, raw.StockMeta]] = defaultdict(dict)
+    for code, meta in stock_meta.items():
+        grouped[meta.market_type][code] = meta
+
+    fetched_at = datetime.now().isoformat(timespec='seconds')
+    run_id = datetime.now().strftime('mops_fallback_%Y%m%d_%H%M%S')
+    all_records: list[dict] = []
+
+    for year, month in raw.iter_months(start_month, end_month):
+        for market_type, market_stock_meta in grouped.items():
+            records, status = raw.fetch_mops_market_month_records(
+                year=year,
+                month=month,
+                market_type=market_type,
+                stock_meta=market_stock_meta,
+                fetched_at=fetched_at,
+                run_id=run_id,
+            )
+            if status.get('status') not in {'ok', 'empty_current_month_expected'}:
+                logger.debug(f'MOPS {market_type} {year}/{month} status={status.get("status")} error={status.get("error")}')
+            for record in records:
+                all_records.append({
+                    'stock_id': record.stock_code,
+                    'revenue_year': record.revenue_year,
+                    'revenue_month': record.revenue_month,
+                    'revenue': record.revenue_amount,
+                })
+
+    logger.info(
+        f'MOPS fallback 抓取完成：{len(all_records):,} 筆，'
+        f'codes={len(codes)}，range={start_month[0]}/{start_month[1]}-{end_month[0]}/{end_month[1]}'
+    )
+    return all_records
+
+
 # ── 計算 MoM% / YoY% ────────────────────────────────────────────────────
 def compute_summaries(records: list[dict]) -> dict[str, dict]:
     """
@@ -348,21 +402,31 @@ def main(argv: list[str] | None = None):
     started_at = datetime.now().isoformat(timespec='seconds')
     requested_codes = parse_codes(args.codes)
 
-    token = load_token()
-    if not token:
-        logger.error('找不到 FINMIND_TOKEN，請設定環境變數或 .env 檔案')
-        sys.exit(1)
-
     now = datetime.now()
     # 抓前兩年起到今天，確保近六月即使跨年也有去年同月資料可算 YoY。
     start_year = now.year - 2
     start_date = f'{start_year}-01-01'
 
-    try:
-        records = fetch_all_revenue(token, start_date, requested_codes=requested_codes)
-    except Exception as e:
-        logger.error(f'FinMind 抓取失敗: {e}')
-        sys.exit(1)
+    token = load_token()
+    if token:
+        try:
+            records = fetch_all_revenue(token, start_date, requested_codes=requested_codes)
+        except Exception as e:
+            logger.error(f'FinMind 抓取失敗: {e}')
+            sys.exit(1)
+    else:
+        logger.warning('找不到 FINMIND_TOKEN，改用 MOPS 官方月營收 fallback')
+        start_month = (start_year, 1)
+        end_month = (now.year, now.month)
+        try:
+            records = fetch_mops_official_revenue(
+                requested_codes=requested_codes,
+                start_month=start_month,
+                end_month=end_month,
+            )
+        except Exception as e:
+            logger.error(f'MOPS fallback 抓取失敗: {e}')
+            sys.exit(1)
 
     summaries = compute_summaries(records)
     missing_requested_codes = sorted(set(requested_codes) - set(summaries)) if requested_codes else []
@@ -377,9 +441,9 @@ def main(argv: list[str] | None = None):
     if missing_requested_codes:
         typed_blockers.append({
             'finding_type': 'monthly_revenue_targeted_fetch_missing_codes',
-            'plain_description': '指定補抓的公司未能從 FinMind 取得月營收摘要。',
+            'plain_description': '指定補抓的公司未能從 FinMind 或 MOPS 取得月營收摘要。',
             'affected_key': ','.join(missing_requested_codes),
-            'required_fix': '確認公司市場別與來源；若為興櫃需改走 MoneyDJ 補抓，若來源未公布則標記 typed blocker。',
+            'required_fix': '確認公司市場別與來源；若來源未公布則標記 typed blocker。',
         })
         logger.error(f'指定補抓代碼仍缺月營收：{missing_requested_codes}')
 

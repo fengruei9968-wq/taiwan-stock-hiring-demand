@@ -2,17 +2,19 @@
 """
 fetch_emerging_revenue.py
 -------------------------
-從 MoneyDJ 興櫃營收總表爬取興櫃公司月營收 YoY%/MoM%，
+從公開資訊觀測站 MOPS 興櫃月營收總表爬取當月/上月/去年同月營收，
+自行計算興櫃公司月營收 YoY%/MoM%，
 補充 fetch_monthly_revenue.py（FinMind）未覆蓋的興櫃公司，
 寫入 investment.db 的 monthly_revenue_summary 表。
 
-資料來源：https://concords.moneydj.com/z/zu/zue/zuef/
-URL 規則：zuef_{產業代碼}_{期別}_2.djhtm
-  期別 0 = 當月，1 = 前一個月
-資料欄位：代碼+名稱 | 營收(千) | 年增率 | 月增率 | 累計營收 | 累計年增率
+資料來源：https://mopsov.twse.com.tw/nas/t21/rotc/
+URL 規則：t21sc03_{民國年}_{月}_0.html
+  例：https://mopsov.twse.com.tw/nas/t21/rotc/t21sc03_115_4_0.html
+資料欄位：公司代號 | 公司名稱 | 當月營收 | 上月營收 | 去年當月營收 | ...
 
 6 個月滾動邏輯：
-  每次抓當月(P0)和前月(P1)，與 DB 現有資料合併，保留最近 6 個月。
+  每次從 MOPS 往回找最新可用月份(P0)，並抓前一個月(P1)，
+  與 DB 現有資料合併，保留最近 6 個月。
   若興櫃資料來源不足 6 個月，左側月份欄位保留 NULL，前端顯示「-」。
   執行方式：
     cd 台股投資資訊系統_完整專案/上市櫃公司徵人需求度
@@ -22,7 +24,6 @@ URL 規則：zuef_{產業代碼}_{期別}_2.djhtm
 import os
 import re
 import sys
-import time
 import sqlite3
 import logging
 import subprocess
@@ -42,26 +43,16 @@ STAGE3_DIR = Path(os.environ.get('HIRING_STAGE3_DIR', BASE_DIR / 'stage3_web')).
 DB_PATH = Path(os.environ.get('DB_PATH', STAGE3_DIR / 'investment.db'))
 LOG_PATH = BASE_DIR / 'logs' / 'fetch_emerging_revenue.log'
 
-# ── 產業代碼（35個，略過開放式基金 EB200000 和 黃金 EB200999）──────────
-INDUSTRY_CODES = [
-    'EB204010', 'EB209020', 'EB205030', 'EB205040', 'EB206050',
-    'EB206060', 'EB205210', 'EB205220', 'EB204080', 'EB204100',
-    'EB205110', 'EB209120', 'EB200240', 'EB200250', 'EB200260',
-    'EB200270', 'EB200280', 'EB200290', 'EB200300', 'EB200310',
-    'EB204140', 'EB207150', 'EB209160', 'EB208170', 'EB209190',
-    'EB209230', 'EB209320', 'EB209330', 'EB209350', 'EB209360',
-    'EB209370', 'EB209380', 'EB209200',
-]
-
-BASE_URL = 'https://concords.moneydj.com/z/zu/zue/zuef/zuef_{code}_{period}_2.djhtm'
+MOPS_ROTC_URL_TEMPLATE = 'https://mopsov.twse.com.tw/nas/t21/rotc/t21sc03_{roc_year}_{month}_0.html'
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) '
                   'AppleWebKit/537.36 (KHTML, like Gecko) '
                   'Chrome/120.0.0.0 Safari/537.36',
-    'Referer': 'https://concords.moneydj.com/',
+    'Referer': 'https://mopsov.twse.com.tw/',
     'Accept-Language': 'zh-TW,zh;q=0.9',
 }
 REVENUE_MONTH_COUNT = 6
+LATEST_MONTH_LOOKBACK = 12
 
 
 def iter_revenue_fields():
@@ -85,85 +76,134 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 # ── 解析頁面 ─────────────────────────────────────────────────────────────
-def parse_page(html: bytes) -> tuple[str | None, dict[str, dict]]:
+def roc_year(year: int) -> int:
+    return year - 1911
+
+
+def build_mops_rotc_url(year: int, month: int) -> str:
+    return MOPS_ROTC_URL_TEMPLATE.format(roc_year=roc_year(year), month=month)
+
+
+def add_months(year: int, month: int, delta: int) -> tuple[int, int]:
+    index = year * 12 + (month - 1) + delta
+    return index // 12, index % 12 + 1
+
+
+def iter_recent_month_candidates(anchor: datetime | None = None,
+                                 lookback: int = LATEST_MONTH_LOOKBACK) -> list[tuple[int, int]]:
+    current = anchor or datetime.now()
+    return [add_months(current.year, current.month, -offset) for offset in range(lookback)]
+
+
+def decode_mops_html(html: bytes | str) -> str:
+    if isinstance(html, str):
+        return html
+    for encoding in ('big5', 'cp950', 'utf-8'):
+        try:
+            return html.decode(encoding)
+        except UnicodeDecodeError:
+            continue
+    return html.decode('big5', errors='ignore')
+
+
+def parse_amount(value: str) -> int | None:
+    text = value.strip().replace(',', '').replace('\u3000', '')
+    if text in ('', '--', 'N/A', '-', '－'):
+        return None
+    text = re.sub(r'[^\d\-.]', '', text)
+    if text in ('', '-', '.', '-.'):
+        return None
+    try:
+        return int(round(float(text)))
+    except ValueError:
+        return None
+
+
+def calculate_pct(current: int | None, base: int | None) -> float | None:
+    if current is None or base in (None, 0):
+        return None
+    return round((current - base) / base * 100, 2)
+
+
+def parse_mops_rotc_page(html: bytes | str) -> tuple[str | None, dict[str, dict]]:
     """
     回傳 (月份標籤, {stock_code: {'mom': float|None, 'yoy': float|None}})
     月份標籤格式：'YYYY/M'（如 '2026/3'）
     """
-    soup = BeautifulSoup(html, 'html.parser')
+    soup = BeautifulSoup(decode_mops_html(html), 'html.parser')
     text = soup.get_text()
 
-    # 解析日期 "日期:115/03"
-    m = re.search(r'日期[：:]\s*(\d{2,3})/(\d{1,2})', text)
+    m = re.search(r'興櫃公司\s*(\d{2,3})\s*年\s*(\d{1,2})\s*月份', text)
+    if not m:
+        m = re.search(r'資料年月\s*(\d{2,3})/(\d{1,2})', text)
     if not m:
         return None, {}
     roc_y, month = int(m.group(1)), int(m.group(2))
     label = f'{roc_y + 1911}/{month}'
 
-    def parse_pct(s: str) -> float | None:
-        s = s.strip().replace(',', '').replace('%', '')
-        if s in ('', '--', 'N/A', '-', '－'):
-            return None
-        try:
-            return round(float(s), 2)
-        except ValueError:
-            return None
-
     data: dict[str, dict] = {}
     for row in soup.find_all('tr'):
         cells = row.find_all('td')
-        if len(cells) < 4:
+        if len(cells) < 5:
             continue
-        raw = cells[0].get_text(strip=True)
-        if not raw or not re.match(r'^\d{4}', raw):
+        code = cells[0].get_text(strip=True)
+        if not re.fullmatch(r'\d{4}', code):
             continue
-        code = raw[:4]
-        # 欄位順序：代碼+名稱, 營收(千), 年增率(YoY), 月增率(MoM), 累計, 累計年增率
-        yoy = parse_pct(cells[2].get_text(strip=True))
-        mom = parse_pct(cells[3].get_text(strip=True))
+        # 欄位順序：公司代號, 公司名稱, 當月營收, 上月營收, 去年當月營收, ...
+        current_revenue = parse_amount(cells[2].get_text(strip=True))
+        previous_revenue = parse_amount(cells[3].get_text(strip=True))
+        last_year_revenue = parse_amount(cells[4].get_text(strip=True))
+        mom = calculate_pct(current_revenue, previous_revenue)
+        yoy = calculate_pct(current_revenue, last_year_revenue)
         data[code] = {'mom': mom, 'yoy': yoy}
 
     return label, data
 
 
-# ── 爬取所有產業 ──────────────────────────────────────────────────────────
+def parse_page(html: bytes) -> tuple[str | None, dict[str, dict]]:
+    """Backward-compatible wrapper for older tests/imports."""
+    return parse_mops_rotc_page(html)
+
+
+def fetch_mops_rotc_month(year: int, month: int) -> tuple[str | None, dict[str, dict], str]:
+    url = build_mops_rotc_url(year, month)
+    resp = requests.get(url, headers=HEADERS, verify=False, timeout=45)
+    resp.raise_for_status()
+    label, data = parse_mops_rotc_page(resp.content)
+    return label, data, url
+
+
+# ── 爬取 MOPS 興櫃最新月份 ───────────────────────────────────────────────
 def fetch_all_industries() -> dict[int, tuple[str | None, dict[str, dict]]]:
     """
     回傳 {period: (label, {code: {mom, yoy}})}
-    period 0 = 當月, 1 = 前月
+    period 0 = MOPS 最新可用月份, 1 = 前月
     """
-    # 合併所有產業資料
-    period_data: dict[int, tuple[str | None, dict]] = {0: (None, {}), 1: (None, {})}
+    period_data: dict[int, tuple[str | None, dict[str, dict]]] = {0: (None, {}), 1: (None, {})}
+    latest_month: tuple[int, int] | None = None
 
-    for i, ind_code in enumerate(INDUSTRY_CODES):
-        for period in [0, 1]:
-            url = BASE_URL.format(code=ind_code, period=period)
-            for attempt in range(3):
-                try:
-                    resp = requests.get(url, headers=HEADERS, verify=False, timeout=45)
-                    resp.raise_for_status()
-                    label, data = parse_page(resp.content)
-                    if label:
-                        existing_label, existing_data = period_data[period]
-                        if existing_label is None:
-                            period_data[period] = (label, data)
-                        else:
-                            existing_data.update(data)
-                    break
-                except requests.Timeout:
-                    logger.warning(f'{ind_code} P{period} timeout (attempt {attempt+1}/3)')
-                    time.sleep(3)
-                except Exception as e:
-                    logger.warning(f'{ind_code} P{period} 失敗: {e}')
-                    break
-            time.sleep(0.5)
+    for year, month in iter_recent_month_candidates():
+        try:
+            label, data, url = fetch_mops_rotc_month(year, month)
+        except Exception as e:
+            logger.warning(f'MOPS ROTC {year}/{month} 取得失敗: {e}')
+            continue
+        if label and data:
+            period_data[0] = (label, data)
+            latest_month = (year, month)
+            logger.info(f'Period 0 ({label}): {len(data)} 家公司 source={url}')
+            break
+        logger.info(f'MOPS ROTC {year}/{month} 尚無可解析資料')
 
-        if (i + 1) % 10 == 0:
-            logger.info(f'進度 {i + 1}/{len(INDUSTRY_CODES)} 個產業')
-
-    for period in [0, 1]:
-        label, data = period_data[period]
-        logger.info(f'Period {period} ({label}): {len(data)} 家公司')
+    if latest_month:
+        prev_year, prev_month = add_months(latest_month[0], latest_month[1], -1)
+        try:
+            label, data, url = fetch_mops_rotc_month(prev_year, prev_month)
+            if label and data:
+                period_data[1] = (label, data)
+            logger.info(f'Period 1 ({label}): {len(data)} 家公司 source={url}')
+        except Exception as e:
+            logger.warning(f'MOPS ROTC 前月 {prev_year}/{prev_month} 取得失敗: {e}')
 
     return period_data
 
@@ -334,7 +374,7 @@ def write_receipt(
         'generated_at': datetime.now().isoformat(timespec='seconds'),
         'started_at': started_at,
         'updated_at': updated_at,
-        'source': 'MoneyDJ',
+        'source': 'MOPS_ROTC',
         'period_0_label': p0_label,
         'period_1_label': p1_label,
         'period_0_company_count': p0_count,
@@ -359,7 +399,7 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None):
     from datetime import datetime
     args = build_parser().parse_args(argv)
-    logger.info('=== fetch_emerging_revenue (MoneyDJ) 開始 ===')
+    logger.info('=== fetch_emerging_revenue (MOPS_ROTC) 開始 ===')
     started_at = datetime.now().isoformat(timespec='seconds')
 
     period_data = fetch_all_industries()
