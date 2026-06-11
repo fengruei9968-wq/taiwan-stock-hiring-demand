@@ -102,6 +102,7 @@ LOCAL_ONLY_PATTERNS = [
 DEPLOY_JSON_FILES = [
     "stage3_web/hiring_reports/latest_hiring_demand_web_data.json",
     "stage3_web/hiring_reports/latest_hiring_revenue_batch.json",
+    "stage3_web/hiring_reports/latest_hiring_revenue_amounts.json",
     "stage3_web/hiring_reports/latest_anomaly_summary.json",
     "stage3_web/hiring_reports/latest_unlimited_hiring_revenue_report_manifest.json",
     "stage3_web/hiring_reports/latest_unlimited_hiring_revenue_media_receipt.json",
@@ -320,6 +321,17 @@ def check_deploy_json(root: Path) -> list[Finding]:
                         rel_path,
                         "月營收 batch JSON 缺 window_months=6 或 count > 0。",
                         "重建月營收 web artifact 後重跑 checker。",
+                    )
+                )
+        if rel_path.endswith("latest_hiring_revenue_amounts.json"):
+            if payload.get("schema_version") != "hiring_revenue_amounts_v1" or int(payload.get("count", 0) or 0) <= 0:
+                findings.append(
+                    Finding(
+                        "blocker",
+                        "invalid_revenue_amounts_payload",
+                        rel_path,
+                        "月營收金額 snapshot JSON 缺 schema_version=hiring_revenue_amounts_v1 或 count > 0。",
+                        "重建月營收金額 web artifact 後重跑 checker。",
                     )
                 )
     return findings

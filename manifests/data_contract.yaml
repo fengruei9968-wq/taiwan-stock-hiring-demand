@@ -30,12 +30,14 @@ web_artifact_contract:
   required_latest_files:
     - stage3_web/hiring_reports/latest_hiring_demand_web_data.json
     - stage3_web/hiring_reports/latest_hiring_revenue_batch.json
+    - stage3_web/hiring_reports/latest_hiring_revenue_amounts.json
     - stage3_web/hiring_reports/latest_anomaly_summary.json
     - stage3_web/hiring_reports/latest_unlimited_hiring_revenue_report_manifest.json
     - stage3_web/hiring_reports/latest_unlimited_hiring_revenue_media_receipt.json
   mirrored_legacy_files:
     - stage3_web/data/hiring_reports/latest_hiring_demand_web_data.json
     - stage3_web/data/hiring_reports/latest_hiring_revenue_batch.json
+    - stage3_web/data/hiring_reports/latest_hiring_revenue_amounts.json
 
 freshness_expectations:
   latest_hiring_demand_web_data:
@@ -44,6 +46,9 @@ freshness_expectations:
   latest_hiring_revenue_batch:
     must_have_window_months: 6
     must_have_positive_count: true
+  latest_hiring_revenue_amounts:
+    must_have_positive_count: true
+    purpose: DB-free modal monthly revenue amount chart on Railway
 
 forbidden_value_sources:
   - old_parent_stage3_web_db_as_primary
@@ -62,4 +67,3 @@ telegram_contract:
     - TELEGRAM_CHAT_ID
   local_recipient_file: telegram_recipients.json
   commit_allowed_recipient_schema: telegram_recipients.example.json
-

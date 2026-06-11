@@ -237,6 +237,121 @@ def build_hiring_revenue_batch(manifest: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _stock_revenue_source_rank(source: str | None) -> int:
+    return {
+        "mops_sii": 1,
+        "mops_otc": 1,
+        "mops_rotc": 1,
+        "finmind": 2,
+        "moneydj_emerging_table": 3,
+        "moneydj_news": 4,
+        "wantgoo": 5,
+    }.get(str(source or ""), 9)
+
+
+def normalize_hiring_revenue_amount_row(row: dict[str, Any]) -> dict[str, Any]:
+    year = int(row["revenue_year"])
+    month = int(row["revenue_month"])
+    amount = int(row["revenue_amount"])
+    revenue_unit = row.get("revenue_unit")
+    revenue = amount * 1000 if revenue_unit == "thousand_twd" else amount
+    return {
+        "date": f"{year:04d}-{month:02d}-01",
+        "revenue": revenue,
+        "revenue_thousand": amount if revenue_unit == "thousand_twd" else round(amount / 1000),
+        "revenue_month": month,
+        "revenue_year": year,
+    }
+
+
+def build_hiring_revenue_amounts(manifest: dict[str, Any], window_months: int = 36) -> dict[str, Any]:
+    db_path = Path(str(manifest.get("db_path", ""))).expanduser()
+    report_key = str(manifest.get("report_yyyymmdd", "")).strip()
+    report_date = str(manifest.get("report_date", "")).strip()
+    if not db_path.exists():
+        raise FileNotFoundError(f"missing hiring demand db: {db_path}")
+
+    conn = sqlite3.connect(f"file:{db_path}?mode=ro", uri=True)
+    try:
+        table_exists = conn.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' AND name='stock_monthly_revenue'"
+        ).fetchone()
+        if not table_exists:
+            raise ValueError("missing stock_monthly_revenue table")
+        rows = _sqlite_rows(
+            conn,
+            """
+            SELECT stock_code, revenue_year, revenue_month, revenue_amount, revenue_unit,
+                   source, source_url, market_type_at_fetch, fetched_at, run_id
+            FROM stock_monthly_revenue
+            ORDER BY stock_code, revenue_year, revenue_month
+            """,
+            (),
+        )
+    finally:
+        conn.close()
+
+    best_by_code_month: dict[tuple[str, int, int], dict[str, Any]] = {}
+    for row in rows:
+        stock_code = str(row.get("stock_code") or "")
+        if not stock_code:
+            continue
+        year = int(row["revenue_year"])
+        month = int(row["revenue_month"])
+        key = (stock_code, year, month)
+        current = best_by_code_month.get(key)
+        if current is None or _stock_revenue_source_rank(row.get("source")) < _stock_revenue_source_rank(current.get("source")):
+            best_by_code_month[key] = row
+
+    grouped: dict[str, list[dict[str, Any]]] = {}
+    for (stock_code, _year, _month), row in best_by_code_month.items():
+        grouped.setdefault(stock_code, []).append(normalize_hiring_revenue_amount_row(row))
+
+    data = {
+        stock_code: sorted(items, key=lambda item: item["date"])[-window_months:]
+        for stock_code, items in grouped.items()
+    }
+    return {
+        "schema_version": "hiring_revenue_amounts_v1",
+        "generated_at": datetime.now().isoformat(timespec="seconds"),
+        "source_manifest_report_key": report_key,
+        "source_manifest_generated_at": manifest.get("generated_at", ""),
+        "report_date": report_date,
+        "data": data,
+        "count": len(data),
+        "window_months": window_months,
+    }
+
+
+def write_hiring_revenue_amounts(manifest: dict[str, Any], target_roots: dict[str, Path], blockers: list[dict[str, str]]) -> dict[str, str]:
+    copied: dict[str, str] = {}
+    report_key = str(manifest.get("report_yyyymmdd", "")).strip()
+    try:
+        payload = build_hiring_revenue_amounts(manifest)
+    except (FileNotFoundError, sqlite3.Error, ValueError) as exc:
+        blockers.append(
+            {
+                "finding_type": "hiring_revenue_amounts_export_failed",
+                "affected_file": str(manifest.get("db_path", "")),
+                "required_fix": f"修復 hiring revenue amounts export：{exc}",
+            }
+        )
+        return copied
+
+    for root_label, target_root in target_roots.items():
+        target_dir = target_root / report_key
+        target_dir.mkdir(parents=True, exist_ok=True)
+        dated_path = target_dir / f"hiring_revenue_amounts_{report_key}.json"
+        latest_path = target_root / "latest_hiring_revenue_amounts.json"
+        for label, path in {
+            f"{root_label}_hiring_revenue_amounts": dated_path,
+            f"{root_label}_latest_hiring_revenue_amounts": latest_path,
+        }.items():
+            path.write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
+            copied[label] = str(path)
+    return copied
+
+
 def write_hiring_revenue_batch(manifest: dict[str, Any], target_roots: dict[str, Path], blockers: list[dict[str, str]]) -> dict[str, str]:
     copied: dict[str, str] = {}
     report_key = str(manifest.get("report_yyyymmdd", "")).strip()
@@ -313,6 +428,7 @@ def sync_artifacts(manifest_path: Path, stage3_dir: Path) -> dict[str, Any]:
 
     copied.update(write_hiring_web_data(manifest, target_roots, blockers))
     copied.update(write_hiring_revenue_batch(manifest, target_roots, blockers))
+    copied.update(write_hiring_revenue_amounts(manifest, target_roots, blockers))
 
     receipt = {
         "receipt_type": "hiring_anomaly_web_artifact_sync",

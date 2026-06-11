@@ -46,6 +46,7 @@ MINIMAL_FIXTURE_FILES = [
     "stage3_web/requirements.txt",
     "stage3_web/hiring_reports/latest_hiring_demand_web_data.json",
     "stage3_web/hiring_reports/latest_hiring_revenue_batch.json",
+    "stage3_web/hiring_reports/latest_hiring_revenue_amounts.json",
     "stage3_web/hiring_reports/latest_anomaly_summary.json",
     "stage3_web/hiring_reports/latest_unlimited_hiring_revenue_report_manifest.json",
     "stage3_web/hiring_reports/latest_unlimited_hiring_revenue_media_receipt.json",

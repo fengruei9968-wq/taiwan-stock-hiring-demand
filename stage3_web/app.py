@@ -31,6 +31,7 @@ INVESTMENT_HOME_URL = os.environ.get(
 HIRING_REVENUE_WINDOW_MONTHS = 6
 HIRING_WEB_DATA_FILENAME = "latest_hiring_demand_web_data.json"
 HIRING_REVENUE_BATCH_FILENAME = "latest_hiring_revenue_batch.json"
+HIRING_REVENUE_AMOUNTS_FILENAME = "latest_hiring_revenue_amounts.json"
 FAVORITES_PATH = Path(os.environ.get("HIRING_FAVORITES_PATH", BASE_DIR / "data" / "hiring_favorites.json"))
 FINMIND_API_URL = "https://api.finmindtrade.com/api/v4/data"
 
@@ -103,6 +104,14 @@ def _read_hiring_revenue_batch_payload() -> dict[str, Any] | None:
     for directory in _report_dirs():
         payload = _load_json(directory / HIRING_REVENUE_BATCH_FILENAME)
         if payload and payload.get("schema_version") == "hiring_revenue_batch_v1" and isinstance(payload.get("data"), dict):
+            return payload
+    return None
+
+
+def _read_hiring_revenue_amounts_payload() -> dict[str, Any] | None:
+    for directory in _report_dirs():
+        payload = _load_json(directory / HIRING_REVENUE_AMOUNTS_FILENAME)
+        if payload and payload.get("schema_version") == "hiring_revenue_amounts_v1" and isinstance(payload.get("data"), dict):
             return payload
     return None
 
@@ -476,8 +485,21 @@ def get_stock_price(stock_code: str):
 
 @app.route("/api/stock-revenue/<stock_code>")
 def get_stock_revenue(stock_code: str):
+    def snapshot_response(source: str) -> Any:
+        payload = _read_hiring_revenue_amounts_payload()
+        if not payload:
+            return jsonify({"data": [], "source": source})
+        rows = list((payload.get("data") or {}).get(str(stock_code), []))
+        start_date = request.args.get("start_date")
+        end_date = request.args.get("end_date")
+        if start_date:
+            rows = [row for row in rows if str(row.get("date", "")) >= start_date[:10]]
+        if end_date:
+            rows = [row for row in rows if str(row.get("date", "")) <= end_date[:10]]
+        return jsonify({"data": rows, "source": "hiring_revenue_amounts", "snapshot_report_date": payload.get("report_date")})
+
     if not DB_PATH.exists():
-        return jsonify({"data": [], "source": "missing_db"})
+        return snapshot_response("missing_db")
     try:
         start_date = request.args.get("start_date")
         end_date = request.args.get("end_date")
@@ -488,7 +510,7 @@ def get_stock_revenue(stock_code: str):
                 "SELECT name FROM sqlite_master WHERE type='table' AND name='stock_monthly_revenue'"
             ).fetchone()
             if not table_exists:
-                return jsonify({"data": [], "source": "missing_stock_monthly_revenue"})
+                return snapshot_response("missing_stock_monthly_revenue")
             rows = conn.execute(
                 """
                 SELECT stock_code, revenue_year, revenue_month, revenue_amount, revenue_unit,
@@ -542,10 +564,12 @@ def get_stock_revenue(stock_code: str):
                     "run_id": row["run_id"],
                 }
             )
-        return jsonify({"data": data, "source": "stock_monthly_revenue", "source_counts": source_counts})
+        if data:
+            return jsonify({"data": data, "source": "stock_monthly_revenue", "source_counts": source_counts})
+        return snapshot_response("empty_stock_monthly_revenue")
     except Exception as exc:
         logger.warning("stock revenue failed for %s: %s", stock_code, exc)
-        return jsonify({"data": [], "error": str(exc)[:100]})
+        return snapshot_response(f"db_error:{str(exc)[:80]}")
 
 
 if __name__ == "__main__":

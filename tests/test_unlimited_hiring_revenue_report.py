@@ -188,6 +188,36 @@ def seed_hiring_web_data_tables(path: Path) -> None:
     conn.close()
 
 
+def seed_stock_monthly_revenue(path: Path) -> None:
+    conn = sqlite3.connect(path)
+    cur = conn.cursor()
+    cur.execute(
+        """
+        CREATE TABLE stock_monthly_revenue (
+            stock_code TEXT,
+            revenue_year INTEGER,
+            revenue_month INTEGER,
+            revenue_amount INTEGER,
+            revenue_unit TEXT,
+            source TEXT,
+            source_url TEXT,
+            market_type_at_fetch TEXT,
+            fetched_at TEXT,
+            run_id TEXT
+        )
+        """
+    )
+    rows = [
+        ("3333", 2026, 2, 100000, "thousand_twd", "mops_sii", "https://example.test/3333/202602", "上市", "2026-05-14 01:00:00", "unit"),
+        ("3333", 2026, 3, 110000, "thousand_twd", "mops_sii", "https://example.test/3333/202603", "上市", "2026-05-14 01:00:00", "unit"),
+        ("3333", 2026, 4, 120000, "thousand_twd", "mops_sii", "https://example.test/3333/202604", "上市", "2026-05-14 01:00:00", "unit"),
+        ("4444", 2026, 4, 250000000, "twd", "finmind", "https://example.test/4444/202604", "上櫃", "2026-05-14 01:00:00", "unit"),
+    ]
+    cur.executemany("INSERT INTO stock_monthly_revenue VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", rows)
+    conn.commit()
+    conn.close()
+
+
 class UnlimitedHiringRevenueReportTests(unittest.TestCase):
     def setUp(self) -> None:
         self.tmp = tempfile.TemporaryDirectory()
@@ -607,6 +637,7 @@ class UnlimitedHiringRevenueReportTests(unittest.TestCase):
         manifest_path = self.output_dir / "unlimited_hiring_revenue_report_manifest_20260514.json"
         self.assertEqual(self.run_renderer(manifest_path, ["--png-scale", "1.5", "--png-dpi", "150"]).returncode, 0)
         seed_hiring_web_data_tables(self.db_path)
+        seed_stock_monthly_revenue(self.db_path)
         stage3_dir = self.root / "stage3_web"
 
         proc = subprocess.run(
@@ -652,11 +683,21 @@ class UnlimitedHiringRevenueReportTests(unittest.TestCase):
         self.assertEqual(latest_revenue_batch["data"]["3333"]["months"][-1], "2026/4")
         self.assertEqual(latest_revenue_batch["data"]["3333"]["mom"][-1], 3.0)
         self.assertEqual(latest_revenue_batch["data"]["3333"]["yoy"][-1], 30.0)
+        latest_revenue_amounts_path = stage3_dir / "hiring_reports" / "latest_hiring_revenue_amounts.json"
+        self.assertTrue(latest_revenue_amounts_path.exists())
+        latest_revenue_amounts = json.loads(latest_revenue_amounts_path.read_text(encoding="utf-8"))
+        self.assertEqual(latest_revenue_amounts["schema_version"], "hiring_revenue_amounts_v1")
+        self.assertEqual(latest_revenue_amounts["count"], 2)
+        self.assertEqual(len(latest_revenue_amounts["data"]["3333"]), 3)
+        self.assertEqual(latest_revenue_amounts["data"]["3333"][-1]["date"], "2026-04-01")
+        self.assertEqual(latest_revenue_amounts["data"]["3333"][-1]["revenue"], 120000000)
+        self.assertEqual(latest_revenue_amounts["data"]["4444"][-1]["revenue"], 250000000)
         self.assertTrue((legacy_target_dir / "anomaly_summary_20260514.json").exists())
         self.assertTrue((stage3_dir / "data" / "hiring_reports" / "latest_anomaly_summary.json").exists())
         self.assertTrue((stage3_dir / "data" / "hiring_reports" / "latest_unlimited_hiring_revenue_report_manifest.json").exists())
         self.assertTrue((stage3_dir / "data" / "hiring_reports" / "latest_hiring_demand_web_data.json").exists())
         self.assertTrue((stage3_dir / "data" / "hiring_reports" / "latest_hiring_revenue_batch.json").exists())
+        self.assertTrue((stage3_dir / "data" / "hiring_reports" / "latest_hiring_revenue_amounts.json").exists())
 
     def test_renderer_outputs_anomaly_png_metadata_and_full_current_month_section(self) -> None:
         previous_rows = [
