@@ -1,53 +1,17 @@
 {
   "schema_version": "hiring_demand_web_data_v1",
-  "generated_at": "2026-06-13T01:28:48",
+  "generated_at": "2026-06-13T02:22:11",
   "source_manifest_report_key": "20260613",
-  "source_manifest_generated_at": "2026-06-13T01:28:41",
+  "source_manifest_generated_at": "2026-06-13T02:22:06",
   "fetch_date": "2026-06-13",
-  "latest_created_at_utc": "2026-06-12 17:28:38",
+  "latest_created_at_utc": "2026-06-12 18:22:04",
   "data": [
     {
-      "stock_code": "8131",
-      "company_short_name": "福懋科",
-      "company_full_name": "福懋科技股份有限公司",
-      "market_type": "上市",
-      "employee_count": 2480,
-      "explicit_need": 0,
-      "unlimited_job_count": 1,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 999.0
-    },
-    {
-      "stock_code": "8046",
-      "company_short_name": "南電",
-      "company_full_name": "南亞電路板股份有限公司",
-      "market_type": "上市",
-      "employee_count": 6000,
-      "explicit_need": 0,
-      "unlimited_job_count": 1,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 999.0
-    },
-    {
-      "stock_code": "2211",
-      "company_short_name": "長榮鋼",
-      "company_full_name": "長榮鋼鐵股份有限公司",
-      "market_type": "上市",
-      "employee_count": 0,
-      "explicit_need": 0,
-      "unlimited_job_count": 1,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 999.0
-    },
-    {
-      "stock_code": "7879",
-      "company_short_name": "益材科技",
-      "company_full_name": "益材科技股份有限公司",
-      "market_type": "興櫃",
-      "employee_count": 130,
+      "stock_code": "3541",
+      "company_short_name": "西柏",
+      "company_full_name": "西柏科技股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 360,
       "explicit_need": 0,
       "unlimited_job_count": 1,
       "unspecified_job_count": 0,
@@ -67,11 +31,11 @@
       "demand_ratio": 999.0
     },
     {
-      "stock_code": "2360",
-      "company_short_name": "致茂",
-      "company_full_name": "致茂電子股份有限公司",
-      "market_type": "上市",
-      "employee_count": 1950,
+      "stock_code": "6538",
+      "company_short_name": "倉和",
+      "company_full_name": "倉和股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 200,
       "explicit_need": 0,
       "unlimited_job_count": 1,
       "unspecified_job_count": 0,
@@ -79,11 +43,11 @@
       "demand_ratio": 999.0
     },
     {
-      "stock_code": "2344",
-      "company_short_name": "華邦電",
-      "company_full_name": "華邦電子股份有限公司",
+      "stock_code": "4720",
+      "company_short_name": "德淵",
+      "company_full_name": "德淵企業股份有限公司",
       "market_type": "上市",
-      "employee_count": 2800,
+      "employee_count": 700,
       "explicit_need": 0,
       "unlimited_job_count": 1,
       "unspecified_job_count": 0,
@@ -115,6 +79,54 @@
       "demand_ratio": 999.0
     },
     {
+      "stock_code": "4995",
+      "company_short_name": "晶達",
+      "company_full_name": "晶達光電股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 188,
+      "explicit_need": 0,
+      "unlimited_job_count": 2,
+      "unspecified_job_count": 0,
+      "total_job_count": 2,
+      "demand_ratio": 999.0
+    },
+    {
+      "stock_code": "8131",
+      "company_short_name": "福懋科",
+      "company_full_name": "福懋科技股份有限公司",
+      "market_type": "上市",
+      "employee_count": 2480,
+      "explicit_need": 0,
+      "unlimited_job_count": 1,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 999.0
+    },
+    {
+      "stock_code": "2360",
+      "company_short_name": "致茂",
+      "company_full_name": "致茂電子股份有限公司",
+      "market_type": "上市",
+      "employee_count": 1950,
+      "explicit_need": 0,
+      "unlimited_job_count": 1,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 999.0
+    },
+    {
+      "stock_code": "2344",
+      "company_short_name": "華邦電",
+      "company_full_name": "華邦電子股份有限公司",
+      "market_type": "上市",
+      "employee_count": 2800,
+      "explicit_need": 0,
+      "unlimited_job_count": 1,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 999.0
+    },
+    {
       "stock_code": "3678",
       "company_short_name": "聯享",
       "company_full_name": "聯享光電股份有限公司",
@@ -127,27 +139,15 @@
       "demand_ratio": 999.0
     },
     {
-      "stock_code": "4764",
-      "company_short_name": "雙鍵",
-      "company_full_name": "雙鍵化工股份有限公司",
-      "market_type": "上市",
-      "employee_count": 400,
+      "stock_code": "4543",
+      "company_short_name": "萬在",
+      "company_full_name": "萬在工業股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 320,
       "explicit_need": 0,
-      "unlimited_job_count": 1,
+      "unlimited_job_count": 2,
       "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 999.0
-    },
-    {
-      "stock_code": "3416",
-      "company_short_name": "融程電",
-      "company_full_name": "融程電訊股份有限公司",
-      "market_type": "上市",
-      "employee_count": 500,
-      "explicit_need": 0,
-      "unlimited_job_count": 1,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
+      "total_job_count": 2,
       "demand_ratio": 999.0
     },
     {
@@ -163,11 +163,35 @@
       "demand_ratio": 999.0
     },
     {
-      "stock_code": "2383",
-      "company_short_name": "台光電",
-      "company_full_name": "台光電子材料股份有限公司",
+      "stock_code": "8183",
+      "company_short_name": "精星",
+      "company_full_name": "台灣精星科技股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 1500,
+      "explicit_need": 0,
+      "unlimited_job_count": 4,
+      "unspecified_job_count": 0,
+      "total_job_count": 4,
+      "demand_ratio": 999.0
+    },
+    {
+      "stock_code": "7610",
+      "company_short_name": "聯友金屬-創",
+      "company_full_name": "聯友金屬科技股份有限公司",
       "market_type": "上市",
-      "employee_count": 8000,
+      "employee_count": 95,
+      "explicit_need": 0,
+      "unlimited_job_count": 1,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 999.0
+    },
+    {
+      "stock_code": "4558",
+      "company_short_name": "寶緯",
+      "company_full_name": "寶緯工業股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 250,
       "explicit_need": 0,
       "unlimited_job_count": 1,
       "unspecified_job_count": 0,
@@ -187,35 +211,107 @@
       "demand_ratio": 999.0
     },
     {
-      "stock_code": "4543",
-      "company_short_name": "萬在",
-      "company_full_name": "萬在工業股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 320,
-      "explicit_need": 0,
-      "unlimited_job_count": 2,
-      "unspecified_job_count": 0,
-      "total_job_count": 2,
-      "demand_ratio": 999.0
-    },
-    {
-      "stock_code": "5291",
-      "company_short_name": "邑昇",
-      "company_full_name": "邑昇實業股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 299,
-      "explicit_need": 0,
-      "unlimited_job_count": 2,
-      "unspecified_job_count": 0,
-      "total_job_count": 2,
-      "demand_ratio": 999.0
-    },
-    {
-      "stock_code": "4720",
-      "company_short_name": "德淵",
-      "company_full_name": "德淵企業股份有限公司",
+      "stock_code": "4764",
+      "company_short_name": "雙鍵",
+      "company_full_name": "雙鍵化工股份有限公司",
       "market_type": "上市",
-      "employee_count": 700,
+      "employee_count": 400,
+      "explicit_need": 0,
+      "unlimited_job_count": 1,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 999.0
+    },
+    {
+      "stock_code": "7879",
+      "company_short_name": "益材科技",
+      "company_full_name": "益材科技股份有限公司",
+      "market_type": "興櫃",
+      "employee_count": 130,
+      "explicit_need": 0,
+      "unlimited_job_count": 1,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 999.0
+    },
+    {
+      "stock_code": "9924",
+      "company_short_name": "福興",
+      "company_full_name": "台灣福興工業股份有限公司",
+      "market_type": "上市",
+      "employee_count": 1300,
+      "explicit_need": 0,
+      "unlimited_job_count": 1,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 999.0
+    },
+    {
+      "stock_code": "2412",
+      "company_short_name": "中華電",
+      "company_full_name": "中華電信股份有限公司",
+      "market_type": "上市",
+      "employee_count": 35,
+      "explicit_need": 0,
+      "unlimited_job_count": 1,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 999.0
+    },
+    {
+      "stock_code": "3416",
+      "company_short_name": "融程電",
+      "company_full_name": "融程電訊股份有限公司",
+      "market_type": "上市",
+      "employee_count": 500,
+      "explicit_need": 0,
+      "unlimited_job_count": 1,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 999.0
+    },
+    {
+      "stock_code": "1217",
+      "company_short_name": "愛之味",
+      "company_full_name": "愛之味股份有限公司",
+      "market_type": "上市",
+      "employee_count": 600,
+      "explicit_need": 0,
+      "unlimited_job_count": 2,
+      "unspecified_job_count": 0,
+      "total_job_count": 2,
+      "demand_ratio": 999.0
+    },
+    {
+      "stock_code": "8046",
+      "company_short_name": "南電",
+      "company_full_name": "南亞電路板股份有限公司",
+      "market_type": "上市",
+      "employee_count": 6000,
+      "explicit_need": 0,
+      "unlimited_job_count": 1,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 999.0
+    },
+    {
+      "stock_code": "2023",
+      "company_short_name": "燁輝",
+      "company_full_name": "燁輝企業股份有限公司",
+      "market_type": "上市",
+      "employee_count": 1379,
+      "explicit_need": 0,
+      "unlimited_job_count": 2,
+      "unspecified_job_count": 0,
+      "total_job_count": 2,
+      "demand_ratio": 999.0
+    },
+    {
+      "stock_code": "2211",
+      "company_short_name": "長榮鋼",
+      "company_full_name": "長榮鋼鐵股份有限公司",
+      "market_type": "上市",
+      "employee_count": 0,
       "explicit_need": 0,
       "unlimited_job_count": 1,
       "unspecified_job_count": 0,
@@ -235,59 +331,11 @@
       "demand_ratio": 999.0
     },
     {
-      "stock_code": "8183",
-      "company_short_name": "精星",
-      "company_full_name": "台灣精星科技股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 1500,
-      "explicit_need": 0,
-      "unlimited_job_count": 4,
-      "unspecified_job_count": 0,
-      "total_job_count": 4,
-      "demand_ratio": 999.0
-    },
-    {
-      "stock_code": "6538",
-      "company_short_name": "倉和",
-      "company_full_name": "倉和股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 200,
-      "explicit_need": 0,
-      "unlimited_job_count": 1,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 999.0
-    },
-    {
-      "stock_code": "3541",
-      "company_short_name": "西柏",
-      "company_full_name": "西柏科技股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 360,
-      "explicit_need": 0,
-      "unlimited_job_count": 2,
-      "unspecified_job_count": 0,
-      "total_job_count": 2,
-      "demand_ratio": 999.0
-    },
-    {
-      "stock_code": "4558",
-      "company_short_name": "寶緯",
-      "company_full_name": "寶緯工業股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 250,
-      "explicit_need": 0,
-      "unlimited_job_count": 1,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 999.0
-    },
-    {
-      "stock_code": "7610",
-      "company_short_name": "聯友金屬-創",
-      "company_full_name": "聯友金屬科技股份有限公司",
+      "stock_code": "2383",
+      "company_short_name": "台光電",
+      "company_full_name": "台光電子材料股份有限公司",
       "market_type": "上市",
-      "employee_count": 95,
+      "employee_count": 8000,
       "explicit_need": 0,
       "unlimited_job_count": 1,
       "unspecified_job_count": 0,
@@ -295,11 +343,11 @@
       "demand_ratio": 999.0
     },
     {
-      "stock_code": "4995",
-      "company_short_name": "晶達",
-      "company_full_name": "晶達光電股份有限公司",
+      "stock_code": "5291",
+      "company_short_name": "邑昇",
+      "company_full_name": "邑昇實業股份有限公司",
       "market_type": "上櫃",
-      "employee_count": 188,
+      "employee_count": 299,
       "explicit_need": 0,
       "unlimited_job_count": 2,
       "unspecified_job_count": 0,
@@ -312,42 +360,6 @@
       "company_full_name": "格斯科技股份有限公司",
       "market_type": "興櫃",
       "employee_count": 300,
-      "explicit_need": 0,
-      "unlimited_job_count": 2,
-      "unspecified_job_count": 0,
-      "total_job_count": 2,
-      "demand_ratio": 999.0
-    },
-    {
-      "stock_code": "2412",
-      "company_short_name": "中華電",
-      "company_full_name": "中華電信股份有限公司",
-      "market_type": "上市",
-      "employee_count": 35,
-      "explicit_need": 0,
-      "unlimited_job_count": 1,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 999.0
-    },
-    {
-      "stock_code": "1217",
-      "company_short_name": "愛之味",
-      "company_full_name": "愛之味股份有限公司",
-      "market_type": "上市",
-      "employee_count": 600,
-      "explicit_need": 0,
-      "unlimited_job_count": 1,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 999.0
-    },
-    {
-      "stock_code": "2023",
-      "company_short_name": "燁輝",
-      "company_full_name": "燁輝企業股份有限公司",
-      "market_type": "上市",
-      "employee_count": 1379,
       "explicit_need": 0,
       "unlimited_job_count": 2,
       "unspecified_job_count": 0,
@@ -763,15 +775,15 @@
       "demand_ratio": 5.26
     },
     {
-      "stock_code": "3310",
-      "company_short_name": "佳穎",
-      "company_full_name": "佳穎精密企業股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 100,
-      "explicit_need": 5,
+      "stock_code": "1215",
+      "company_short_name": "卜蜂",
+      "company_full_name": "台灣卜蜂企業股份有限公司",
+      "market_type": "上市",
+      "employee_count": 1200,
+      "explicit_need": 60,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
-      "total_job_count": 3,
+      "total_job_count": 5,
       "demand_ratio": 5.0
     },
     {
@@ -784,6 +796,42 @@
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 1,
+      "demand_ratio": 5.0
+    },
+    {
+      "stock_code": "4117",
+      "company_short_name": "普生",
+      "company_full_name": "普生股份有限公司",
+      "market_type": "興櫃",
+      "employee_count": 40,
+      "explicit_need": 2,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 2,
+      "demand_ratio": 5.0
+    },
+    {
+      "stock_code": "3310",
+      "company_short_name": "佳穎",
+      "company_full_name": "佳穎精密企業股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 100,
+      "explicit_need": 5,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 3,
+      "demand_ratio": 5.0
+    },
+    {
+      "stock_code": "2371",
+      "company_short_name": "大同",
+      "company_full_name": "大同股份有限公司",
+      "market_type": "上市",
+      "employee_count": 300,
+      "explicit_need": 15,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 7,
       "demand_ratio": 5.0
     },
     {
@@ -808,42 +856,6 @@
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 5,
-      "demand_ratio": 5.0
-    },
-    {
-      "stock_code": "1215",
-      "company_short_name": "卜蜂",
-      "company_full_name": "台灣卜蜂企業股份有限公司",
-      "market_type": "上市",
-      "employee_count": 1200,
-      "explicit_need": 60,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 5,
-      "demand_ratio": 5.0
-    },
-    {
-      "stock_code": "4117",
-      "company_short_name": "普生",
-      "company_full_name": "普生股份有限公司",
-      "market_type": "興櫃",
-      "employee_count": 40,
-      "explicit_need": 2,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 2,
-      "demand_ratio": 5.0
-    },
-    {
-      "stock_code": "2371",
-      "company_short_name": "大同",
-      "company_full_name": "大同股份有限公司",
-      "market_type": "上市",
-      "employee_count": 300,
-      "explicit_need": 15,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 7,
       "demand_ratio": 5.0
     },
     {
@@ -955,6 +967,18 @@
       "demand_ratio": 4.4
     },
     {
+      "stock_code": "6959",
+      "company_short_name": "兆捷科技",
+      "company_full_name": "兆捷科技國際股份有限公司",
+      "market_type": "興櫃",
+      "employee_count": 70,
+      "explicit_need": 3,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 4.29
+    },
+    {
       "stock_code": "5306",
       "company_short_name": "桂盟",
       "company_full_name": "桂盟國際股份有限公司",
@@ -983,18 +1007,6 @@
       "company_short_name": "建錩",
       "company_full_name": "建錩實業股份有限公司",
       "market_type": "上櫃",
-      "employee_count": 70,
-      "explicit_need": 3,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 4.29
-    },
-    {
-      "stock_code": "6959",
-      "company_short_name": "兆捷科技",
-      "company_full_name": "兆捷科技國際股份有限公司",
-      "market_type": "興櫃",
       "employee_count": 70,
       "explicit_need": 3,
       "unlimited_job_count": 0,
@@ -1099,24 +1111,24 @@
       "demand_ratio": 3.85
     },
     {
-      "stock_code": "3390",
-      "company_short_name": "旭軟",
-      "company_full_name": "旭軟電子科技股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 320,
-      "explicit_need": 12,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 2,
-      "demand_ratio": 3.75
-    },
-    {
       "stock_code": "6543",
       "company_short_name": "普惠醫工",
       "company_full_name": "普惠醫工股份有限公司",
       "market_type": "興櫃",
       "employee_count": 80,
       "explicit_need": 3,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 2,
+      "demand_ratio": 3.75
+    },
+    {
+      "stock_code": "3390",
+      "company_short_name": "旭軟",
+      "company_full_name": "旭軟電子科技股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 320,
+      "explicit_need": 12,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 2,
@@ -1135,18 +1147,6 @@
       "demand_ratio": 3.7
     },
     {
-      "stock_code": "2017",
-      "company_short_name": "官田鋼",
-      "company_full_name": "官田鋼鐵股份有限公司",
-      "market_type": "上市",
-      "employee_count": 300,
-      "explicit_need": 11,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 2,
-      "demand_ratio": 3.67
-    },
-    {
       "stock_code": "1536",
       "company_short_name": "和大",
       "company_full_name": "和大工業股份有限公司",
@@ -1156,6 +1156,18 @@
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 6,
+      "demand_ratio": 3.67
+    },
+    {
+      "stock_code": "2017",
+      "company_short_name": "官田鋼",
+      "company_full_name": "官田鋼鐵股份有限公司",
+      "market_type": "上市",
+      "employee_count": 300,
+      "explicit_need": 11,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 2,
       "demand_ratio": 3.67
     },
     {
@@ -1255,18 +1267,6 @@
       "demand_ratio": 3.33
     },
     {
-      "stock_code": "2345",
-      "company_short_name": "智邦",
-      "company_full_name": "智邦科技股份有限公司",
-      "market_type": "上市",
-      "employee_count": 3200,
-      "explicit_need": 103,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 14,
-      "demand_ratio": 3.22
-    },
-    {
       "stock_code": "6279",
       "company_short_name": "胡連",
       "company_full_name": "胡連精密股份有限公司",
@@ -1303,6 +1303,18 @@
       "demand_ratio": 3.08
     },
     {
+      "stock_code": "2345",
+      "company_short_name": "智邦",
+      "company_full_name": "智邦科技股份有限公司",
+      "market_type": "上市",
+      "employee_count": 3200,
+      "explicit_need": 98,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 13,
+      "demand_ratio": 3.06
+    },
+    {
       "stock_code": "9919",
       "company_short_name": "康那香",
       "company_full_name": "康那香企業股份有限公司",
@@ -1315,15 +1327,15 @@
       "demand_ratio": 3.06
     },
     {
-      "stock_code": "8111",
-      "company_short_name": "立碁",
-      "company_full_name": "立碁電子工業股份有限公司",
-      "market_type": "上櫃",
+      "stock_code": "4739",
+      "company_short_name": "康普",
+      "company_full_name": "康普材料科技股份有限公司",
+      "market_type": "上市",
       "employee_count": 200,
       "explicit_need": 6,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
-      "total_job_count": 4,
+      "total_job_count": 2,
       "demand_ratio": 3.0
     },
     {
@@ -1348,6 +1360,18 @@
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 1,
+      "demand_ratio": 3.0
+    },
+    {
+      "stock_code": "8111",
+      "company_short_name": "立碁",
+      "company_full_name": "立碁電子工業股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 200,
+      "explicit_need": 6,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 4,
       "demand_ratio": 3.0
     },
     {
@@ -1387,24 +1411,24 @@
       "demand_ratio": 2.88
     },
     {
-      "stock_code": "6168",
-      "company_short_name": "宏齊",
-      "company_full_name": "宏齊科技股份有限公司",
-      "market_type": "上市",
-      "employee_count": 560,
-      "explicit_need": 16,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 2,
-      "demand_ratio": 2.86
-    },
-    {
       "stock_code": "8905",
       "company_short_name": "裕國",
       "company_full_name": "裕國冷凍冷藏股份有限公司",
       "market_type": "上櫃",
       "employee_count": 210,
       "explicit_need": 6,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 2,
+      "demand_ratio": 2.86
+    },
+    {
+      "stock_code": "6168",
+      "company_short_name": "宏齊",
+      "company_full_name": "宏齊科技股份有限公司",
+      "market_type": "上市",
+      "employee_count": 560,
+      "explicit_need": 16,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 2,
@@ -1471,6 +1495,18 @@
       "demand_ratio": 2.64
     },
     {
+      "stock_code": "4137",
+      "company_short_name": "麗豐-KY",
+      "company_full_name": "麗豐股份有限公司",
+      "market_type": "上市",
+      "employee_count": 76,
+      "explicit_need": 2,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 2,
+      "demand_ratio": 2.63
+    },
+    {
       "stock_code": "4207",
       "company_short_name": "環泰",
       "company_full_name": "環泰企業股份有限公司",
@@ -1489,18 +1525,6 @@
       "market_type": "興櫃",
       "employee_count": 190,
       "explicit_need": 5,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 2,
-      "demand_ratio": 2.63
-    },
-    {
-      "stock_code": "4137",
-      "company_short_name": "麗豐-KY",
-      "company_full_name": "麗豐股份有限公司",
-      "market_type": "上市",
-      "employee_count": 76,
-      "explicit_need": 2,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 2,
@@ -1543,15 +1567,15 @@
       "demand_ratio": 2.58
     },
     {
-      "stock_code": "4553",
-      "company_short_name": "盛復",
-      "company_full_name": "盛復工業股份有限公司",
-      "market_type": "興櫃",
-      "employee_count": 240,
-      "explicit_need": 6,
+      "stock_code": "3666",
+      "company_short_name": "光耀",
+      "company_full_name": "光耀科技股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 160,
+      "explicit_need": 4,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
-      "total_job_count": 4,
+      "total_job_count": 2,
       "demand_ratio": 2.5
     },
     {
@@ -1567,18 +1591,6 @@
       "demand_ratio": 2.5
     },
     {
-      "stock_code": "3666",
-      "company_short_name": "光耀",
-      "company_full_name": "光耀科技股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 160,
-      "explicit_need": 4,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 2,
-      "demand_ratio": 2.5
-    },
-    {
       "stock_code": "6705",
       "company_short_name": "振躍精密",
       "company_full_name": "振躍精密滑軌股份有限公司",
@@ -1586,6 +1598,18 @@
       "employee_count": 120,
       "explicit_need": 3,
       "unlimited_job_count": 1,
+      "unspecified_job_count": 0,
+      "total_job_count": 4,
+      "demand_ratio": 2.5
+    },
+    {
+      "stock_code": "4553",
+      "company_short_name": "盛復",
+      "company_full_name": "盛復工業股份有限公司",
+      "market_type": "興櫃",
+      "employee_count": 240,
+      "explicit_need": 6,
+      "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 4,
       "demand_ratio": 2.5
@@ -1699,18 +1723,6 @@
       "demand_ratio": 2.31
     },
     {
-      "stock_code": "2423",
-      "company_short_name": "固緯",
-      "company_full_name": "固緯電子實業股份有限公司",
-      "market_type": "上市",
-      "employee_count": 400,
-      "explicit_need": 9,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 2,
-      "demand_ratio": 2.25
-    },
-    {
       "stock_code": "3652",
       "company_short_name": "精聯",
       "company_full_name": "精聯電子股份有限公司",
@@ -1720,6 +1732,18 @@
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 3,
+      "demand_ratio": 2.25
+    },
+    {
+      "stock_code": "2423",
+      "company_short_name": "固緯",
+      "company_full_name": "固緯電子實業股份有限公司",
+      "market_type": "上市",
+      "employee_count": 400,
+      "explicit_need": 9,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 2,
       "demand_ratio": 2.25
     },
     {
@@ -1735,18 +1759,6 @@
       "demand_ratio": 2.24
     },
     {
-      "stock_code": "6161",
-      "company_short_name": "捷波",
-      "company_full_name": "捷波資訊股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 90,
-      "explicit_need": 2,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 2,
-      "demand_ratio": 2.22
-    },
-    {
       "stock_code": "6662",
       "company_short_name": "樂斯科",
       "company_full_name": "樂斯科生物科技股份有限公司",
@@ -1759,16 +1771,16 @@
       "demand_ratio": 2.22
     },
     {
-      "stock_code": "2010",
-      "company_short_name": "春源",
-      "company_full_name": "春源鋼鐵工業股份有限公司",
-      "market_type": "上市",
-      "employee_count": 1400,
-      "explicit_need": 31,
+      "stock_code": "6161",
+      "company_short_name": "捷波",
+      "company_full_name": "捷波資訊股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 90,
+      "explicit_need": 2,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
-      "total_job_count": 11,
-      "demand_ratio": 2.21
+      "total_job_count": 2,
+      "demand_ratio": 2.22
     },
     {
       "stock_code": "6588",
@@ -1831,39 +1843,27 @@
       "demand_ratio": 2.08
     },
     {
-      "stock_code": "4771",
-      "company_short_name": "望隼",
-      "company_full_name": "望隼科技股份有限公司",
+      "stock_code": "2010",
+      "company_short_name": "春源",
+      "company_full_name": "春源鋼鐵工業股份有限公司",
       "market_type": "上市",
-      "employee_count": 500,
-      "explicit_need": 10,
+      "employee_count": 1400,
+      "explicit_need": 29,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
-      "total_job_count": 5,
-      "demand_ratio": 2.0
+      "total_job_count": 10,
+      "demand_ratio": 2.07
     },
     {
-      "stock_code": "7860",
-      "company_short_name": "得生製藥",
-      "company_full_name": "得生製藥股份有限公司",
-      "market_type": "興櫃",
-      "employee_count": 400,
-      "explicit_need": 8,
+      "stock_code": "4999",
+      "company_short_name": "鑫禾",
+      "company_full_name": "鑫禾科技股份有限公司",
+      "market_type": "上市",
+      "employee_count": 200,
+      "explicit_need": 4,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
-      "total_job_count": 2,
-      "demand_ratio": 2.0
-    },
-    {
-      "stock_code": "6832",
-      "company_short_name": "金鼎科",
-      "company_full_name": "金鼎聯合科技纖維股份有限公司",
-      "market_type": "興櫃",
-      "employee_count": 100,
-      "explicit_need": 2,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
+      "total_job_count": 3,
       "demand_ratio": 2.0
     },
     {
@@ -1891,18 +1891,6 @@
       "demand_ratio": 2.0
     },
     {
-      "stock_code": "6848",
-      "company_short_name": "拉法醫",
-      "company_full_name": "拉法生醫股份有限公司",
-      "market_type": "興櫃",
-      "employee_count": 50,
-      "explicit_need": 1,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 2.0
-    },
-    {
       "stock_code": "6935",
       "company_short_name": "王子製藥",
       "company_full_name": "王子製藥股份有限公司",
@@ -1915,15 +1903,51 @@
       "demand_ratio": 2.0
     },
     {
-      "stock_code": "4999",
-      "company_short_name": "鑫禾",
-      "company_full_name": "鑫禾科技股份有限公司",
+      "stock_code": "4771",
+      "company_short_name": "望隼",
+      "company_full_name": "望隼科技股份有限公司",
       "market_type": "上市",
-      "employee_count": 200,
-      "explicit_need": 4,
+      "employee_count": 500,
+      "explicit_need": 10,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
-      "total_job_count": 3,
+      "total_job_count": 5,
+      "demand_ratio": 2.0
+    },
+    {
+      "stock_code": "6832",
+      "company_short_name": "金鼎科",
+      "company_full_name": "金鼎聯合科技纖維股份有限公司",
+      "market_type": "興櫃",
+      "employee_count": 100,
+      "explicit_need": 2,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 2.0
+    },
+    {
+      "stock_code": "6848",
+      "company_short_name": "拉法醫",
+      "company_full_name": "拉法生醫股份有限公司",
+      "market_type": "興櫃",
+      "employee_count": 50,
+      "explicit_need": 1,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 2.0
+    },
+    {
+      "stock_code": "7860",
+      "company_short_name": "得生製藥",
+      "company_full_name": "得生製藥股份有限公司",
+      "market_type": "興櫃",
+      "employee_count": 400,
+      "explicit_need": 8,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 2,
       "demand_ratio": 2.0
     },
     {
@@ -1951,18 +1975,6 @@
       "demand_ratio": 1.86
     },
     {
-      "stock_code": "6886",
-      "company_short_name": "遠東生技",
-      "company_full_name": "遠東生物科技股份有限公司",
-      "market_type": "興櫃",
-      "employee_count": 110,
-      "explicit_need": 2,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 2,
-      "demand_ratio": 1.82
-    },
-    {
       "stock_code": "1324",
       "company_short_name": "地球",
       "company_full_name": "地球綜合工業股份有限公司",
@@ -1975,12 +1987,12 @@
       "demand_ratio": 1.82
     },
     {
-      "stock_code": "5344",
-      "company_short_name": "立衛",
-      "company_full_name": "立衛科技股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 220,
-      "explicit_need": 4,
+      "stock_code": "6886",
+      "company_short_name": "遠東生技",
+      "company_full_name": "遠東生物科技股份有限公司",
+      "market_type": "興櫃",
+      "employee_count": 110,
+      "explicit_need": 2,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 2,
@@ -2047,18 +2059,6 @@
       "demand_ratio": 1.76
     },
     {
-      "stock_code": "7791",
-      "company_short_name": "皇家可口",
-      "company_full_name": "皇家可口股份有限公司",
-      "market_type": "上市",
-      "employee_count": 400,
-      "explicit_need": 7,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 3,
-      "demand_ratio": 1.75
-    },
-    {
       "stock_code": "6275",
       "company_short_name": "元山",
       "company_full_name": "元山科技工業股份有限公司",
@@ -2068,6 +2068,18 @@
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 7,
+      "demand_ratio": 1.75
+    },
+    {
+      "stock_code": "7791",
+      "company_short_name": "皇家可口",
+      "company_full_name": "皇家可口股份有限公司",
+      "market_type": "上市",
+      "employee_count": 400,
+      "explicit_need": 7,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 3,
       "demand_ratio": 1.75
     },
     {
@@ -2095,15 +2107,15 @@
       "demand_ratio": 1.71
     },
     {
-      "stock_code": "3689",
-      "company_short_name": "湧德",
-      "company_full_name": "湧德電子股份有限公司",
+      "stock_code": "4129",
+      "company_short_name": "聯合",
+      "company_full_name": "聯合骨科器材股份有限公司",
       "market_type": "上櫃",
-      "employee_count": 120,
-      "explicit_need": 2,
+      "employee_count": 840,
+      "explicit_need": 14,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
-      "total_job_count": 2,
+      "total_job_count": 11,
       "demand_ratio": 1.67
     },
     {
@@ -2119,36 +2131,12 @@
       "demand_ratio": 1.67
     },
     {
-      "stock_code": "4540",
-      "company_short_name": "全球傳動",
-      "company_full_name": "全球傳動科技股份有限公司",
-      "market_type": "上市",
-      "employee_count": 1020,
-      "explicit_need": 17,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 3,
-      "demand_ratio": 1.67
-    },
-    {
-      "stock_code": "4573",
-      "company_short_name": "高明鐵",
-      "company_full_name": "高明鐵企業股份有限公司",
-      "market_type": "興櫃",
-      "employee_count": 300,
-      "explicit_need": 5,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 3,
-      "demand_ratio": 1.67
-    },
-    {
-      "stock_code": "4161",
-      "company_short_name": "聿新科",
-      "company_full_name": "聿新生物科技股份有限公司",
+      "stock_code": "3689",
+      "company_short_name": "湧德",
+      "company_full_name": "湧德電子股份有限公司",
       "market_type": "上櫃",
-      "employee_count": 180,
-      "explicit_need": 3,
+      "employee_count": 120,
+      "explicit_need": 2,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 2,
@@ -2167,15 +2155,15 @@
       "demand_ratio": 1.67
     },
     {
-      "stock_code": "4129",
-      "company_short_name": "聯合",
-      "company_full_name": "聯合骨科器材股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 840,
-      "explicit_need": 14,
+      "stock_code": "4573",
+      "company_short_name": "高明鐵",
+      "company_full_name": "高明鐵企業股份有限公司",
+      "market_type": "興櫃",
+      "employee_count": 300,
+      "explicit_need": 5,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
-      "total_job_count": 11,
+      "total_job_count": 3,
       "demand_ratio": 1.67
     },
     {
@@ -2191,16 +2179,28 @@
       "demand_ratio": 1.67
     },
     {
-      "stock_code": "3374",
-      "company_short_name": "精材",
-      "company_full_name": "精材科技股份有限公司",
+      "stock_code": "4540",
+      "company_short_name": "全球傳動",
+      "company_full_name": "全球傳動科技股份有限公司",
+      "market_type": "上市",
+      "employee_count": 1020,
+      "explicit_need": 17,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 3,
+      "demand_ratio": 1.67
+    },
+    {
+      "stock_code": "4161",
+      "company_short_name": "聿新科",
+      "company_full_name": "聿新生物科技股份有限公司",
       "market_type": "上櫃",
-      "employee_count": 1500,
-      "explicit_need": 24,
+      "employee_count": 180,
+      "explicit_need": 3,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 2,
-      "demand_ratio": 1.6
+      "demand_ratio": 1.67
     },
     {
       "stock_code": "6796",
@@ -2215,16 +2215,16 @@
       "demand_ratio": 1.6
     },
     {
-      "stock_code": "2413",
-      "company_short_name": "環科",
-      "company_full_name": "環隆科技股份有限公司",
-      "market_type": "上市",
-      "employee_count": 700,
-      "explicit_need": 11,
+      "stock_code": "3374",
+      "company_short_name": "精材",
+      "company_full_name": "精材科技股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 1500,
+      "explicit_need": 24,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
-      "total_job_count": 8,
-      "demand_ratio": 1.57
+      "total_job_count": 2,
+      "demand_ratio": 1.6
     },
     {
       "stock_code": "4549",
@@ -2236,6 +2236,18 @@
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 4,
+      "demand_ratio": 1.57
+    },
+    {
+      "stock_code": "2413",
+      "company_short_name": "環科",
+      "company_full_name": "環隆科技股份有限公司",
+      "market_type": "上市",
+      "employee_count": 700,
+      "explicit_need": 11,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 8,
       "demand_ratio": 1.57
     },
     {
@@ -2299,18 +2311,6 @@
       "demand_ratio": 1.47
     },
     {
-      "stock_code": "1707",
-      "company_short_name": "葡萄王",
-      "company_full_name": "葡萄王生技股份有限公司",
-      "market_type": "上市",
-      "employee_count": 550,
-      "explicit_need": 8,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 3,
-      "demand_ratio": 1.45
-    },
-    {
       "stock_code": "6282",
       "company_short_name": "康舒",
       "company_full_name": "康舒科技股份有限公司",
@@ -2323,15 +2323,15 @@
       "demand_ratio": 1.44
     },
     {
-      "stock_code": "6155",
-      "company_short_name": "鈞寶",
-      "company_full_name": "鈞寶電子工業股份有限公司",
+      "stock_code": "1236",
+      "company_short_name": "宏亞",
+      "company_full_name": "宏亞食品股份有限公司",
       "market_type": "上市",
-      "employee_count": 210,
-      "explicit_need": 3,
+      "employee_count": 700,
+      "explicit_need": 10,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
-      "total_job_count": 3,
+      "total_job_count": 1,
       "demand_ratio": 1.43
     },
     {
@@ -2347,15 +2347,15 @@
       "demand_ratio": 1.43
     },
     {
-      "stock_code": "1236",
-      "company_short_name": "宏亞",
-      "company_full_name": "宏亞食品股份有限公司",
+      "stock_code": "6155",
+      "company_short_name": "鈞寶",
+      "company_full_name": "鈞寶電子工業股份有限公司",
       "market_type": "上市",
-      "employee_count": 700,
-      "explicit_need": 10,
+      "employee_count": 210,
+      "explicit_need": 3,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
-      "total_job_count": 1,
+      "total_job_count": 3,
       "demand_ratio": 1.43
     },
     {
@@ -2395,6 +2395,18 @@
       "demand_ratio": 1.39
     },
     {
+      "stock_code": "8162",
+      "company_short_name": "微矽電子-創",
+      "company_full_name": "微矽電子股份有限公司",
+      "market_type": "上市",
+      "employee_count": 580,
+      "explicit_need": 8,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 6,
+      "demand_ratio": 1.38
+    },
+    {
       "stock_code": "3622",
       "company_short_name": "洋華",
       "company_full_name": "洋華光電股份有限公司",
@@ -2419,11 +2431,11 @@
       "demand_ratio": 1.37
     },
     {
-      "stock_code": "2235",
-      "company_short_name": "謚源",
-      "company_full_name": "謚源實業股份有限公司",
+      "stock_code": "6730",
+      "company_short_name": "常廣",
+      "company_full_name": "常廣股份有限公司",
       "market_type": "上櫃",
-      "employee_count": 220,
+      "employee_count": 221,
       "explicit_need": 3,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
@@ -2443,18 +2455,6 @@
       "demand_ratio": 1.36
     },
     {
-      "stock_code": "6730",
-      "company_short_name": "常廣",
-      "company_full_name": "常廣股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 221,
-      "explicit_need": 3,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 1.36
-    },
-    {
       "stock_code": "2024",
       "company_short_name": "志聯",
       "company_full_name": "志聯工業股份有限公司",
@@ -2467,40 +2467,16 @@
       "demand_ratio": 1.36
     },
     {
-      "stock_code": "6472",
-      "company_short_name": "保瑞",
-      "company_full_name": "保瑞藥業股份有限公司",
-      "market_type": "上市",
-      "employee_count": 300,
-      "explicit_need": 4,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 2,
-      "demand_ratio": 1.33
-    },
-    {
-      "stock_code": "4304",
-      "company_short_name": "勝昱",
-      "company_full_name": "勝昱科技股份有限公司",
+      "stock_code": "2235",
+      "company_short_name": "謚源",
+      "company_full_name": "謚源實業股份有限公司",
       "market_type": "上櫃",
-      "employee_count": 150,
-      "explicit_need": 2,
-      "unlimited_job_count": 1,
-      "unspecified_job_count": 0,
-      "total_job_count": 2,
-      "demand_ratio": 1.33
-    },
-    {
-      "stock_code": "6877",
-      "company_short_name": "鏵友益",
-      "company_full_name": "鏵友益科技股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 150,
-      "explicit_need": 2,
+      "employee_count": 220,
+      "explicit_need": 3,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 1,
-      "demand_ratio": 1.33
+      "demand_ratio": 1.36
     },
     {
       "stock_code": "2256",
@@ -2527,22 +2503,10 @@
       "demand_ratio": 1.33
     },
     {
-      "stock_code": "4153",
-      "company_short_name": "鈺緯",
-      "company_full_name": "鈺緯科技開發股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 150,
-      "explicit_need": 2,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 1.33
-    },
-    {
-      "stock_code": "2022",
-      "company_short_name": "聚亨",
-      "company_full_name": "聚亨企業股份有限公司",
-      "market_type": "上市",
+      "stock_code": "7893",
+      "company_short_name": "睿信",
+      "company_full_name": "睿信電子股份有限公司",
+      "market_type": "興櫃",
       "employee_count": 150,
       "explicit_need": 2,
       "unlimited_job_count": 0,
@@ -2563,15 +2527,63 @@
       "demand_ratio": 1.33
     },
     {
-      "stock_code": "7893",
-      "company_short_name": "睿信",
-      "company_full_name": "睿信電子股份有限公司",
-      "market_type": "興櫃",
+      "stock_code": "6472",
+      "company_short_name": "保瑞",
+      "company_full_name": "保瑞藥業股份有限公司",
+      "market_type": "上市",
+      "employee_count": 300,
+      "explicit_need": 4,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 2,
+      "demand_ratio": 1.33
+    },
+    {
+      "stock_code": "4304",
+      "company_short_name": "勝昱",
+      "company_full_name": "勝昱科技股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 150,
+      "explicit_need": 2,
+      "unlimited_job_count": 1,
+      "unspecified_job_count": 0,
+      "total_job_count": 2,
+      "demand_ratio": 1.33
+    },
+    {
+      "stock_code": "2022",
+      "company_short_name": "聚亨",
+      "company_full_name": "聚亨企業股份有限公司",
+      "market_type": "上市",
       "employee_count": 150,
       "explicit_need": 2,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 2,
+      "demand_ratio": 1.33
+    },
+    {
+      "stock_code": "4153",
+      "company_short_name": "鈺緯",
+      "company_full_name": "鈺緯科技開發股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 150,
+      "explicit_need": 2,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 1.33
+    },
+    {
+      "stock_code": "6877",
+      "company_short_name": "鏵友益",
+      "company_full_name": "鏵友益科技股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 150,
+      "explicit_need": 2,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
       "demand_ratio": 1.33
     },
     {
@@ -2599,18 +2611,6 @@
       "demand_ratio": 1.32
     },
     {
-      "stock_code": "6150",
-      "company_short_name": "撼訊",
-      "company_full_name": "撼訊科技股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 240,
-      "explicit_need": 3,
-      "unlimited_job_count": 2,
-      "unspecified_job_count": 0,
-      "total_job_count": 3,
-      "demand_ratio": 1.25
-    },
-    {
       "stock_code": "4147",
       "company_short_name": "中裕",
       "company_full_name": "中裕新藥股份有限公司",
@@ -2635,6 +2635,30 @@
       "demand_ratio": 1.25
     },
     {
+      "stock_code": "4566",
+      "company_short_name": "時碩工業",
+      "company_full_name": "時碩工業股份有限公司",
+      "market_type": "上市",
+      "employee_count": 400,
+      "explicit_need": 5,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 2,
+      "demand_ratio": 1.25
+    },
+    {
+      "stock_code": "6150",
+      "company_short_name": "撼訊",
+      "company_full_name": "撼訊科技股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 240,
+      "explicit_need": 3,
+      "unlimited_job_count": 2,
+      "unspecified_job_count": 0,
+      "total_job_count": 3,
+      "demand_ratio": 1.25
+    },
+    {
       "stock_code": "1414",
       "company_short_name": "東和",
       "company_full_name": "東和紡織股份有限公司",
@@ -2647,18 +2671,6 @@
       "demand_ratio": 1.24
     },
     {
-      "stock_code": "8162",
-      "company_short_name": "微矽電子-創",
-      "company_full_name": "微矽電子股份有限公司",
-      "market_type": "上市",
-      "employee_count": 580,
-      "explicit_need": 7,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 5,
-      "demand_ratio": 1.21
-    },
-    {
       "stock_code": "6269",
       "company_short_name": "台郡",
       "company_full_name": "台郡科技股份有限公司",
@@ -2668,6 +2680,30 @@
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 3,
+      "demand_ratio": 1.2
+    },
+    {
+      "stock_code": "6215",
+      "company_short_name": "和椿",
+      "company_full_name": "和椿科技股份有限公司",
+      "market_type": "上市",
+      "employee_count": 250,
+      "explicit_need": 3,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 1.2
+    },
+    {
+      "stock_code": "7764",
+      "company_short_name": "聖州",
+      "company_full_name": "聖州企業股份有限公司",
+      "market_type": "興櫃",
+      "employee_count": 250,
+      "explicit_need": 3,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 2,
       "demand_ratio": 1.2
     },
     {
@@ -2695,18 +2731,6 @@
       "demand_ratio": 1.2
     },
     {
-      "stock_code": "1810",
-      "company_short_name": "和成",
-      "company_full_name": "和成欣業股份有限公司",
-      "market_type": "上市",
-      "employee_count": 1080,
-      "explicit_need": 13,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 5,
-      "demand_ratio": 1.2
-    },
-    {
       "stock_code": "4114",
       "company_short_name": "健喬",
       "company_full_name": "健喬信元醫藥生技股份有限公司",
@@ -2719,36 +2743,24 @@
       "demand_ratio": 1.2
     },
     {
+      "stock_code": "1810",
+      "company_short_name": "和成",
+      "company_full_name": "和成欣業股份有限公司",
+      "market_type": "上市",
+      "employee_count": 1080,
+      "explicit_need": 13,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 5,
+      "demand_ratio": 1.2
+    },
+    {
       "stock_code": "6825",
       "company_short_name": "和暢科技",
       "company_full_name": "和暢科技股份有限公司",
       "market_type": "興櫃",
       "employee_count": 83,
       "explicit_need": 1,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 1.2
-    },
-    {
-      "stock_code": "7764",
-      "company_short_name": "聖州",
-      "company_full_name": "聖州企業股份有限公司",
-      "market_type": "興櫃",
-      "employee_count": 250,
-      "explicit_need": 3,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 2,
-      "demand_ratio": 1.2
-    },
-    {
-      "stock_code": "6215",
-      "company_short_name": "和椿",
-      "company_full_name": "和椿科技股份有限公司",
-      "market_type": "上市",
-      "employee_count": 250,
-      "explicit_need": 3,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 1,
@@ -2765,6 +2777,18 @@
       "unspecified_job_count": 0,
       "total_job_count": 2,
       "demand_ratio": 1.18
+    },
+    {
+      "stock_code": "6664",
+      "company_short_name": "群翊",
+      "company_full_name": "群翊工業股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 428,
+      "explicit_need": 5,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 1.17
     },
     {
       "stock_code": "3693",
@@ -2788,18 +2812,6 @@
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 2,
-      "demand_ratio": 1.17
-    },
-    {
-      "stock_code": "6664",
-      "company_short_name": "群翊",
-      "company_full_name": "群翊工業股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 428,
-      "explicit_need": 5,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
       "demand_ratio": 1.17
     },
     {
@@ -2875,24 +2887,12 @@
       "demand_ratio": 1.13
     },
     {
-      "stock_code": "3363",
-      "company_short_name": "上詮",
-      "company_full_name": "上詮光纖通信股份有限公司",
+      "stock_code": "4577",
+      "company_short_name": "達航科技",
+      "company_full_name": "達航科技股份有限公司",
       "market_type": "上櫃",
-      "employee_count": 270,
-      "explicit_need": 3,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 3,
-      "demand_ratio": 1.11
-    },
-    {
-      "stock_code": "8255",
-      "company_short_name": "朋程",
-      "company_full_name": "朋程科技股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 900,
-      "explicit_need": 10,
+      "employee_count": 180,
+      "explicit_need": 2,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 1,
@@ -2911,6 +2911,30 @@
       "demand_ratio": 1.11
     },
     {
+      "stock_code": "8255",
+      "company_short_name": "朋程",
+      "company_full_name": "朋程科技股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 900,
+      "explicit_need": 10,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 1.11
+    },
+    {
+      "stock_code": "3363",
+      "company_short_name": "上詮",
+      "company_full_name": "上詮光纖通信股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 270,
+      "explicit_need": 3,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 3,
+      "demand_ratio": 1.11
+    },
+    {
       "stock_code": "1530",
       "company_short_name": "亞崴",
       "company_full_name": "亞崴機電股份有限公司",
@@ -2920,18 +2944,6 @@
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 3,
-      "demand_ratio": 1.11
-    },
-    {
-      "stock_code": "4577",
-      "company_short_name": "達航科技",
-      "company_full_name": "達航科技股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 180,
-      "explicit_need": 2,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
       "demand_ratio": 1.11
     },
     {
@@ -2971,16 +2983,16 @@
       "demand_ratio": 1.09
     },
     {
-      "stock_code": "1720",
-      "company_short_name": "生達",
-      "company_full_name": "生達化學製藥股份有限公司",
+      "stock_code": "1707",
+      "company_short_name": "葡萄王",
+      "company_full_name": "葡萄王生技股份有限公司",
       "market_type": "上市",
-      "employee_count": 830,
-      "explicit_need": 9,
+      "employee_count": 550,
+      "explicit_need": 6,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 2,
-      "demand_ratio": 1.08
+      "demand_ratio": 1.09
     },
     {
       "stock_code": "6722",
@@ -2995,10 +3007,22 @@
       "demand_ratio": 1.08
     },
     {
-      "stock_code": "4544",
-      "company_short_name": "春日",
-      "company_full_name": "春日機械工業股份有限公司",
-      "market_type": "興櫃",
+      "stock_code": "1720",
+      "company_short_name": "生達",
+      "company_full_name": "生達化學製藥股份有限公司",
+      "market_type": "上市",
+      "employee_count": 830,
+      "explicit_need": 9,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 2,
+      "demand_ratio": 1.08
+    },
+    {
+      "stock_code": "2067",
+      "company_short_name": "嘉鋼",
+      "company_full_name": "嘉鋼精密工業股份有限公司",
+      "market_type": "上櫃",
       "employee_count": 185,
       "explicit_need": 2,
       "unlimited_job_count": 0,
@@ -3007,10 +3031,10 @@
       "demand_ratio": 1.08
     },
     {
-      "stock_code": "2067",
-      "company_short_name": "嘉鋼",
-      "company_full_name": "嘉鋼精密工業股份有限公司",
-      "market_type": "上櫃",
+      "stock_code": "4544",
+      "company_short_name": "春日",
+      "company_full_name": "春日機械工業股份有限公司",
+      "market_type": "興櫃",
       "employee_count": 185,
       "explicit_need": 2,
       "unlimited_job_count": 0,
@@ -3029,6 +3053,18 @@
       "unspecified_job_count": 0,
       "total_job_count": 1,
       "demand_ratio": 1.08
+    },
+    {
+      "stock_code": "1760",
+      "company_short_name": "寶齡富錦",
+      "company_full_name": "寶齡富錦生技股份有限公司",
+      "market_type": "上市",
+      "employee_count": 380,
+      "explicit_need": 4,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 3,
+      "demand_ratio": 1.05
     },
     {
       "stock_code": "4754",
@@ -3052,18 +3088,6 @@
       "unlimited_job_count": 1,
       "unspecified_job_count": 0,
       "total_job_count": 2,
-      "demand_ratio": 1.05
-    },
-    {
-      "stock_code": "1760",
-      "company_short_name": "寶齡富錦",
-      "company_full_name": "寶齡富錦生技股份有限公司",
-      "market_type": "上市",
-      "employee_count": 380,
-      "explicit_need": 4,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 3,
       "demand_ratio": 1.05
     },
     {
@@ -3103,15 +3127,27 @@
       "demand_ratio": 1.02
     },
     {
-      "stock_code": "3213",
-      "company_short_name": "茂訊",
-      "company_full_name": "茂訊電腦股份有限公司",
+      "stock_code": "4768",
+      "company_short_name": "晶呈科技",
+      "company_full_name": "晶呈科技股份有限公司",
       "market_type": "上櫃",
-      "employee_count": 300,
-      "explicit_need": 3,
+      "employee_count": 100,
+      "explicit_need": 1,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
-      "total_job_count": 2,
+      "total_job_count": 1,
+      "demand_ratio": 1.0
+    },
+    {
+      "stock_code": "6205",
+      "company_short_name": "詮欣",
+      "company_full_name": "詮欣股份有限公司",
+      "market_type": "上市",
+      "employee_count": 500,
+      "explicit_need": 5,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
       "demand_ratio": 1.0
     },
     {
@@ -3127,12 +3163,36 @@
       "demand_ratio": 1.0
     },
     {
-      "stock_code": "4536",
-      "company_short_name": "拓凱",
-      "company_full_name": "拓凱實業股份有限公司",
+      "stock_code": "4736",
+      "company_short_name": "泰博",
+      "company_full_name": "泰博科技股份有限公司",
       "market_type": "上市",
+      "employee_count": 1100,
+      "explicit_need": 11,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 7,
+      "demand_ratio": 1.0
+    },
+    {
+      "stock_code": "3213",
+      "company_short_name": "茂訊",
+      "company_full_name": "茂訊電腦股份有限公司",
+      "market_type": "上櫃",
       "employee_count": 300,
       "explicit_need": 3,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 2,
+      "demand_ratio": 1.0
+    },
+    {
+      "stock_code": "4706",
+      "company_short_name": "大恭",
+      "company_full_name": "大恭化學工業股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 200,
+      "explicit_need": 2,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 1,
@@ -3163,60 +3223,24 @@
       "demand_ratio": 1.0
     },
     {
-      "stock_code": "4706",
-      "company_short_name": "大恭",
-      "company_full_name": "大恭化學工業股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 200,
-      "explicit_need": 2,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 1.0
-    },
-    {
-      "stock_code": "6205",
-      "company_short_name": "詮欣",
-      "company_full_name": "詮欣股份有限公司",
-      "market_type": "上市",
-      "employee_count": 500,
-      "explicit_need": 5,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 1.0
-    },
-    {
-      "stock_code": "4979",
-      "company_short_name": "華星光",
-      "company_full_name": "華星光通科技股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 500,
-      "explicit_need": 5,
-      "unlimited_job_count": 4,
-      "unspecified_job_count": 0,
-      "total_job_count": 6,
-      "demand_ratio": 1.0
-    },
-    {
-      "stock_code": "4736",
-      "company_short_name": "泰博",
-      "company_full_name": "泰博科技股份有限公司",
-      "market_type": "上市",
-      "employee_count": 1100,
-      "explicit_need": 11,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 7,
-      "demand_ratio": 1.0
-    },
-    {
       "stock_code": "7866",
       "company_short_name": "丹立",
       "company_full_name": "丹立電子股份有限公司",
       "market_type": "興櫃",
       "employee_count": 100,
       "explicit_need": 1,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 1.0
+    },
+    {
+      "stock_code": "4536",
+      "company_short_name": "拓凱",
+      "company_full_name": "拓凱實業股份有限公司",
+      "market_type": "上市",
+      "employee_count": 300,
+      "explicit_need": 3,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 1,
@@ -3235,22 +3259,22 @@
       "demand_ratio": 1.0
     },
     {
+      "stock_code": "4979",
+      "company_short_name": "華星光",
+      "company_full_name": "華星光通科技股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 500,
+      "explicit_need": 5,
+      "unlimited_job_count": 4,
+      "unspecified_job_count": 0,
+      "total_job_count": 6,
+      "demand_ratio": 1.0
+    },
+    {
       "stock_code": "6666",
       "company_short_name": "羅麗芬-KY",
       "company_full_name": "羅麗芬控股股份有限公司",
       "market_type": "上市",
-      "employee_count": 100,
-      "explicit_need": 1,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 1.0
-    },
-    {
-      "stock_code": "4768",
-      "company_short_name": "晶呈科技",
-      "company_full_name": "晶呈科技股份有限公司",
-      "market_type": "上櫃",
       "employee_count": 100,
       "explicit_need": 1,
       "unlimited_job_count": 0,
@@ -3331,30 +3355,6 @@
       "demand_ratio": 0.93
     },
     {
-      "stock_code": "6201",
-      "company_short_name": "亞弘電",
-      "company_full_name": "亞弘電科技股份有限公司",
-      "market_type": "上市",
-      "employee_count": 330,
-      "explicit_need": 3,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 2,
-      "demand_ratio": 0.91
-    },
-    {
-      "stock_code": "5521",
-      "company_short_name": "工信",
-      "company_full_name": "工信工程股份有限公司",
-      "market_type": "上市",
-      "employee_count": 330,
-      "explicit_need": 3,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0.91
-    },
-    {
       "stock_code": "7873",
       "company_short_name": "瑞峰",
       "company_full_name": "瑞峰半導體股份有限公司",
@@ -3379,6 +3379,54 @@
       "demand_ratio": 0.91
     },
     {
+      "stock_code": "6504",
+      "company_short_name": "南六",
+      "company_full_name": "南六企業股份有限公司",
+      "market_type": "上市",
+      "employee_count": 220,
+      "explicit_need": 2,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 0.91
+    },
+    {
+      "stock_code": "6201",
+      "company_short_name": "亞弘電",
+      "company_full_name": "亞弘電科技股份有限公司",
+      "market_type": "上市",
+      "employee_count": 330,
+      "explicit_need": 3,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 2,
+      "demand_ratio": 0.91
+    },
+    {
+      "stock_code": "6680",
+      "company_short_name": "鑫創電子",
+      "company_full_name": "鑫創電子股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 110,
+      "explicit_need": 1,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 0.91
+    },
+    {
+      "stock_code": "5521",
+      "company_short_name": "工信",
+      "company_full_name": "工信工程股份有限公司",
+      "market_type": "上市",
+      "employee_count": 330,
+      "explicit_need": 3,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 0.91
+    },
+    {
       "stock_code": "8289",
       "company_short_name": "泰藝",
       "company_full_name": "泰藝電子股份有限公司",
@@ -3391,10 +3439,10 @@
       "demand_ratio": 0.91
     },
     {
-      "stock_code": "6504",
-      "company_short_name": "南六",
-      "company_full_name": "南六企業股份有限公司",
-      "market_type": "上市",
+      "stock_code": "6593",
+      "company_short_name": "台灣銘板",
+      "company_full_name": "台灣銘板股份有限公司",
+      "market_type": "上櫃",
       "employee_count": 220,
       "explicit_need": 2,
       "unlimited_job_count": 0,
@@ -3412,30 +3460,6 @@
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 3,
-      "demand_ratio": 0.91
-    },
-    {
-      "stock_code": "6593",
-      "company_short_name": "台灣銘板",
-      "company_full_name": "台灣銘板股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 220,
-      "explicit_need": 2,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0.91
-    },
-    {
-      "stock_code": "6680",
-      "company_short_name": "鑫創電子",
-      "company_full_name": "鑫創電子股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 110,
-      "explicit_need": 1,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
       "demand_ratio": 0.91
     },
     {
@@ -3487,6 +3511,18 @@
       "demand_ratio": 0.87
     },
     {
+      "stock_code": "2316",
+      "company_short_name": "楠梓電",
+      "company_full_name": "楠梓電子股份有限公司",
+      "market_type": "上市",
+      "employee_count": 1500,
+      "explicit_need": 13,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 3,
+      "demand_ratio": 0.87
+    },
+    {
       "stock_code": "7857",
       "company_short_name": "合水先進",
       "company_full_name": "合水先進環境技術股份有限公司",
@@ -3499,40 +3535,16 @@
       "demand_ratio": 0.86
     },
     {
-      "stock_code": "5309",
-      "company_short_name": "系統電",
-      "company_full_name": "系統電子工業股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 600,
-      "explicit_need": 5,
-      "unlimited_job_count": 1,
-      "unspecified_job_count": 0,
-      "total_job_count": 4,
-      "demand_ratio": 0.83
-    },
-    {
-      "stock_code": "7858",
-      "company_short_name": "芝普",
-      "company_full_name": "芝普企業股份有限公司",
-      "market_type": "興櫃",
-      "employee_count": 120,
-      "explicit_need": 1,
+      "stock_code": "9911",
+      "company_short_name": "櫻花",
+      "company_full_name": "台灣櫻花股份有限公司",
+      "market_type": "上市",
+      "employee_count": 950,
+      "explicit_need": 8,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0.83
-    },
-    {
-      "stock_code": "7772",
-      "company_short_name": "耀穎",
-      "company_full_name": "耀穎光電股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 120,
-      "explicit_need": 1,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0.83
+      "total_job_count": 3,
+      "demand_ratio": 0.84
     },
     {
       "stock_code": "8930",
@@ -3559,6 +3571,18 @@
       "demand_ratio": 0.83
     },
     {
+      "stock_code": "7772",
+      "company_short_name": "耀穎",
+      "company_full_name": "耀穎光電股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 120,
+      "explicit_need": 1,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 0.83
+    },
+    {
       "stock_code": "3081",
       "company_short_name": "聯亞",
       "company_full_name": "聯亞光電工業股份有限公司",
@@ -3568,6 +3592,30 @@
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 3,
+      "demand_ratio": 0.83
+    },
+    {
+      "stock_code": "5309",
+      "company_short_name": "系統電",
+      "company_full_name": "系統電子工業股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 600,
+      "explicit_need": 5,
+      "unlimited_job_count": 1,
+      "unspecified_job_count": 0,
+      "total_job_count": 4,
+      "demand_ratio": 0.83
+    },
+    {
+      "stock_code": "7858",
+      "company_short_name": "芝普",
+      "company_full_name": "芝普企業股份有限公司",
+      "market_type": "興櫃",
+      "employee_count": 120,
+      "explicit_need": 1,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
       "demand_ratio": 0.83
     },
     {
@@ -3595,18 +3643,6 @@
       "demand_ratio": 0.81
     },
     {
-      "stock_code": "7837",
-      "company_short_name": "啟新生",
-      "company_full_name": "啟新生物科技股份有限公司",
-      "market_type": "興櫃",
-      "employee_count": 250,
-      "explicit_need": 2,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 2,
-      "demand_ratio": 0.8
-    },
-    {
       "stock_code": "6224",
       "company_short_name": "聚鼎",
       "company_full_name": "聚鼎科技股份有限公司",
@@ -3616,6 +3652,18 @@
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 1,
+      "demand_ratio": 0.8
+    },
+    {
+      "stock_code": "7837",
+      "company_short_name": "啟新生",
+      "company_full_name": "啟新生物科技股份有限公司",
+      "market_type": "興櫃",
+      "employee_count": 250,
+      "explicit_need": 2,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 2,
       "demand_ratio": 0.8
     },
     {
@@ -3697,10 +3745,22 @@
       "market_type": "上市",
       "employee_count": 1700,
       "explicit_need": 13,
-      "unlimited_job_count": 1,
+      "unlimited_job_count": 0,
       "unspecified_job_count": 0,
-      "total_job_count": 6,
+      "total_job_count": 5,
       "demand_ratio": 0.76
+    },
+    {
+      "stock_code": "2006",
+      "company_short_name": "東和鋼鐵",
+      "company_full_name": "東和鋼鐵企業股份有限公司",
+      "market_type": "上市",
+      "employee_count": 2000,
+      "explicit_need": 15,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 9,
+      "demand_ratio": 0.75
     },
     {
       "stock_code": "3311",
@@ -3739,30 +3799,6 @@
       "demand_ratio": 0.75
     },
     {
-      "stock_code": "2006",
-      "company_short_name": "東和鋼鐵",
-      "company_full_name": "東和鋼鐵企業股份有限公司",
-      "market_type": "上市",
-      "employee_count": 2000,
-      "explicit_need": 15,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 9,
-      "demand_ratio": 0.75
-    },
-    {
-      "stock_code": "7718",
-      "company_short_name": "友鋮",
-      "company_full_name": "友鋮股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 135,
-      "explicit_need": 1,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0.74
-    },
-    {
       "stock_code": "3717",
       "company_short_name": "聯嘉投控",
       "company_full_name": "聯嘉光電投資控股股份有限公司",
@@ -3775,15 +3811,15 @@
       "demand_ratio": 0.74
     },
     {
-      "stock_code": "9911",
-      "company_short_name": "櫻花",
-      "company_full_name": "台灣櫻花股份有限公司",
-      "market_type": "上市",
-      "employee_count": 950,
-      "explicit_need": 7,
+      "stock_code": "7718",
+      "company_short_name": "友鋮",
+      "company_full_name": "友鋮股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 135,
+      "explicit_need": 1,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
-      "total_job_count": 2,
+      "total_job_count": 1,
       "demand_ratio": 0.74
     },
     {
@@ -3823,15 +3859,15 @@
       "demand_ratio": 0.71
     },
     {
-      "stock_code": "4169",
-      "company_short_name": "泰宗",
-      "company_full_name": "泰宗生物科技股份有限公司",
+      "stock_code": "1514",
+      "company_short_name": "亞力",
+      "company_full_name": "亞力電機股份有限公司",
       "market_type": "上市",
-      "employee_count": 140,
-      "explicit_need": 1,
+      "employee_count": 700,
+      "explicit_need": 5,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
-      "total_job_count": 1,
+      "total_job_count": 3,
       "demand_ratio": 0.71
     },
     {
@@ -3847,28 +3883,16 @@
       "demand_ratio": 0.71
     },
     {
-      "stock_code": "1514",
-      "company_short_name": "亞力",
-      "company_full_name": "亞力電機股份有限公司",
+      "stock_code": "4169",
+      "company_short_name": "泰宗",
+      "company_full_name": "泰宗生物科技股份有限公司",
       "market_type": "上市",
-      "employee_count": 700,
-      "explicit_need": 5,
+      "employee_count": 140,
+      "explicit_need": 1,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
-      "total_job_count": 3,
+      "total_job_count": 1,
       "demand_ratio": 0.71
-    },
-    {
-      "stock_code": "6261",
-      "company_short_name": "久元",
-      "company_full_name": "久元電子股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 1000,
-      "explicit_need": 7,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 5,
-      "demand_ratio": 0.7
     },
     {
       "stock_code": "2101",
@@ -3880,6 +3904,18 @@
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 2,
+      "demand_ratio": 0.7
+    },
+    {
+      "stock_code": "6261",
+      "company_short_name": "久元",
+      "company_full_name": "久元電子股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 1000,
+      "explicit_need": 7,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 5,
       "demand_ratio": 0.7
     },
     {
@@ -3907,24 +3943,36 @@
       "demand_ratio": 0.69
     },
     {
-      "stock_code": "5245",
-      "company_short_name": "智晶",
-      "company_full_name": "智晶光電股份有限公司",
-      "market_type": "上櫃",
+      "stock_code": "8213",
+      "company_short_name": "志超",
+      "company_full_name": "志超科技股份有限公司",
+      "market_type": "上市",
       "employee_count": 300,
       "explicit_need": 2,
+      "unlimited_job_count": 1,
+      "unspecified_job_count": 0,
+      "total_job_count": 2,
+      "demand_ratio": 0.67
+    },
+    {
+      "stock_code": "9927",
+      "company_short_name": "泰銘",
+      "company_full_name": "泰銘實業股份有限公司",
+      "market_type": "上市",
+      "employee_count": 150,
+      "explicit_need": 1,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 1,
       "demand_ratio": 0.67
     },
     {
-      "stock_code": "3051",
-      "company_short_name": "力特",
-      "company_full_name": "力特光電科技股份有限公司",
-      "market_type": "上市",
-      "employee_count": 600,
-      "explicit_need": 4,
+      "stock_code": "5245",
+      "company_short_name": "智晶",
+      "company_full_name": "智晶光電股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 300,
+      "explicit_need": 2,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 1,
@@ -3943,27 +3991,15 @@
       "demand_ratio": 0.67
     },
     {
-      "stock_code": "9927",
-      "company_short_name": "泰銘",
-      "company_full_name": "泰銘實業股份有限公司",
+      "stock_code": "3051",
+      "company_short_name": "力特",
+      "company_full_name": "力特光電科技股份有限公司",
       "market_type": "上市",
-      "employee_count": 150,
-      "explicit_need": 1,
+      "employee_count": 600,
+      "explicit_need": 4,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 1,
-      "demand_ratio": 0.67
-    },
-    {
-      "stock_code": "8213",
-      "company_short_name": "志超",
-      "company_full_name": "志超科技股份有限公司",
-      "market_type": "上市",
-      "employee_count": 300,
-      "explicit_need": 2,
-      "unlimited_job_count": 1,
-      "unspecified_job_count": 0,
-      "total_job_count": 2,
       "demand_ratio": 0.67
     },
     {
@@ -4015,6 +4051,18 @@
       "demand_ratio": 0.63
     },
     {
+      "stock_code": "2482",
+      "company_short_name": "連宇",
+      "company_full_name": "連宇股份有限公司",
+      "market_type": "上市",
+      "employee_count": 160,
+      "explicit_need": 1,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 0.62
+    },
+    {
       "stock_code": "7443",
       "company_short_name": "凡事康",
       "company_full_name": "凡事康流體科技股份有限公司",
@@ -4039,18 +4087,6 @@
       "demand_ratio": 0.62
     },
     {
-      "stock_code": "2482",
-      "company_short_name": "連宇",
-      "company_full_name": "連宇股份有限公司",
-      "market_type": "上市",
-      "employee_count": 160,
-      "explicit_need": 1,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0.62
-    },
-    {
       "stock_code": "1525",
       "company_short_name": "江申",
       "company_full_name": "江申工業股份有限公司",
@@ -4060,18 +4096,6 @@
       "unlimited_job_count": 1,
       "unspecified_job_count": 0,
       "total_job_count": 3,
-      "demand_ratio": 0.61
-    },
-    {
-      "stock_code": "2020",
-      "company_short_name": "美亞",
-      "company_full_name": "美亞鋼管廠股份有限公司",
-      "market_type": "上市",
-      "employee_count": 330,
-      "explicit_need": 2,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
       "demand_ratio": 0.61
     },
     {
@@ -4087,39 +4111,27 @@
       "demand_ratio": 0.61
     },
     {
-      "stock_code": "3653",
-      "company_short_name": "健策",
-      "company_full_name": "健策精密工業股份有限公司",
+      "stock_code": "2020",
+      "company_short_name": "美亞",
+      "company_full_name": "美亞鋼管廠股份有限公司",
       "market_type": "上市",
-      "employee_count": 2500,
-      "explicit_need": 15,
-      "unlimited_job_count": 1,
-      "unspecified_job_count": 0,
-      "total_job_count": 5,
-      "demand_ratio": 0.6
-    },
-    {
-      "stock_code": "9926",
-      "company_short_name": "新海",
-      "company_full_name": "新海瓦斯股份有限公司",
-      "market_type": "上市",
-      "employee_count": 166,
-      "explicit_need": 1,
+      "employee_count": 330,
+      "explicit_need": 2,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 1,
-      "demand_ratio": 0.6
+      "demand_ratio": 0.61
     },
     {
-      "stock_code": "6206",
-      "company_short_name": "飛捷",
-      "company_full_name": "飛捷科技股份有限公司",
+      "stock_code": "8215",
+      "company_short_name": "明基材",
+      "company_full_name": "明基材料股份有限公司",
       "market_type": "上市",
-      "employee_count": 500,
-      "explicit_need": 3,
+      "employee_count": 3000,
+      "explicit_need": 18,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
-      "total_job_count": 2,
+      "total_job_count": 12,
       "demand_ratio": 0.6
     },
     {
@@ -4135,30 +4147,6 @@
       "demand_ratio": 0.6
     },
     {
-      "stock_code": "6266",
-      "company_short_name": "泰詠",
-      "company_full_name": "泰詠電子股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 500,
-      "explicit_need": 3,
-      "unlimited_job_count": 1,
-      "unspecified_job_count": 0,
-      "total_job_count": 2,
-      "demand_ratio": 0.6
-    },
-    {
-      "stock_code": "8215",
-      "company_short_name": "明基材",
-      "company_full_name": "明基材料股份有限公司",
-      "market_type": "上市",
-      "employee_count": 3000,
-      "explicit_need": 18,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 12,
-      "demand_ratio": 0.6
-    },
-    {
       "stock_code": "2038",
       "company_short_name": "海光",
       "company_full_name": "海光企業股份有限公司",
@@ -4171,16 +4159,52 @@
       "demand_ratio": 0.6
     },
     {
-      "stock_code": "3467",
-      "company_short_name": "台灣精材",
-      "company_full_name": "台灣精材股份有限公司",
+      "stock_code": "6266",
+      "company_short_name": "泰詠",
+      "company_full_name": "泰詠電子股份有限公司",
       "market_type": "上櫃",
-      "employee_count": 170,
+      "employee_count": 500,
+      "explicit_need": 3,
+      "unlimited_job_count": 1,
+      "unspecified_job_count": 0,
+      "total_job_count": 2,
+      "demand_ratio": 0.6
+    },
+    {
+      "stock_code": "3653",
+      "company_short_name": "健策",
+      "company_full_name": "健策精密工業股份有限公司",
+      "market_type": "上市",
+      "employee_count": 2500,
+      "explicit_need": 15,
+      "unlimited_job_count": 1,
+      "unspecified_job_count": 0,
+      "total_job_count": 5,
+      "demand_ratio": 0.6
+    },
+    {
+      "stock_code": "6206",
+      "company_short_name": "飛捷",
+      "company_full_name": "飛捷科技股份有限公司",
+      "market_type": "上市",
+      "employee_count": 500,
+      "explicit_need": 3,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 2,
+      "demand_ratio": 0.6
+    },
+    {
+      "stock_code": "9926",
+      "company_short_name": "新海",
+      "company_full_name": "新海瓦斯股份有限公司",
+      "market_type": "上市",
+      "employee_count": 166,
       "explicit_need": 1,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 1,
-      "demand_ratio": 0.59
+      "demand_ratio": 0.6
     },
     {
       "stock_code": "1527",
@@ -4195,16 +4219,16 @@
       "demand_ratio": 0.59
     },
     {
-      "stock_code": "8358",
-      "company_short_name": "金居",
-      "company_full_name": "金居開發股份有限公司",
+      "stock_code": "3467",
+      "company_short_name": "台灣精材",
+      "company_full_name": "台灣精材股份有限公司",
       "market_type": "上櫃",
-      "employee_count": 345,
-      "explicit_need": 2,
-      "unlimited_job_count": 1,
+      "employee_count": 170,
+      "explicit_need": 1,
+      "unlimited_job_count": 0,
       "unspecified_job_count": 0,
-      "total_job_count": 2,
-      "demand_ratio": 0.58
+      "total_job_count": 1,
+      "demand_ratio": 0.59
     },
     {
       "stock_code": "2420",
@@ -4219,27 +4243,27 @@
       "demand_ratio": 0.58
     },
     {
-      "stock_code": "2436",
-      "company_short_name": "偉詮電",
-      "company_full_name": "偉詮電子股份有限公司",
-      "market_type": "上市",
-      "employee_count": 350,
+      "stock_code": "8358",
+      "company_short_name": "金居",
+      "company_full_name": "金居開發股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 345,
       "explicit_need": 2,
-      "unlimited_job_count": 0,
+      "unlimited_job_count": 1,
       "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0.57
+      "total_job_count": 2,
+      "demand_ratio": 0.58
     },
     {
-      "stock_code": "1305",
-      "company_short_name": "華夏",
-      "company_full_name": "華夏海灣塑膠股份有限公司",
+      "stock_code": "8473",
+      "company_short_name": "山林水",
+      "company_full_name": "山林水環境工程股份有限公司",
       "market_type": "上市",
       "employee_count": 700,
       "explicit_need": 4,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
-      "total_job_count": 1,
+      "total_job_count": 3,
       "demand_ratio": 0.57
     },
     {
@@ -4255,28 +4279,28 @@
       "demand_ratio": 0.57
     },
     {
-      "stock_code": "8473",
-      "company_short_name": "山林水",
-      "company_full_name": "山林水環境工程股份有限公司",
+      "stock_code": "1305",
+      "company_short_name": "華夏",
+      "company_full_name": "華夏海灣塑膠股份有限公司",
       "market_type": "上市",
       "employee_count": 700,
       "explicit_need": 4,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
-      "total_job_count": 3,
+      "total_job_count": 1,
       "demand_ratio": 0.57
     },
     {
-      "stock_code": "6936",
-      "company_short_name": "永鴻生技",
-      "company_full_name": "永鴻國際生技股份有限公司",
+      "stock_code": "2436",
+      "company_short_name": "偉詮電",
+      "company_full_name": "偉詮電子股份有限公司",
       "market_type": "上市",
-      "employee_count": 180,
-      "explicit_need": 1,
+      "employee_count": 350,
+      "explicit_need": 2,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 1,
-      "demand_ratio": 0.56
+      "demand_ratio": 0.57
     },
     {
       "stock_code": "6515",
@@ -4288,6 +4312,18 @@
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 4,
+      "demand_ratio": 0.56
+    },
+    {
+      "stock_code": "6936",
+      "company_short_name": "永鴻生技",
+      "company_full_name": "永鴻國際生技股份有限公司",
+      "market_type": "上市",
+      "employee_count": 180,
+      "explicit_need": 1,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
       "demand_ratio": 0.56
     },
     {
@@ -4351,18 +4387,6 @@
       "demand_ratio": 0.54
     },
     {
-      "stock_code": "2316",
-      "company_short_name": "楠梓電",
-      "company_full_name": "楠梓電子股份有限公司",
-      "market_type": "上市",
-      "employee_count": 1500,
-      "explicit_need": 8,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 2,
-      "demand_ratio": 0.53
-    },
-    {
       "stock_code": "2059",
       "company_short_name": "川湖",
       "company_full_name": "川湖科技股份有限公司",
@@ -4387,54 +4411,6 @@
       "demand_ratio": 0.51
     },
     {
-      "stock_code": "6417",
-      "company_short_name": "韋僑",
-      "company_full_name": "韋僑科技股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 400,
-      "explicit_need": 2,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0.5
-    },
-    {
-      "stock_code": "6434",
-      "company_short_name": "達輝光電",
-      "company_full_name": "達輝光電股份有限公司",
-      "market_type": "興櫃",
-      "employee_count": 200,
-      "explicit_need": 1,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0.5
-    },
-    {
-      "stock_code": "1717",
-      "company_short_name": "長興",
-      "company_full_name": "長興材料工業股份有限公司",
-      "market_type": "上市",
-      "employee_count": 2000,
-      "explicit_need": 10,
-      "unlimited_job_count": 1,
-      "unspecified_job_count": 0,
-      "total_job_count": 3,
-      "demand_ratio": 0.5
-    },
-    {
-      "stock_code": "1718",
-      "company_short_name": "中纖",
-      "company_full_name": "中國人造纖維股份有限公司",
-      "market_type": "上市",
-      "employee_count": 600,
-      "explicit_need": 3,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 3,
-      "demand_ratio": 0.5
-    },
-    {
       "stock_code": "1219",
       "company_short_name": "福壽",
       "company_full_name": "福壽實業股份有限公司",
@@ -4444,6 +4420,30 @@
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 3,
+      "demand_ratio": 0.5
+    },
+    {
+      "stock_code": "9938",
+      "company_short_name": "百和",
+      "company_full_name": "台灣百和工業股份有限公司",
+      "market_type": "上市",
+      "employee_count": 800,
+      "explicit_need": 4,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 2,
+      "demand_ratio": 0.5
+    },
+    {
+      "stock_code": "6195",
+      "company_short_name": "詩肯",
+      "company_full_name": "詩肯股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 400,
+      "explicit_need": 2,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
       "demand_ratio": 0.5
     },
     {
@@ -4459,27 +4459,27 @@
       "demand_ratio": 0.5
     },
     {
-      "stock_code": "5425",
-      "company_short_name": "台半",
-      "company_full_name": "台灣半導體股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 2000,
-      "explicit_need": 10,
-      "unlimited_job_count": 2,
-      "unspecified_job_count": 0,
-      "total_job_count": 3,
-      "demand_ratio": 0.5
-    },
-    {
-      "stock_code": "7840",
-      "company_short_name": "祥圃",
-      "company_full_name": "祥圃實業股份有限公司",
-      "market_type": "興櫃",
-      "employee_count": 200,
-      "explicit_need": 1,
+      "stock_code": "6928",
+      "company_short_name": "攸泰科技",
+      "company_full_name": "攸泰科技股份有限公司",
+      "market_type": "上市",
+      "employee_count": 400,
+      "explicit_need": 2,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 1,
+      "demand_ratio": 0.5
+    },
+    {
+      "stock_code": "1718",
+      "company_short_name": "中纖",
+      "company_full_name": "中國人造纖維股份有限公司",
+      "market_type": "上市",
+      "employee_count": 600,
+      "explicit_need": 3,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 3,
       "demand_ratio": 0.5
     },
     {
@@ -4507,21 +4507,9 @@
       "demand_ratio": 0.5
     },
     {
-      "stock_code": "6928",
-      "company_short_name": "攸泰科技",
-      "company_full_name": "攸泰科技股份有限公司",
-      "market_type": "上市",
-      "employee_count": 400,
-      "explicit_need": 2,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0.5
-    },
-    {
-      "stock_code": "6195",
-      "company_short_name": "詩肯",
-      "company_full_name": "詩肯股份有限公司",
+      "stock_code": "6417",
+      "company_short_name": "韋僑",
+      "company_full_name": "韋僑科技股份有限公司",
       "market_type": "上櫃",
       "employee_count": 400,
       "explicit_need": 2,
@@ -4531,27 +4519,27 @@
       "demand_ratio": 0.5
     },
     {
-      "stock_code": "4566",
-      "company_short_name": "時碩工業",
-      "company_full_name": "時碩工業股份有限公司",
+      "stock_code": "1717",
+      "company_short_name": "長興",
+      "company_full_name": "長興材料工業股份有限公司",
       "market_type": "上市",
-      "employee_count": 400,
-      "explicit_need": 2,
-      "unlimited_job_count": 0,
+      "employee_count": 2000,
+      "explicit_need": 10,
+      "unlimited_job_count": 1,
       "unspecified_job_count": 0,
-      "total_job_count": 1,
+      "total_job_count": 3,
       "demand_ratio": 0.5
     },
     {
-      "stock_code": "4739",
-      "company_short_name": "康普",
-      "company_full_name": "康普材料科技股份有限公司",
-      "market_type": "上市",
-      "employee_count": 200,
-      "explicit_need": 1,
-      "unlimited_job_count": 0,
+      "stock_code": "5425",
+      "company_short_name": "台半",
+      "company_full_name": "台灣半導體股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 2000,
+      "explicit_need": 10,
+      "unlimited_job_count": 2,
       "unspecified_job_count": 0,
-      "total_job_count": 1,
+      "total_job_count": 3,
       "demand_ratio": 0.5
     },
     {
@@ -4567,28 +4555,28 @@
       "demand_ratio": 0.5
     },
     {
-      "stock_code": "9938",
-      "company_short_name": "百和",
-      "company_full_name": "台灣百和工業股份有限公司",
-      "market_type": "上市",
-      "employee_count": 800,
-      "explicit_need": 4,
+      "stock_code": "6434",
+      "company_short_name": "達輝光電",
+      "company_full_name": "達輝光電股份有限公司",
+      "market_type": "興櫃",
+      "employee_count": 200,
+      "explicit_need": 1,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
-      "total_job_count": 2,
+      "total_job_count": 1,
       "demand_ratio": 0.5
     },
     {
-      "stock_code": "1402",
-      "company_short_name": "遠東新",
-      "company_full_name": "遠東新世紀股份有限公司",
-      "market_type": "上市",
-      "employee_count": 4800,
-      "explicit_need": 23,
-      "unlimited_job_count": 1,
+      "stock_code": "7840",
+      "company_short_name": "祥圃",
+      "company_full_name": "祥圃實業股份有限公司",
+      "market_type": "興櫃",
+      "employee_count": 200,
+      "explicit_need": 1,
+      "unlimited_job_count": 0,
       "unspecified_job_count": 0,
-      "total_job_count": 3,
-      "demand_ratio": 0.48
+      "total_job_count": 1,
+      "demand_ratio": 0.5
     },
     {
       "stock_code": "4570",
@@ -4624,6 +4612,18 @@
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 1,
+      "demand_ratio": 0.48
+    },
+    {
+      "stock_code": "1402",
+      "company_short_name": "遠東新",
+      "company_full_name": "遠東新世紀股份有限公司",
+      "market_type": "上市",
+      "employee_count": 4800,
+      "explicit_need": 23,
+      "unlimited_job_count": 1,
+      "unspecified_job_count": 0,
+      "total_job_count": 3,
       "demand_ratio": 0.48
     },
     {
@@ -4663,10 +4663,10 @@
       "demand_ratio": 0.46
     },
     {
-      "stock_code": "3663",
-      "company_short_name": "鑫科",
-      "company_full_name": "鑫科材料科技股份有限公司",
-      "market_type": "上櫃",
+      "stock_code": "6426",
+      "company_short_name": "統新",
+      "company_full_name": "統新光訊股份有限公司",
+      "market_type": "上市",
       "employee_count": 220,
       "explicit_need": 1,
       "unlimited_job_count": 0,
@@ -4687,10 +4687,10 @@
       "demand_ratio": 0.45
     },
     {
-      "stock_code": "6426",
-      "company_short_name": "統新",
-      "company_full_name": "統新光訊股份有限公司",
-      "market_type": "上市",
+      "stock_code": "3663",
+      "company_short_name": "鑫科",
+      "company_full_name": "鑫科材料科技股份有限公司",
+      "market_type": "上櫃",
       "employee_count": 220,
       "explicit_need": 1,
       "unlimited_job_count": 0,
@@ -4708,6 +4708,18 @@
       "unlimited_job_count": 2,
       "unspecified_job_count": 0,
       "total_job_count": 3,
+      "demand_ratio": 0.45
+    },
+    {
+      "stock_code": "5344",
+      "company_short_name": "立衛",
+      "company_full_name": "立衛科技股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 220,
+      "explicit_need": 1,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
       "demand_ratio": 0.45
     },
     {
@@ -4733,54 +4745,6 @@
       "unspecified_job_count": 0,
       "total_job_count": 3,
       "demand_ratio": 0.44
-    },
-    {
-      "stock_code": "1731",
-      "company_short_name": "美吾華",
-      "company_full_name": "美吾華股份有限公司",
-      "market_type": "上市",
-      "employee_count": 230,
-      "explicit_need": 1,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0.43
-    },
-    {
-      "stock_code": "2369",
-      "company_short_name": "菱生",
-      "company_full_name": "菱生精密工業股份有限公司",
-      "market_type": "上市",
-      "employee_count": 2300,
-      "explicit_need": 10,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0.43
-    },
-    {
-      "stock_code": "6160",
-      "company_short_name": "欣技",
-      "company_full_name": "欣技資訊股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 230,
-      "explicit_need": 1,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0.43
-    },
-    {
-      "stock_code": "1733",
-      "company_short_name": "五鼎",
-      "company_full_name": "五鼎生物技術股份有限公司",
-      "market_type": "上市",
-      "employee_count": 700,
-      "explicit_need": 3,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 2,
-      "demand_ratio": 0.43
     },
     {
       "stock_code": "4583",
@@ -4819,16 +4783,52 @@
       "demand_ratio": 0.43
     },
     {
-      "stock_code": "3095",
-      "company_short_name": "及成",
-      "company_full_name": "及成企業股份有限公司",
+      "stock_code": "6160",
+      "company_short_name": "欣技",
+      "company_full_name": "欣技資訊股份有限公司",
       "market_type": "上櫃",
-      "employee_count": 240,
+      "employee_count": 230,
       "explicit_need": 1,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 1,
-      "demand_ratio": 0.42
+      "demand_ratio": 0.43
+    },
+    {
+      "stock_code": "2369",
+      "company_short_name": "菱生",
+      "company_full_name": "菱生精密工業股份有限公司",
+      "market_type": "上市",
+      "employee_count": 2300,
+      "explicit_need": 10,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 0.43
+    },
+    {
+      "stock_code": "1733",
+      "company_short_name": "五鼎",
+      "company_full_name": "五鼎生物技術股份有限公司",
+      "market_type": "上市",
+      "employee_count": 700,
+      "explicit_need": 3,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 2,
+      "demand_ratio": 0.43
+    },
+    {
+      "stock_code": "1731",
+      "company_short_name": "美吾華",
+      "company_full_name": "美吾華股份有限公司",
+      "market_type": "上市",
+      "employee_count": 230,
+      "explicit_need": 1,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 0.43
     },
     {
       "stock_code": "1905",
@@ -4843,6 +4843,30 @@
       "demand_ratio": 0.42
     },
     {
+      "stock_code": "3095",
+      "company_short_name": "及成",
+      "company_full_name": "及成企業股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 240,
+      "explicit_need": 1,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 0.42
+    },
+    {
+      "stock_code": "1210",
+      "company_short_name": "大成",
+      "company_full_name": "大成長城企業股份有限公司",
+      "market_type": "上市",
+      "employee_count": 2900,
+      "explicit_need": 12,
+      "unlimited_job_count": 8,
+      "unspecified_job_count": 0,
+      "total_job_count": 10,
+      "demand_ratio": 0.41
+    },
+    {
       "stock_code": "5007",
       "company_short_name": "三星",
       "company_full_name": "三星科技股份有限公司",
@@ -4855,22 +4879,10 @@
       "demand_ratio": 0.41
     },
     {
-      "stock_code": "8481",
-      "company_short_name": "政伸",
-      "company_full_name": "政伸企業股份有限公司",
-      "market_type": "上市",
-      "employee_count": 250,
-      "explicit_need": 1,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0.4
-    },
-    {
-      "stock_code": "2029",
-      "company_short_name": "盛餘",
-      "company_full_name": "盛餘股份有限公司",
-      "market_type": "上市",
+      "stock_code": "4729",
+      "company_short_name": "熒茂",
+      "company_full_name": "熒茂光學股份有限公司",
+      "market_type": "上櫃",
       "employee_count": 500,
       "explicit_need": 2,
       "unlimited_job_count": 0,
@@ -4891,27 +4903,15 @@
       "demand_ratio": 0.4
     },
     {
-      "stock_code": "3209",
-      "company_short_name": "全科",
-      "company_full_name": "全科科技股份有限公司",
+      "stock_code": "3023",
+      "company_short_name": "信邦",
+      "company_full_name": "信邦電子股份有限公司",
       "market_type": "上市",
-      "employee_count": 250,
-      "explicit_need": 1,
+      "employee_count": 6000,
+      "explicit_need": 24,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0.4
-    },
-    {
-      "stock_code": "4729",
-      "company_short_name": "熒茂",
-      "company_full_name": "熒茂光學股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 500,
-      "explicit_need": 2,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
+      "total_job_count": 5,
       "demand_ratio": 0.4
     },
     {
@@ -4927,12 +4927,60 @@
       "demand_ratio": 0.4
     },
     {
+      "stock_code": "2029",
+      "company_short_name": "盛餘",
+      "company_full_name": "盛餘股份有限公司",
+      "market_type": "上市",
+      "employee_count": 500,
+      "explicit_need": 2,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 0.4
+    },
+    {
       "stock_code": "3207",
       "company_short_name": "耀勝",
       "company_full_name": "耀勝電子股份有限公司",
       "market_type": "上櫃",
       "employee_count": 500,
       "explicit_need": 2,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 0.4
+    },
+    {
+      "stock_code": "6753",
+      "company_short_name": "龍德造船",
+      "company_full_name": "龍德造船工業股份有限公司",
+      "market_type": "上市",
+      "employee_count": 750,
+      "explicit_need": 3,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 0.4
+    },
+    {
+      "stock_code": "8210",
+      "company_short_name": "勤誠",
+      "company_full_name": "勤誠興業股份有限公司",
+      "market_type": "上市",
+      "employee_count": 2000,
+      "explicit_need": 8,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 7,
+      "demand_ratio": 0.4
+    },
+    {
+      "stock_code": "8481",
+      "company_short_name": "政伸",
+      "company_full_name": "政伸企業股份有限公司",
+      "market_type": "上市",
+      "employee_count": 250,
+      "explicit_need": 1,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 1,
@@ -4963,64 +5011,16 @@
       "demand_ratio": 0.4
     },
     {
-      "stock_code": "6753",
-      "company_short_name": "龍德造船",
-      "company_full_name": "龍德造船工業股份有限公司",
+      "stock_code": "3209",
+      "company_short_name": "全科",
+      "company_full_name": "全科科技股份有限公司",
       "market_type": "上市",
-      "employee_count": 750,
-      "explicit_need": 3,
+      "employee_count": 250,
+      "explicit_need": 1,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 1,
       "demand_ratio": 0.4
-    },
-    {
-      "stock_code": "3023",
-      "company_short_name": "信邦",
-      "company_full_name": "信邦電子股份有限公司",
-      "market_type": "上市",
-      "employee_count": 6000,
-      "explicit_need": 24,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 5,
-      "demand_ratio": 0.4
-    },
-    {
-      "stock_code": "8210",
-      "company_short_name": "勤誠",
-      "company_full_name": "勤誠興業股份有限公司",
-      "market_type": "上市",
-      "employee_count": 2000,
-      "explicit_need": 8,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 7,
-      "demand_ratio": 0.4
-    },
-    {
-      "stock_code": "1608",
-      "company_short_name": "華榮",
-      "company_full_name": "華榮電線電纜股份有限公司",
-      "market_type": "上市",
-      "employee_count": 519,
-      "explicit_need": 2,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 2,
-      "demand_ratio": 0.39
-    },
-    {
-      "stock_code": "2106",
-      "company_short_name": "建大",
-      "company_full_name": "建大工業股份有限公司",
-      "market_type": "上市",
-      "employee_count": 1800,
-      "explicit_need": 7,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 2,
-      "demand_ratio": 0.39
     },
     {
       "stock_code": "2014",
@@ -5032,6 +5032,18 @@
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 1,
+      "demand_ratio": 0.39
+    },
+    {
+      "stock_code": "1608",
+      "company_short_name": "華榮",
+      "company_full_name": "華榮電線電纜股份有限公司",
+      "market_type": "上市",
+      "employee_count": 519,
+      "explicit_need": 2,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 2,
       "demand_ratio": 0.39
     },
     {
@@ -5047,27 +5059,27 @@
       "demand_ratio": 0.39
     },
     {
-      "stock_code": "9950",
-      "company_short_name": "萬國通",
-      "company_full_name": "萬國通路股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 800,
-      "explicit_need": 3,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0.38
-    },
-    {
-      "stock_code": "6117",
-      "company_short_name": "迎廣",
-      "company_full_name": "迎廣科技股份有限公司",
+      "stock_code": "2106",
+      "company_short_name": "建大",
+      "company_full_name": "建大工業股份有限公司",
       "market_type": "上市",
-      "employee_count": 800,
-      "explicit_need": 3,
+      "employee_count": 1800,
+      "explicit_need": 7,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 2,
+      "demand_ratio": 0.39
+    },
+    {
+      "stock_code": "6147",
+      "company_short_name": "頎邦",
+      "company_full_name": "頎邦科技股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 5200,
+      "explicit_need": 20,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
       "demand_ratio": 0.38
     },
     {
@@ -5083,15 +5095,15 @@
       "demand_ratio": 0.38
     },
     {
-      "stock_code": "6604",
-      "company_short_name": "儒億",
-      "company_full_name": "儒億科技股份有限公司",
-      "market_type": "興櫃",
-      "employee_count": 520,
-      "explicit_need": 2,
+      "stock_code": "9950",
+      "company_short_name": "萬國通",
+      "company_full_name": "萬國通路股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 800,
+      "explicit_need": 3,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
-      "total_job_count": 2,
+      "total_job_count": 1,
       "demand_ratio": 0.38
     },
     {
@@ -5119,6 +5131,18 @@
       "demand_ratio": 0.38
     },
     {
+      "stock_code": "6604",
+      "company_short_name": "儒億",
+      "company_full_name": "儒億科技股份有限公司",
+      "market_type": "興櫃",
+      "employee_count": 520,
+      "explicit_need": 2,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 2,
+      "demand_ratio": 0.38
+    },
+    {
       "stock_code": "4126",
       "company_short_name": "太醫",
       "company_full_name": "太平洋醫材股份有限公司",
@@ -5131,22 +5155,22 @@
       "demand_ratio": 0.38
     },
     {
-      "stock_code": "6147",
-      "company_short_name": "頎邦",
-      "company_full_name": "頎邦科技股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 5200,
-      "explicit_need": 20,
+      "stock_code": "6117",
+      "company_short_name": "迎廣",
+      "company_full_name": "迎廣科技股份有限公司",
+      "market_type": "上市",
+      "employee_count": 800,
+      "explicit_need": 3,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
-      "total_job_count": 1,
+      "total_job_count": 2,
       "demand_ratio": 0.38
     },
     {
-      "stock_code": "1727",
-      "company_short_name": "中華化",
-      "company_full_name": "臺灣中華化學工業股份有限公司",
-      "market_type": "上市",
+      "stock_code": "6174",
+      "company_short_name": "安碁",
+      "company_full_name": "安碁科技股份有限公司",
+      "market_type": "上櫃",
       "employee_count": 270,
       "explicit_need": 1,
       "unlimited_job_count": 0,
@@ -5155,10 +5179,10 @@
       "demand_ratio": 0.37
     },
     {
-      "stock_code": "6174",
-      "company_short_name": "安碁",
-      "company_full_name": "安碁科技股份有限公司",
-      "market_type": "上櫃",
+      "stock_code": "1727",
+      "company_short_name": "中華化",
+      "company_full_name": "臺灣中華化學工業股份有限公司",
+      "market_type": "上市",
       "employee_count": 270,
       "explicit_need": 1,
       "unlimited_job_count": 0,
@@ -5191,59 +5215,11 @@
       "demand_ratio": 0.35
     },
     {
-      "stock_code": "1260",
-      "company_short_name": "富味鄉",
-      "company_full_name": "富味鄉食品股份有限公司",
-      "market_type": "興櫃",
-      "employee_count": 590,
-      "explicit_need": 2,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 2,
-      "demand_ratio": 0.34
-    },
-    {
       "stock_code": "5905",
       "company_short_name": "南仁湖",
       "company_full_name": "南仁湖育樂股份有限公司",
       "market_type": "上櫃",
       "employee_count": 295,
-      "explicit_need": 1,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0.34
-    },
-    {
-      "stock_code": "5016",
-      "company_short_name": "松和",
-      "company_full_name": "松和工業股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 290,
-      "explicit_need": 1,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0.34
-    },
-    {
-      "stock_code": "8058",
-      "company_short_name": "耐特",
-      "company_full_name": "耐特科技材料股份有限公司",
-      "market_type": "興櫃",
-      "employee_count": 295,
-      "explicit_need": 1,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0.34
-    },
-    {
-      "stock_code": "2065",
-      "company_short_name": "世豐",
-      "company_full_name": "世豐螺絲股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 290,
       "explicit_need": 1,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
@@ -5263,6 +5239,54 @@
       "demand_ratio": 0.34
     },
     {
+      "stock_code": "8058",
+      "company_short_name": "耐特",
+      "company_full_name": "耐特科技材料股份有限公司",
+      "market_type": "興櫃",
+      "employee_count": 295,
+      "explicit_need": 1,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 0.34
+    },
+    {
+      "stock_code": "1260",
+      "company_short_name": "富味鄉",
+      "company_full_name": "富味鄉食品股份有限公司",
+      "market_type": "興櫃",
+      "employee_count": 590,
+      "explicit_need": 2,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 2,
+      "demand_ratio": 0.34
+    },
+    {
+      "stock_code": "5016",
+      "company_short_name": "松和",
+      "company_full_name": "松和工業股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 290,
+      "explicit_need": 1,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 0.34
+    },
+    {
+      "stock_code": "2065",
+      "company_short_name": "世豐",
+      "company_full_name": "世豐螺絲股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 290,
+      "explicit_need": 1,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 0.34
+    },
+    {
       "stock_code": "3332",
       "company_short_name": "幸康",
       "company_full_name": "幸康電子股份有限公司",
@@ -5273,6 +5297,42 @@
       "unspecified_job_count": 0,
       "total_job_count": 1,
       "demand_ratio": 0.34
+    },
+    {
+      "stock_code": "8933",
+      "company_short_name": "愛地雅",
+      "company_full_name": "愛地雅工業股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 300,
+      "explicit_need": 1,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 0.33
+    },
+    {
+      "stock_code": "6166",
+      "company_short_name": "凌華",
+      "company_full_name": "凌華科技股份有限公司",
+      "market_type": "上市",
+      "employee_count": 1800,
+      "explicit_need": 6,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 3,
+      "demand_ratio": 0.33
+    },
+    {
+      "stock_code": "8069",
+      "company_short_name": "元太",
+      "company_full_name": "元太科技工業股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 900,
+      "explicit_need": 3,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 0.33
     },
     {
       "stock_code": "2063",
@@ -5287,9 +5347,21 @@
       "demand_ratio": 0.33
     },
     {
-      "stock_code": "8933",
-      "company_short_name": "愛地雅",
-      "company_full_name": "愛地雅工業股份有限公司",
+      "stock_code": "6182",
+      "company_short_name": "合晶",
+      "company_full_name": "合晶科技股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 1500,
+      "explicit_need": 5,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 2,
+      "demand_ratio": 0.33
+    },
+    {
+      "stock_code": "3597",
+      "company_short_name": "映興",
+      "company_full_name": "映興電子股份有限公司",
       "market_type": "上櫃",
       "employee_count": 300,
       "explicit_need": 1,
@@ -5323,54 +5395,6 @@
       "demand_ratio": 0.33
     },
     {
-      "stock_code": "6166",
-      "company_short_name": "凌華",
-      "company_full_name": "凌華科技股份有限公司",
-      "market_type": "上市",
-      "employee_count": 1800,
-      "explicit_need": 6,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 3,
-      "demand_ratio": 0.33
-    },
-    {
-      "stock_code": "3597",
-      "company_short_name": "映興",
-      "company_full_name": "映興電子股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 300,
-      "explicit_need": 1,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0.33
-    },
-    {
-      "stock_code": "8069",
-      "company_short_name": "元太",
-      "company_full_name": "元太科技工業股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 900,
-      "explicit_need": 3,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0.33
-    },
-    {
-      "stock_code": "6182",
-      "company_short_name": "合晶",
-      "company_full_name": "合晶科技股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 1500,
-      "explicit_need": 5,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 2,
-      "demand_ratio": 0.33
-    },
-    {
       "stock_code": "2492",
       "company_short_name": "華新科",
       "company_full_name": "華新科技股份有限公司",
@@ -5383,54 +5407,6 @@
       "demand_ratio": 0.32
     },
     {
-      "stock_code": "8114",
-      "company_short_name": "振樺電",
-      "company_full_name": "振樺電子股份有限公司",
-      "market_type": "上市",
-      "employee_count": 323,
-      "explicit_need": 1,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0.31
-    },
-    {
-      "stock_code": "3680",
-      "company_short_name": "家登",
-      "company_full_name": "家登精密工業股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 1300,
-      "explicit_need": 4,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 2,
-      "demand_ratio": 0.31
-    },
-    {
-      "stock_code": "1216",
-      "company_short_name": "統一",
-      "company_full_name": "統一企業股份有限公司",
-      "market_type": "上市",
-      "employee_count": 5400,
-      "explicit_need": 17,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 10,
-      "demand_ratio": 0.31
-    },
-    {
-      "stock_code": "6609",
-      "company_short_name": "瀧澤科",
-      "company_full_name": "台灣瀧澤科技股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 320,
-      "explicit_need": 1,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0.31
-    },
-    {
       "stock_code": "6728",
       "company_short_name": "上洋",
       "company_full_name": "上洋產業股份有限公司",
@@ -5440,6 +5416,18 @@
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 2,
+      "demand_ratio": 0.31
+    },
+    {
+      "stock_code": "6859",
+      "company_short_name": "伯特光",
+      "company_full_name": "伯特光電股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 320,
+      "explicit_need": 1,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
       "demand_ratio": 0.31
     },
     {
@@ -5455,11 +5443,47 @@
       "demand_ratio": 0.31
     },
     {
-      "stock_code": "6859",
-      "company_short_name": "伯特光",
-      "company_full_name": "伯特光電股份有限公司",
+      "stock_code": "3680",
+      "company_short_name": "家登",
+      "company_full_name": "家登精密工業股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 1300,
+      "explicit_need": 4,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 2,
+      "demand_ratio": 0.31
+    },
+    {
+      "stock_code": "6609",
+      "company_short_name": "瀧澤科",
+      "company_full_name": "台灣瀧澤科技股份有限公司",
       "market_type": "上櫃",
       "employee_count": 320,
+      "explicit_need": 1,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 0.31
+    },
+    {
+      "stock_code": "1216",
+      "company_short_name": "統一",
+      "company_full_name": "統一企業股份有限公司",
+      "market_type": "上市",
+      "employee_count": 5400,
+      "explicit_need": 17,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 10,
+      "demand_ratio": 0.31
+    },
+    {
+      "stock_code": "8114",
+      "company_short_name": "振樺電",
+      "company_full_name": "振樺電子股份有限公司",
+      "market_type": "上市",
+      "employee_count": 323,
       "explicit_need": 1,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
@@ -5515,11 +5539,11 @@
       "demand_ratio": 0.3
     },
     {
-      "stock_code": "1315",
-      "company_short_name": "達新",
-      "company_full_name": "達新工業股份有限公司",
+      "stock_code": "1229",
+      "company_short_name": "聯華",
+      "company_full_name": "聯華實業控股股份有限公司",
       "market_type": "上市",
-      "employee_count": 350,
+      "employee_count": 348,
       "explicit_need": 1,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
@@ -5527,21 +5551,21 @@
       "demand_ratio": 0.29
     },
     {
-      "stock_code": "3015",
-      "company_short_name": "全漢",
-      "company_full_name": "全漢企業股份有限公司",
+      "stock_code": "3406",
+      "company_short_name": "玉晶光",
+      "company_full_name": "玉晶光電股份有限公司",
       "market_type": "上市",
-      "employee_count": 700,
-      "explicit_need": 2,
+      "employee_count": 8000,
+      "explicit_need": 23,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
-      "total_job_count": 1,
+      "total_job_count": 3,
       "demand_ratio": 0.29
     },
     {
-      "stock_code": "8478",
-      "company_short_name": "東哥遊艇",
-      "company_full_name": "東哥企業股份有限公司",
+      "stock_code": "3015",
+      "company_short_name": "全漢",
+      "company_full_name": "全漢企業股份有限公司",
       "market_type": "上市",
       "employee_count": 700,
       "explicit_need": 2,
@@ -5563,12 +5587,24 @@
       "demand_ratio": 0.29
     },
     {
-      "stock_code": "1229",
-      "company_short_name": "聯華",
-      "company_full_name": "聯華實業控股股份有限公司",
+      "stock_code": "1315",
+      "company_short_name": "達新",
+      "company_full_name": "達新工業股份有限公司",
       "market_type": "上市",
-      "employee_count": 348,
+      "employee_count": 350,
       "explicit_need": 1,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 0.29
+    },
+    {
+      "stock_code": "1726",
+      "company_short_name": "永記",
+      "company_full_name": "永記造漆工業股份有限公司",
+      "market_type": "上市",
+      "employee_count": 690,
+      "explicit_need": 2,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 1,
@@ -5587,28 +5623,16 @@
       "demand_ratio": 0.29
     },
     {
-      "stock_code": "1726",
-      "company_short_name": "永記",
-      "company_full_name": "永記造漆工業股份有限公司",
+      "stock_code": "8478",
+      "company_short_name": "東哥遊艇",
+      "company_full_name": "東哥企業股份有限公司",
       "market_type": "上市",
-      "employee_count": 690,
+      "employee_count": 700,
       "explicit_need": 2,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 1,
       "demand_ratio": 0.29
-    },
-    {
-      "stock_code": "9103",
-      "company_short_name": "美德醫療-DR",
-      "company_full_name": "美德向邦醫療國際股份有限公司",
-      "market_type": "上市",
-      "employee_count": 5000,
-      "explicit_need": 14,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 6,
-      "demand_ratio": 0.28
     },
     {
       "stock_code": "6285",
@@ -5620,6 +5644,18 @@
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 9,
+      "demand_ratio": 0.28
+    },
+    {
+      "stock_code": "9103",
+      "company_short_name": "美德醫療-DR",
+      "company_full_name": "美德向邦醫療國際股份有限公司",
+      "market_type": "上市",
+      "employee_count": 5000,
+      "explicit_need": 14,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 6,
       "demand_ratio": 0.28
     },
     {
@@ -5647,18 +5683,6 @@
       "demand_ratio": 0.27
     },
     {
-      "stock_code": "2481",
-      "company_short_name": "強茂",
-      "company_full_name": "強茂股份有限公司",
-      "market_type": "上市",
-      "employee_count": 3500,
-      "explicit_need": 9,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 3,
-      "demand_ratio": 0.26
-    },
-    {
       "stock_code": "2302",
       "company_short_name": "麗正",
       "company_full_name": "麗正國際科技股份有限公司",
@@ -5683,27 +5707,39 @@
       "demand_ratio": 0.26
     },
     {
-      "stock_code": "6510",
-      "company_short_name": "精測",
-      "company_full_name": "中華精測科技股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 1200,
-      "explicit_need": 3,
+      "stock_code": "2481",
+      "company_short_name": "強茂",
+      "company_full_name": "強茂股份有限公司",
+      "market_type": "上市",
+      "employee_count": 3500,
+      "explicit_need": 9,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
-      "total_job_count": 2,
+      "total_job_count": 3,
+      "demand_ratio": 0.26
+    },
+    {
+      "stock_code": "7909",
+      "company_short_name": "鈺祥",
+      "company_full_name": "鈺祥企業股份有限公司",
+      "market_type": "興櫃",
+      "employee_count": 400,
+      "explicit_need": 1,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
       "demand_ratio": 0.25
     },
     {
-      "stock_code": "1503",
-      "company_short_name": "士電",
-      "company_full_name": "士林電機廠股份有限公司",
+      "stock_code": "3022",
+      "company_short_name": "威強電",
+      "company_full_name": "威強電工業電腦股份有限公司",
       "market_type": "上市",
-      "employee_count": 4000,
-      "explicit_need": 10,
+      "employee_count": 400,
+      "explicit_need": 1,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
-      "total_job_count": 2,
+      "total_job_count": 1,
       "demand_ratio": 0.25
     },
     {
@@ -5731,15 +5767,15 @@
       "demand_ratio": 0.25
     },
     {
-      "stock_code": "7909",
-      "company_short_name": "鈺祥",
-      "company_full_name": "鈺祥企業股份有限公司",
-      "market_type": "興櫃",
-      "employee_count": 400,
-      "explicit_need": 1,
+      "stock_code": "6510",
+      "company_short_name": "精測",
+      "company_full_name": "中華精測科技股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 1200,
+      "explicit_need": 3,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
-      "total_job_count": 1,
+      "total_job_count": 2,
       "demand_ratio": 0.25
     },
     {
@@ -5755,28 +5791,16 @@
       "demand_ratio": 0.25
     },
     {
-      "stock_code": "3022",
-      "company_short_name": "威強電",
-      "company_full_name": "威強電工業電腦股份有限公司",
+      "stock_code": "1503",
+      "company_short_name": "士電",
+      "company_full_name": "士林電機廠股份有限公司",
       "market_type": "上市",
-      "employee_count": 400,
-      "explicit_need": 1,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0.25
-    },
-    {
-      "stock_code": "2105",
-      "company_short_name": "正新",
-      "company_full_name": "正新橡膠工業股份有限公司",
-      "market_type": "上市",
-      "employee_count": 4200,
+      "employee_count": 4000,
       "explicit_need": 10,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
-      "total_job_count": 7,
-      "demand_ratio": 0.24
+      "total_job_count": 2,
+      "demand_ratio": 0.25
     },
     {
       "stock_code": "8936",
@@ -5788,6 +5812,18 @@
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 1,
+      "demand_ratio": 0.24
+    },
+    {
+      "stock_code": "2105",
+      "company_short_name": "正新",
+      "company_full_name": "正新橡膠工業股份有限公司",
+      "market_type": "上市",
+      "employee_count": 4200,
+      "explicit_need": 10,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 7,
       "demand_ratio": 0.24
     },
     {
@@ -5839,18 +5875,6 @@
       "demand_ratio": 0.22
     },
     {
-      "stock_code": "6933",
-      "company_short_name": "AMAX-KY",
-      "company_full_name": "艾瑪斯科技控股股份有限公司",
-      "market_type": "上市",
-      "employee_count": 450,
-      "explicit_need": 1,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0.22
-    },
-    {
       "stock_code": "4107",
       "company_short_name": "邦特",
       "company_full_name": "邦特生物科技股份有限公司",
@@ -5899,16 +5923,16 @@
       "demand_ratio": 0.22
     },
     {
-      "stock_code": "8039",
-      "company_short_name": "台虹",
-      "company_full_name": "台虹科技股份有限公司",
+      "stock_code": "6933",
+      "company_short_name": "AMAX-KY",
+      "company_full_name": "艾瑪斯科技控股股份有限公司",
       "market_type": "上市",
-      "employee_count": 964,
-      "explicit_need": 2,
-      "unlimited_job_count": 2,
+      "employee_count": 450,
+      "explicit_need": 1,
+      "unlimited_job_count": 0,
       "unspecified_job_count": 0,
-      "total_job_count": 4,
-      "demand_ratio": 0.21
+      "total_job_count": 1,
+      "demand_ratio": 0.22
     },
     {
       "stock_code": "2015",
@@ -5923,16 +5947,16 @@
       "demand_ratio": 0.21
     },
     {
-      "stock_code": "4949",
-      "company_short_name": "有成精密",
-      "company_full_name": "有成精密股份有限公司",
+      "stock_code": "8039",
+      "company_short_name": "台虹",
+      "company_full_name": "台虹科技股份有限公司",
       "market_type": "上市",
-      "employee_count": 500,
-      "explicit_need": 1,
-      "unlimited_job_count": 0,
+      "employee_count": 964,
+      "explicit_need": 2,
+      "unlimited_job_count": 2,
       "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0.2
+      "total_job_count": 4,
+      "demand_ratio": 0.21
     },
     {
       "stock_code": "3372",
@@ -5947,9 +5971,33 @@
       "demand_ratio": 0.2
     },
     {
-      "stock_code": "6792",
-      "company_short_name": "詠業",
-      "company_full_name": "詠業科技股份有限公司",
+      "stock_code": "8401",
+      "company_short_name": "白紗科",
+      "company_full_name": "白紗科技印刷股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 500,
+      "explicit_need": 1,
+      "unlimited_job_count": 1,
+      "unspecified_job_count": 0,
+      "total_job_count": 2,
+      "demand_ratio": 0.2
+    },
+    {
+      "stock_code": "8349",
+      "company_short_name": "恒耀國際",
+      "company_full_name": "恒耀國際股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 500,
+      "explicit_need": 1,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 0.2
+    },
+    {
+      "stock_code": "4949",
+      "company_short_name": "有成精密",
+      "company_full_name": "有成精密股份有限公司",
       "market_type": "上市",
       "employee_count": 500,
       "explicit_need": 1,
@@ -5983,27 +6031,15 @@
       "demand_ratio": 0.2
     },
     {
-      "stock_code": "8349",
-      "company_short_name": "恒耀國際",
-      "company_full_name": "恒耀國際股份有限公司",
-      "market_type": "上櫃",
+      "stock_code": "6792",
+      "company_short_name": "詠業",
+      "company_full_name": "詠業科技股份有限公司",
+      "market_type": "上市",
       "employee_count": 500,
       "explicit_need": 1,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 1,
-      "demand_ratio": 0.2
-    },
-    {
-      "stock_code": "8401",
-      "company_short_name": "白紗科",
-      "company_full_name": "白紗科技印刷股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 500,
-      "explicit_need": 1,
-      "unlimited_job_count": 1,
-      "unspecified_job_count": 0,
-      "total_job_count": 2,
       "demand_ratio": 0.2
     },
     {
@@ -6043,6 +6079,30 @@
       "demand_ratio": 0.18
     },
     {
+      "stock_code": "2497",
+      "company_short_name": "怡利電",
+      "company_full_name": "怡利電子工業股份有限公司",
+      "market_type": "上市",
+      "employee_count": 550,
+      "explicit_need": 1,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 0.18
+    },
+    {
+      "stock_code": "1517",
+      "company_short_name": "利奇",
+      "company_full_name": "利奇機械工業股份有限公司",
+      "market_type": "上市",
+      "employee_count": 550,
+      "explicit_need": 1,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 0.18
+    },
+    {
       "stock_code": "3004",
       "company_short_name": "豐達科",
       "company_full_name": "豐達科技股份有限公司",
@@ -6067,30 +6127,6 @@
       "demand_ratio": 0.18
     },
     {
-      "stock_code": "1517",
-      "company_short_name": "利奇",
-      "company_full_name": "利奇機械工業股份有限公司",
-      "market_type": "上市",
-      "employee_count": 550,
-      "explicit_need": 1,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0.18
-    },
-    {
-      "stock_code": "2497",
-      "company_short_name": "怡利電",
-      "company_full_name": "怡利電子工業股份有限公司",
-      "market_type": "上市",
-      "employee_count": 550,
-      "explicit_need": 1,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0.18
-    },
-    {
       "stock_code": "7689",
       "company_short_name": "大鵬科CLMX",
       "company_full_name": "大鵬科技股份有限公司",
@@ -6103,27 +6139,15 @@
       "demand_ratio": 0.18
     },
     {
-      "stock_code": "6146",
-      "company_short_name": "耕興",
-      "company_full_name": "耕興股份有限公司",
+      "stock_code": "6971",
+      "company_short_name": "惠民實業",
+      "company_full_name": "惠民實業股份有限公司",
       "market_type": "上櫃",
       "employee_count": 1200,
       "explicit_need": 2,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 2,
-      "demand_ratio": 0.17
-    },
-    {
-      "stock_code": "2030",
-      "company_short_name": "彰源",
-      "company_full_name": "彰源企業股份有限公司",
-      "market_type": "上市",
-      "employee_count": 600,
-      "explicit_need": 1,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
       "demand_ratio": 0.17
     },
     {
@@ -6139,27 +6163,15 @@
       "demand_ratio": 0.17
     },
     {
-      "stock_code": "6971",
-      "company_short_name": "惠民實業",
-      "company_full_name": "惠民實業股份有限公司",
+      "stock_code": "6146",
+      "company_short_name": "耕興",
+      "company_full_name": "耕興股份有限公司",
       "market_type": "上櫃",
       "employee_count": 1200,
       "explicit_need": 2,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 2,
-      "demand_ratio": 0.17
-    },
-    {
-      "stock_code": "4976",
-      "company_short_name": "佳凌",
-      "company_full_name": "佳凌科技股份有限公司",
-      "market_type": "上市",
-      "employee_count": 600,
-      "explicit_need": 1,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
       "demand_ratio": 0.17
     },
     {
@@ -6175,16 +6187,40 @@
       "demand_ratio": 0.17
     },
     {
-      "stock_code": "1785",
-      "company_short_name": "光洋科",
-      "company_full_name": "光洋應用材料科技股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 1246,
-      "explicit_need": 2,
+      "stock_code": "2030",
+      "company_short_name": "彰源",
+      "company_full_name": "彰源企業股份有限公司",
+      "market_type": "上市",
+      "employee_count": 600,
+      "explicit_need": 1,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
-      "total_job_count": 2,
-      "demand_ratio": 0.16
+      "total_job_count": 1,
+      "demand_ratio": 0.17
+    },
+    {
+      "stock_code": "1560",
+      "company_short_name": "中砂",
+      "company_full_name": "中國砂輪企業股份有限公司",
+      "market_type": "上市",
+      "employee_count": 1720,
+      "explicit_need": 3,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 3,
+      "demand_ratio": 0.17
+    },
+    {
+      "stock_code": "4976",
+      "company_short_name": "佳凌",
+      "company_full_name": "佳凌科技股份有限公司",
+      "market_type": "上市",
+      "employee_count": 600,
+      "explicit_need": 1,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 0.17
     },
     {
       "stock_code": "1752",
@@ -6194,6 +6230,18 @@
       "employee_count": 630,
       "explicit_need": 1,
       "unlimited_job_count": 1,
+      "unspecified_job_count": 0,
+      "total_job_count": 2,
+      "demand_ratio": 0.16
+    },
+    {
+      "stock_code": "1785",
+      "company_short_name": "光洋科",
+      "company_full_name": "光洋應用材料科技股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 1246,
+      "explicit_need": 2,
+      "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 2,
       "demand_ratio": 0.16
@@ -6209,30 +6257,6 @@
       "unspecified_job_count": 0,
       "total_job_count": 5,
       "demand_ratio": 0.16
-    },
-    {
-      "stock_code": "2634",
-      "company_short_name": "漢翔",
-      "company_full_name": "漢翔航空工業股份有限公司",
-      "market_type": "上市",
-      "employee_count": 3300,
-      "explicit_need": 5,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0.15
-    },
-    {
-      "stock_code": "4106",
-      "company_short_name": "雃博",
-      "company_full_name": "雃博股份有限公司",
-      "market_type": "上市",
-      "employee_count": 650,
-      "explicit_need": 1,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0.15
     },
     {
       "stock_code": "1722",
@@ -6259,28 +6283,28 @@
       "demand_ratio": 0.15
     },
     {
-      "stock_code": "3211",
-      "company_short_name": "順達",
-      "company_full_name": "順達科技股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 3500,
+      "stock_code": "2634",
+      "company_short_name": "漢翔",
+      "company_full_name": "漢翔航空工業股份有限公司",
+      "market_type": "上市",
+      "employee_count": 3300,
       "explicit_need": 5,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
-      "total_job_count": 3,
-      "demand_ratio": 0.14
+      "total_job_count": 1,
+      "demand_ratio": 0.15
     },
     {
-      "stock_code": "3037",
-      "company_short_name": "欣興",
-      "company_full_name": "欣興電子股份有限公司",
+      "stock_code": "4106",
+      "company_short_name": "雃博",
+      "company_full_name": "雃博股份有限公司",
       "market_type": "上市",
-      "employee_count": 18000,
-      "explicit_need": 25,
-      "unlimited_job_count": 4,
+      "employee_count": 650,
+      "explicit_need": 1,
+      "unlimited_job_count": 0,
       "unspecified_job_count": 0,
-      "total_job_count": 7,
-      "demand_ratio": 0.14
+      "total_job_count": 1,
+      "demand_ratio": 0.15
     },
     {
       "stock_code": "7883",
@@ -6292,42 +6316,6 @@
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 1,
-      "demand_ratio": 0.14
-    },
-    {
-      "stock_code": "2397",
-      "company_short_name": "友通",
-      "company_full_name": "友通資訊股份有限公司",
-      "market_type": "上市",
-      "employee_count": 700,
-      "explicit_need": 1,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0.14
-    },
-    {
-      "stock_code": "3303",
-      "company_short_name": "岱稜",
-      "company_full_name": "岱稜科技股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 700,
-      "explicit_need": 1,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0.14
-    },
-    {
-      "stock_code": "6173",
-      "company_short_name": "信昌電",
-      "company_full_name": "信昌電子陶瓷股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 700,
-      "explicit_need": 1,
-      "unlimited_job_count": 2,
-      "unspecified_job_count": 0,
-      "total_job_count": 3,
       "demand_ratio": 0.14
     },
     {
@@ -6355,16 +6343,64 @@
       "demand_ratio": 0.14
     },
     {
-      "stock_code": "2206",
-      "company_short_name": "三陽工業",
-      "company_full_name": "三陽工業股份有限公司",
-      "market_type": "上市",
-      "employee_count": 2300,
-      "explicit_need": 3,
+      "stock_code": "6173",
+      "company_short_name": "信昌電",
+      "company_full_name": "信昌電子陶瓷股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 700,
+      "explicit_need": 1,
+      "unlimited_job_count": 2,
+      "unspecified_job_count": 0,
+      "total_job_count": 3,
+      "demand_ratio": 0.14
+    },
+    {
+      "stock_code": "3211",
+      "company_short_name": "順達",
+      "company_full_name": "順達科技股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 3500,
+      "explicit_need": 5,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
-      "total_job_count": 2,
-      "demand_ratio": 0.13
+      "total_job_count": 3,
+      "demand_ratio": 0.14
+    },
+    {
+      "stock_code": "3303",
+      "company_short_name": "岱稜",
+      "company_full_name": "岱稜科技股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 700,
+      "explicit_need": 1,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 0.14
+    },
+    {
+      "stock_code": "3037",
+      "company_short_name": "欣興",
+      "company_full_name": "欣興電子股份有限公司",
+      "market_type": "上市",
+      "employee_count": 18000,
+      "explicit_need": 25,
+      "unlimited_job_count": 4,
+      "unspecified_job_count": 0,
+      "total_job_count": 7,
+      "demand_ratio": 0.14
+    },
+    {
+      "stock_code": "2397",
+      "company_short_name": "友通",
+      "company_full_name": "友通資訊股份有限公司",
+      "market_type": "上市",
+      "employee_count": 700,
+      "explicit_need": 1,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 0.14
     },
     {
       "stock_code": "7854",
@@ -6376,6 +6412,18 @@
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 1,
+      "demand_ratio": 0.13
+    },
+    {
+      "stock_code": "2206",
+      "company_short_name": "三陽工業",
+      "company_full_name": "三陽工業股份有限公司",
+      "market_type": "上市",
+      "employee_count": 2300,
+      "explicit_need": 3,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 2,
       "demand_ratio": 0.13
     },
     {
@@ -6403,18 +6451,6 @@
       "demand_ratio": 0.12
     },
     {
-      "stock_code": "2485",
-      "company_short_name": "兆赫",
-      "company_full_name": "兆赫電子股份有限公司",
-      "market_type": "上市",
-      "employee_count": 800,
-      "explicit_need": 1,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0.12
-    },
-    {
       "stock_code": "3551",
       "company_short_name": "世禾",
       "company_full_name": "世禾科技股份有限公司",
@@ -6439,15 +6475,15 @@
       "demand_ratio": 0.12
     },
     {
-      "stock_code": "1560",
-      "company_short_name": "中砂",
-      "company_full_name": "中國砂輪企業股份有限公司",
+      "stock_code": "2485",
+      "company_short_name": "兆赫",
+      "company_full_name": "兆赫電子股份有限公司",
       "market_type": "上市",
-      "employee_count": 1720,
-      "explicit_need": 2,
+      "employee_count": 800,
+      "explicit_need": 1,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
-      "total_job_count": 2,
+      "total_job_count": 1,
       "demand_ratio": 0.12
     },
     {
@@ -6487,15 +6523,15 @@
       "demand_ratio": 0.11
     },
     {
-      "stock_code": "6284",
-      "company_short_name": "佳邦",
-      "company_full_name": "佳邦科技股份有限公司",
-      "market_type": "上櫃",
+      "stock_code": "7818",
+      "company_short_name": "溢泰實業",
+      "company_full_name": "溢泰實業股份有限公司",
+      "market_type": "上市",
       "employee_count": 1000,
       "explicit_need": 1,
-      "unlimited_job_count": 0,
+      "unlimited_job_count": 1,
       "unspecified_job_count": 0,
-      "total_job_count": 1,
+      "total_job_count": 2,
       "demand_ratio": 0.1
     },
     {
@@ -6511,58 +6547,10 @@
       "demand_ratio": 0.1
     },
     {
-      "stock_code": "5009",
-      "company_short_name": "榮剛",
-      "company_full_name": "榮剛材料科技股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 1000,
-      "explicit_need": 1,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0.1
-    },
-    {
-      "stock_code": "7818",
-      "company_short_name": "溢泰實業",
-      "company_full_name": "溢泰實業股份有限公司",
-      "market_type": "上市",
-      "employee_count": 1000,
-      "explicit_need": 1,
-      "unlimited_job_count": 1,
-      "unspecified_job_count": 0,
-      "total_job_count": 2,
-      "demand_ratio": 0.1
-    },
-    {
       "stock_code": "8928",
       "company_short_name": "鉅明",
       "company_full_name": "鉅明股份有限公司",
       "market_type": "上櫃",
-      "employee_count": 1000,
-      "explicit_need": 1,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0.1
-    },
-    {
-      "stock_code": "3026",
-      "company_short_name": "禾伸堂",
-      "company_full_name": "禾伸堂企業股份有限公司",
-      "market_type": "上市",
-      "employee_count": 1000,
-      "explicit_need": 1,
-      "unlimited_job_count": 2,
-      "unspecified_job_count": 0,
-      "total_job_count": 3,
-      "demand_ratio": 0.1
-    },
-    {
-      "stock_code": "4737",
-      "company_short_name": "華廣",
-      "company_full_name": "華廣生技股份有限公司",
-      "market_type": "上市",
       "employee_count": 1000,
       "explicit_need": 1,
       "unlimited_job_count": 0,
@@ -6583,16 +6571,52 @@
       "demand_ratio": 0.1
     },
     {
-      "stock_code": "2049",
-      "company_short_name": "上銀",
-      "company_full_name": "上銀科技股份有限公司",
-      "market_type": "上市",
-      "employee_count": 4500,
-      "explicit_need": 4,
+      "stock_code": "6284",
+      "company_short_name": "佳邦",
+      "company_full_name": "佳邦科技股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 1000,
+      "explicit_need": 1,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
-      "total_job_count": 2,
-      "demand_ratio": 0.09
+      "total_job_count": 1,
+      "demand_ratio": 0.1
+    },
+    {
+      "stock_code": "4737",
+      "company_short_name": "華廣",
+      "company_full_name": "華廣生技股份有限公司",
+      "market_type": "上市",
+      "employee_count": 1000,
+      "explicit_need": 1,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 0.1
+    },
+    {
+      "stock_code": "3026",
+      "company_short_name": "禾伸堂",
+      "company_full_name": "禾伸堂企業股份有限公司",
+      "market_type": "上市",
+      "employee_count": 1000,
+      "explicit_need": 1,
+      "unlimited_job_count": 2,
+      "unspecified_job_count": 0,
+      "total_job_count": 3,
+      "demand_ratio": 0.1
+    },
+    {
+      "stock_code": "5009",
+      "company_short_name": "榮剛",
+      "company_full_name": "榮剛材料科技股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 1000,
+      "explicit_need": 1,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 0.1
     },
     {
       "stock_code": "3324",
@@ -6619,16 +6643,16 @@
       "demand_ratio": 0.09
     },
     {
-      "stock_code": "8021",
-      "company_short_name": "尖點",
-      "company_full_name": "尖點科技股份有限公司",
+      "stock_code": "2049",
+      "company_short_name": "上銀",
+      "company_full_name": "上銀科技股份有限公司",
       "market_type": "上市",
-      "employee_count": 2500,
-      "explicit_need": 2,
+      "employee_count": 4500,
+      "explicit_need": 4,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 2,
-      "demand_ratio": 0.08
+      "demand_ratio": 0.09
     },
     {
       "stock_code": "2454",
@@ -6643,15 +6667,15 @@
       "demand_ratio": 0.08
     },
     {
-      "stock_code": "4938",
-      "company_short_name": "和碩",
-      "company_full_name": "和碩聯合科技股份有限公司",
+      "stock_code": "1909",
+      "company_short_name": "榮成",
+      "company_full_name": "榮成紙業股份有限公司",
       "market_type": "上市",
-      "employee_count": 6000,
-      "explicit_need": 5,
+      "employee_count": 3608,
+      "explicit_need": 3,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
-      "total_job_count": 2,
+      "total_job_count": 1,
       "demand_ratio": 0.08
     },
     {
@@ -6667,6 +6691,18 @@
       "demand_ratio": 0.08
     },
     {
+      "stock_code": "8021",
+      "company_short_name": "尖點",
+      "company_full_name": "尖點科技股份有限公司",
+      "market_type": "上市",
+      "employee_count": 2500,
+      "explicit_need": 2,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 2,
+      "demand_ratio": 0.08
+    },
+    {
       "stock_code": "6257",
       "company_short_name": "矽格",
       "company_full_name": "矽格股份有限公司",
@@ -6679,25 +6715,13 @@
       "demand_ratio": 0.08
     },
     {
-      "stock_code": "1909",
-      "company_short_name": "榮成",
-      "company_full_name": "榮成紙業股份有限公司",
+      "stock_code": "4938",
+      "company_short_name": "和碩",
+      "company_full_name": "和碩聯合科技股份有限公司",
       "market_type": "上市",
-      "employee_count": 3608,
-      "explicit_need": 3,
-      "unlimited_job_count": 1,
-      "unspecified_job_count": 0,
-      "total_job_count": 2,
-      "demand_ratio": 0.08
-    },
-    {
-      "stock_code": "9924",
-      "company_short_name": "福興",
-      "company_full_name": "台灣福興工業股份有限公司",
-      "market_type": "上市",
-      "employee_count": 1300,
-      "explicit_need": 1,
-      "unlimited_job_count": 1,
+      "employee_count": 6000,
+      "explicit_need": 5,
+      "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 2,
       "demand_ratio": 0.08
@@ -6715,12 +6739,12 @@
       "demand_ratio": 0.07
     },
     {
-      "stock_code": "3406",
-      "company_short_name": "玉晶光",
-      "company_full_name": "玉晶光電股份有限公司",
-      "market_type": "上市",
-      "employee_count": 8000,
-      "explicit_need": 6,
+      "stock_code": "3484",
+      "company_short_name": "崧騰",
+      "company_full_name": "崧騰企業股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 3000,
+      "explicit_need": 2,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 2,
@@ -6736,30 +6760,6 @@
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 1,
-      "demand_ratio": 0.07
-    },
-    {
-      "stock_code": "1210",
-      "company_short_name": "大成",
-      "company_full_name": "大成長城企業股份有限公司",
-      "market_type": "上市",
-      "employee_count": 2900,
-      "explicit_need": 2,
-      "unlimited_job_count": 8,
-      "unspecified_job_count": 0,
-      "total_job_count": 9,
-      "demand_ratio": 0.07
-    },
-    {
-      "stock_code": "3484",
-      "company_short_name": "崧騰",
-      "company_full_name": "崧騰企業股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 3000,
-      "explicit_need": 2,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 2,
       "demand_ratio": 0.07
     },
     {
@@ -6787,18 +6787,6 @@
       "demand_ratio": 0.06
     },
     {
-      "stock_code": "2382",
-      "company_short_name": "廣達",
-      "company_full_name": "廣達電腦股份有限公司",
-      "market_type": "上市",
-      "employee_count": 10925,
-      "explicit_need": 6,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 2,
-      "demand_ratio": 0.05
-    },
-    {
       "stock_code": "1565",
       "company_short_name": "精華",
       "company_full_name": "精華光學股份有限公司",
@@ -6811,12 +6799,12 @@
       "demand_ratio": 0.05
     },
     {
-      "stock_code": "3294",
-      "company_short_name": "英濟",
-      "company_full_name": "英濟股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 4000,
-      "explicit_need": 2,
+      "stock_code": "2382",
+      "company_short_name": "廣達",
+      "company_full_name": "廣達電腦股份有限公司",
+      "market_type": "上市",
+      "employee_count": 10925,
+      "explicit_need": 6,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 2,
@@ -6835,28 +6823,16 @@
       "demand_ratio": 0.05
     },
     {
-      "stock_code": "4942",
-      "company_short_name": "嘉彰",
-      "company_full_name": "嘉彰股份有限公司",
-      "market_type": "上市",
-      "employee_count": 2300,
-      "explicit_need": 1,
+      "stock_code": "3294",
+      "company_short_name": "英濟",
+      "company_full_name": "英濟股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 4000,
+      "explicit_need": 2,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0.04
-    },
-    {
-      "stock_code": "3231",
-      "company_short_name": "緯創",
-      "company_full_name": "緯創資通股份有限公司",
-      "market_type": "上市",
-      "employee_count": 80000,
-      "explicit_need": 29,
-      "unlimited_job_count": 2,
-      "unspecified_job_count": 0,
-      "total_job_count": 11,
-      "demand_ratio": 0.04
+      "total_job_count": 2,
+      "demand_ratio": 0.05
     },
     {
       "stock_code": "3044",
@@ -6883,6 +6859,30 @@
       "demand_ratio": 0.04
     },
     {
+      "stock_code": "4942",
+      "company_short_name": "嘉彰",
+      "company_full_name": "嘉彰股份有限公司",
+      "market_type": "上市",
+      "employee_count": 2300,
+      "explicit_need": 1,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 0.04
+    },
+    {
+      "stock_code": "3231",
+      "company_short_name": "緯創",
+      "company_full_name": "緯創資通股份有限公司",
+      "market_type": "上市",
+      "employee_count": 80000,
+      "explicit_need": 29,
+      "unlimited_job_count": 3,
+      "unspecified_job_count": 0,
+      "total_job_count": 12,
+      "demand_ratio": 0.04
+    },
+    {
       "stock_code": "2354",
       "company_short_name": "鴻準",
       "company_full_name": "鴻準精密工業股份有限公司",
@@ -6892,30 +6892,6 @@
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 1,
-      "demand_ratio": 0.03
-    },
-    {
-      "stock_code": "3042",
-      "company_short_name": "晶技",
-      "company_full_name": "台灣晶技股份有限公司",
-      "market_type": "上市",
-      "employee_count": 3600,
-      "explicit_need": 1,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0.03
-    },
-    {
-      "stock_code": "1736",
-      "company_short_name": "喬山",
-      "company_full_name": "喬山健康科技股份有限公司",
-      "market_type": "上市",
-      "employee_count": 8000,
-      "explicit_need": 2,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 2,
       "demand_ratio": 0.03
     },
     {
@@ -6943,6 +6919,30 @@
       "demand_ratio": 0.03
     },
     {
+      "stock_code": "1736",
+      "company_short_name": "喬山",
+      "company_full_name": "喬山健康科技股份有限公司",
+      "market_type": "上市",
+      "employee_count": 8000,
+      "explicit_need": 2,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 2,
+      "demand_ratio": 0.03
+    },
+    {
+      "stock_code": "3042",
+      "company_short_name": "晶技",
+      "company_full_name": "台灣晶技股份有限公司",
+      "market_type": "上市",
+      "employee_count": 3600,
+      "explicit_need": 1,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 0.03
+    },
+    {
       "stock_code": "2408",
       "company_short_name": "南亞科",
       "company_full_name": "南亞科技股份有限公司",
@@ -6953,18 +6953,6 @@
       "unspecified_job_count": 0,
       "total_job_count": 1,
       "demand_ratio": 0.03
-    },
-    {
-      "stock_code": "2727",
-      "company_short_name": "王品",
-      "company_full_name": "王品餐飲股份有限公司",
-      "market_type": "上市",
-      "employee_count": 10000,
-      "explicit_need": 2,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 2,
-      "demand_ratio": 0.02
     },
     {
       "stock_code": "1259",
@@ -6979,24 +6967,24 @@
       "demand_ratio": 0.02
     },
     {
-      "stock_code": "3008",
-      "company_short_name": "大立光",
-      "company_full_name": "大立光電股份有限公司",
+      "stock_code": "2727",
+      "company_short_name": "王品",
+      "company_full_name": "王品餐飲股份有限公司",
       "market_type": "上市",
-      "employee_count": 8000,
-      "explicit_need": 1,
+      "employee_count": 10000,
+      "explicit_need": 2,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0.01
+      "total_job_count": 2,
+      "demand_ratio": 0.02
     },
     {
-      "stock_code": "1303",
-      "company_short_name": "南亞",
-      "company_full_name": "南亞塑膠工業股份有限公司",
+      "stock_code": "2356",
+      "company_short_name": "英業達",
+      "company_full_name": "英業達股份有限公司",
       "market_type": "上市",
-      "employee_count": 11671,
-      "explicit_need": 1,
+      "employee_count": 36000,
+      "explicit_need": 4,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 1,
@@ -7039,18 +7027,6 @@
       "demand_ratio": 0.01
     },
     {
-      "stock_code": "2356",
-      "company_short_name": "英業達",
-      "company_full_name": "英業達股份有限公司",
-      "market_type": "上市",
-      "employee_count": 36000,
-      "explicit_need": 4,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0.01
-    },
-    {
       "stock_code": "2352",
       "company_short_name": "佳世達",
       "company_full_name": "佳世達科技股份有限公司",
@@ -7063,21 +7039,69 @@
       "demand_ratio": 0.01
     },
     {
-      "stock_code": "1907",
-      "company_short_name": "永豐餘",
-      "company_full_name": "永豐餘投資控股股份有限公司",
+      "stock_code": "3008",
+      "company_short_name": "大立光",
+      "company_full_name": "大立光電股份有限公司",
       "market_type": "上市",
+      "employee_count": 8000,
+      "explicit_need": 1,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 0.01
+    },
+    {
+      "stock_code": "1303",
+      "company_short_name": "南亞",
+      "company_full_name": "南亞塑膠工業股份有限公司",
+      "market_type": "上市",
+      "employee_count": 11671,
+      "explicit_need": 1,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 0.01
+    },
+    {
+      "stock_code": "3581",
+      "company_short_name": "博磊",
+      "company_full_name": "博磊科技股份有限公司",
+      "market_type": "上櫃",
       "employee_count": 0,
-      "explicit_need": 3,
+      "explicit_need": 1,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 1,
       "demand_ratio": 0
     },
     {
-      "stock_code": "3581",
-      "company_short_name": "博磊",
-      "company_full_name": "博磊科技股份有限公司",
+      "stock_code": "2484",
+      "company_short_name": "希華",
+      "company_full_name": "希華晶體科技股份有限公司",
+      "market_type": "上市",
+      "employee_count": 0,
+      "explicit_need": 4,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 2,
+      "demand_ratio": 0
+    },
+    {
+      "stock_code": "2308",
+      "company_short_name": "台達電",
+      "company_full_name": "台達電子工業股份有限公司",
+      "market_type": "上市",
+      "employee_count": 88000,
+      "explicit_need": 3,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 3,
+      "demand_ratio": 0
+    },
+    {
+      "stock_code": "3272",
+      "company_short_name": "東碩",
+      "company_full_name": "東碩資訊股份有限公司",
       "market_type": "上櫃",
       "employee_count": 0,
       "explicit_need": 1,
@@ -7099,51 +7123,27 @@
       "demand_ratio": 0
     },
     {
-      "stock_code": "7756",
-      "company_short_name": "多那之",
-      "company_full_name": "多那之國際股份有限公司",
-      "market_type": "興櫃",
+      "stock_code": "6988",
+      "company_short_name": "威力暘-創",
+      "company_full_name": "威力暘電子股份有限公司",
+      "market_type": "上市",
+      "employee_count": 0,
+      "explicit_need": 4,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 2,
+      "demand_ratio": 0
+    },
+    {
+      "stock_code": "6899",
+      "company_short_name": "創為精密",
+      "company_full_name": "創為精密材料股份有限公司",
+      "market_type": "上櫃",
       "employee_count": 0,
       "explicit_need": 4,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 3,
-      "demand_ratio": 0
-    },
-    {
-      "stock_code": "6130",
-      "company_short_name": "上亞科技",
-      "company_full_name": "上亞科技股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 0,
-      "explicit_need": 6,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 3,
-      "demand_ratio": 0
-    },
-    {
-      "stock_code": "4958",
-      "company_short_name": "臻鼎-KY",
-      "company_full_name": "臻鼎科技控股股份有限公司",
-      "market_type": "上市",
-      "employee_count": 46000,
-      "explicit_need": 1,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0
-    },
-    {
-      "stock_code": "2258",
-      "company_short_name": "鴻華先進-創",
-      "company_full_name": "鴻華先進科技股份有限公司",
-      "market_type": "上市",
-      "employee_count": 0,
-      "explicit_need": 3,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
       "demand_ratio": 0
     },
     {
@@ -7159,66 +7159,6 @@
       "demand_ratio": 0
     },
     {
-      "stock_code": "6121",
-      "company_short_name": "新普",
-      "company_full_name": "新普科技股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 0,
-      "explicit_need": 4,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 2,
-      "demand_ratio": 0
-    },
-    {
-      "stock_code": "2392",
-      "company_short_name": "正崴",
-      "company_full_name": "正崴精密工業股份有限公司",
-      "market_type": "上市",
-      "employee_count": 49000,
-      "explicit_need": 1,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0
-    },
-    {
-      "stock_code": "6988",
-      "company_short_name": "威力暘-創",
-      "company_full_name": "威力暘電子股份有限公司",
-      "market_type": "上市",
-      "employee_count": 0,
-      "explicit_need": 4,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 2,
-      "demand_ratio": 0
-    },
-    {
-      "stock_code": "3625",
-      "company_short_name": "西勝",
-      "company_full_name": "西勝國際股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 0,
-      "explicit_need": 18,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 2,
-      "demand_ratio": 0
-    },
-    {
-      "stock_code": "4956",
-      "company_short_name": "光鋐",
-      "company_full_name": "光鋐科技股份有限公司",
-      "market_type": "上市",
-      "employee_count": 0,
-      "explicit_need": 11,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 2,
-      "demand_ratio": 0
-    },
-    {
       "stock_code": "6143",
       "company_short_name": "振曜",
       "company_full_name": "振曜科技股份有限公司",
@@ -7231,35 +7171,11 @@
       "demand_ratio": 0
     },
     {
-      "stock_code": "6461",
-      "company_short_name": "益得",
-      "company_full_name": "益得生物科技股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 0,
-      "explicit_need": 1,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0
-    },
-    {
-      "stock_code": "3025",
-      "company_short_name": "星通",
-      "company_full_name": "星通資訊股份有限公司",
+      "stock_code": "2392",
+      "company_short_name": "正崴",
+      "company_full_name": "正崴精密工業股份有限公司",
       "market_type": "上市",
-      "employee_count": 0,
-      "explicit_need": 1,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0
-    },
-    {
-      "stock_code": "3272",
-      "company_short_name": "東碩",
-      "company_full_name": "東碩資訊股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 0,
+      "employee_count": 49000,
       "explicit_need": 1,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
@@ -7279,6 +7195,138 @@
       "demand_ratio": 0
     },
     {
+      "stock_code": "7918",
+      "company_short_name": "創鉅材料",
+      "company_full_name": "創鉅先進材料股份有限公司",
+      "market_type": "興櫃",
+      "employee_count": 0,
+      "explicit_need": 10,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 2,
+      "demand_ratio": 0
+    },
+    {
+      "stock_code": "7915",
+      "company_short_name": "廌家",
+      "company_full_name": "廌家科技股份有限公司",
+      "market_type": "興櫃",
+      "employee_count": 0,
+      "explicit_need": 3,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 0
+    },
+    {
+      "stock_code": "4958",
+      "company_short_name": "臻鼎-KY",
+      "company_full_name": "臻鼎科技控股股份有限公司",
+      "market_type": "上市",
+      "employee_count": 46000,
+      "explicit_need": 1,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 0
+    },
+    {
+      "stock_code": "4956",
+      "company_short_name": "光鋐",
+      "company_full_name": "光鋐科技股份有限公司",
+      "market_type": "上市",
+      "employee_count": 0,
+      "explicit_need": 11,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 2,
+      "demand_ratio": 0
+    },
+    {
+      "stock_code": "6121",
+      "company_short_name": "新普",
+      "company_full_name": "新普科技股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 0,
+      "explicit_need": 4,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 2,
+      "demand_ratio": 0
+    },
+    {
+      "stock_code": "2258",
+      "company_short_name": "鴻華先進-創",
+      "company_full_name": "鴻華先進科技股份有限公司",
+      "market_type": "上市",
+      "employee_count": 0,
+      "explicit_need": 3,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 0
+    },
+    {
+      "stock_code": "6461",
+      "company_short_name": "益得",
+      "company_full_name": "益得生物科技股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 0,
+      "explicit_need": 1,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 0
+    },
+    {
+      "stock_code": "2377",
+      "company_short_name": "微星",
+      "company_full_name": "微星科技股份有限公司",
+      "market_type": "上市",
+      "employee_count": 0,
+      "explicit_need": 1,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 0
+    },
+    {
+      "stock_code": "1907",
+      "company_short_name": "永豐餘",
+      "company_full_name": "永豐餘投資控股股份有限公司",
+      "market_type": "上市",
+      "employee_count": 0,
+      "explicit_need": 3,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 0
+    },
+    {
+      "stock_code": "8222",
+      "company_short_name": "寶一",
+      "company_full_name": "寶一科技股份有限公司",
+      "market_type": "上市",
+      "employee_count": 0,
+      "explicit_need": 4,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 4,
+      "demand_ratio": 0
+    },
+    {
+      "stock_code": "6797",
+      "company_short_name": "圓點奈米",
+      "company_full_name": "台灣圓點奈米技術股份有限公司",
+      "market_type": "興櫃",
+      "employee_count": 0,
+      "explicit_need": 1,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 0
+    },
+    {
       "stock_code": "6532",
       "company_short_name": "瑞耘",
       "company_full_name": "瑞耘科技股份有限公司",
@@ -7288,6 +7336,30 @@
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 5,
+      "demand_ratio": 0
+    },
+    {
+      "stock_code": "3625",
+      "company_short_name": "西勝",
+      "company_full_name": "西勝國際股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 0,
+      "explicit_need": 18,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 2,
+      "demand_ratio": 0
+    },
+    {
+      "stock_code": "3013",
+      "company_short_name": "晟銘電",
+      "company_full_name": "晟銘電子科技股份有限公司",
+      "market_type": "上市",
+      "employee_count": 0,
+      "explicit_need": 1,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
       "demand_ratio": 0
     },
     {
@@ -7303,15 +7375,27 @@
       "demand_ratio": 0
     },
     {
-      "stock_code": "2308",
-      "company_short_name": "台達電",
-      "company_full_name": "台達電子工業股份有限公司",
+      "stock_code": "2314",
+      "company_short_name": "台揚",
+      "company_full_name": "台揚科技股份有限公司",
       "market_type": "上市",
-      "employee_count": 88000,
-      "explicit_need": 3,
+      "employee_count": 0,
+      "explicit_need": 20,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
-      "total_job_count": 3,
+      "total_job_count": 4,
+      "demand_ratio": 0
+    },
+    {
+      "stock_code": "9944",
+      "company_short_name": "新麗",
+      "company_full_name": "新麗企業股份有限公司",
+      "market_type": "上市",
+      "employee_count": 0,
+      "explicit_need": 19,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 2,
       "demand_ratio": 0
     },
     {
@@ -7324,30 +7408,6 @@
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 2,
-      "demand_ratio": 0
-    },
-    {
-      "stock_code": "2484",
-      "company_short_name": "希華",
-      "company_full_name": "希華晶體科技股份有限公司",
-      "market_type": "上市",
-      "employee_count": 0,
-      "explicit_need": 4,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 2,
-      "demand_ratio": 0
-    },
-    {
-      "stock_code": "6899",
-      "company_short_name": "創為精密",
-      "company_full_name": "創為精密材料股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 0,
-      "explicit_need": 4,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 3,
       "demand_ratio": 0
     },
     {
@@ -7375,99 +7435,15 @@
       "demand_ratio": 0
     },
     {
-      "stock_code": "2314",
-      "company_short_name": "台揚",
-      "company_full_name": "台揚科技股份有限公司",
-      "market_type": "上市",
-      "employee_count": 0,
-      "explicit_need": 20,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 4,
-      "demand_ratio": 0
-    },
-    {
-      "stock_code": "8024",
-      "company_short_name": "佑華",
-      "company_full_name": "佑華微電子股份有限公司",
+      "stock_code": "6130",
+      "company_short_name": "上亞科技",
+      "company_full_name": "上亞科技股份有限公司",
       "market_type": "上櫃",
       "employee_count": 0,
-      "explicit_need": 1,
+      "explicit_need": 6,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0
-    },
-    {
-      "stock_code": "2323",
-      "company_short_name": "中環",
-      "company_full_name": "中環股份有限公司",
-      "market_type": "上市",
-      "employee_count": 0,
-      "explicit_need": 1,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0
-    },
-    {
-      "stock_code": "7892",
-      "company_short_name": "元鈦科",
-      "company_full_name": "元鈦科技股份有限公司",
-      "market_type": "興櫃",
-      "employee_count": 0,
-      "explicit_need": 3,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0
-    },
-    {
-      "stock_code": "3088",
-      "company_short_name": "艾訊",
-      "company_full_name": "艾訊股份有限公司",
-      "market_type": "上櫃",
-      "employee_count": 0,
-      "explicit_need": 3,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 2,
-      "demand_ratio": 0
-    },
-    {
-      "stock_code": "8222",
-      "company_short_name": "寶一",
-      "company_full_name": "寶一科技股份有限公司",
-      "market_type": "上市",
-      "employee_count": 0,
-      "explicit_need": 4,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 4,
-      "demand_ratio": 0
-    },
-    {
-      "stock_code": "6805",
-      "company_short_name": "富世達",
-      "company_full_name": "富世達股份有限公司",
-      "market_type": "上市",
-      "employee_count": 0,
-      "explicit_need": 5,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0
-    },
-    {
-      "stock_code": "7918",
-      "company_short_name": "創鉅材料",
-      "company_full_name": "創鉅先進材料股份有限公司",
-      "market_type": "興櫃",
-      "employee_count": 0,
-      "explicit_need": 10,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 2,
+      "total_job_count": 3,
       "demand_ratio": 0
     },
     {
@@ -7483,12 +7459,36 @@
       "demand_ratio": 0
     },
     {
-      "stock_code": "9944",
-      "company_short_name": "新麗",
-      "company_full_name": "新麗企業股份有限公司",
+      "stock_code": "3025",
+      "company_short_name": "星通",
+      "company_full_name": "星通資訊股份有限公司",
       "market_type": "上市",
       "employee_count": 0,
-      "explicit_need": 19,
+      "explicit_need": 1,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 0
+    },
+    {
+      "stock_code": "7756",
+      "company_short_name": "多那之",
+      "company_full_name": "多那之國際股份有限公司",
+      "market_type": "興櫃",
+      "employee_count": 0,
+      "explicit_need": 4,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 3,
+      "demand_ratio": 0
+    },
+    {
+      "stock_code": "3088",
+      "company_short_name": "艾訊",
+      "company_full_name": "艾訊股份有限公司",
+      "market_type": "上櫃",
+      "employee_count": 0,
+      "explicit_need": 3,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 2,
@@ -7507,12 +7507,36 @@
       "demand_ratio": 0
     },
     {
-      "stock_code": "2377",
-      "company_short_name": "微星",
-      "company_full_name": "微星科技股份有限公司",
-      "market_type": "上市",
+      "stock_code": "8024",
+      "company_short_name": "佑華",
+      "company_full_name": "佑華微電子股份有限公司",
+      "market_type": "上櫃",
       "employee_count": 0,
       "explicit_need": 1,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 0
+    },
+    {
+      "stock_code": "6805",
+      "company_short_name": "富世達",
+      "company_full_name": "富世達股份有限公司",
+      "market_type": "上市",
+      "employee_count": 0,
+      "explicit_need": 5,
+      "unlimited_job_count": 0,
+      "unspecified_job_count": 0,
+      "total_job_count": 1,
+      "demand_ratio": 0
+    },
+    {
+      "stock_code": "7892",
+      "company_short_name": "元鈦科",
+      "company_full_name": "元鈦科技股份有限公司",
+      "market_type": "興櫃",
+      "employee_count": 0,
+      "explicit_need": 3,
       "unlimited_job_count": 0,
       "unspecified_job_count": 0,
       "total_job_count": 1,
@@ -7531,21 +7555,9 @@
       "demand_ratio": 0
     },
     {
-      "stock_code": "7915",
-      "company_short_name": "廌家",
-      "company_full_name": "廌家科技股份有限公司",
-      "market_type": "興櫃",
-      "employee_count": 0,
-      "explicit_need": 3,
-      "unlimited_job_count": 0,
-      "unspecified_job_count": 0,
-      "total_job_count": 1,
-      "demand_ratio": 0
-    },
-    {
-      "stock_code": "3013",
-      "company_short_name": "晟銘電",
-      "company_full_name": "晟銘電子科技股份有限公司",
+      "stock_code": "2323",
+      "company_short_name": "中環",
+      "company_full_name": "中環股份有限公司",
       "market_type": "上市",
       "employee_count": 0,
       "explicit_need": 1,
@@ -7699,6 +7711,13 @@
         "is_unspecified": false
       },
       {
+        "job_name": "土雞加工廠作業員(台南柳營)",
+        "job_url": "https://www.104.com.tw/job/8vf7o",
+        "need_display": "10人",
+        "is_unlimited": false,
+        "is_unspecified": false
+      },
+      {
         "job_name": "調理食品廚房作業員（桃園中壢）",
         "job_url": "https://www.104.com.tw/job/8irgw",
         "need_display": "1~3人",
@@ -7819,6 +7838,13 @@
       {
         "job_name": "愛之味-充填技術員/嘉義利樂包廠【輪班津貼/獎金另計】",
         "job_url": "https://www.104.com.tw/job/7wbss",
+        "need_display": "不限",
+        "is_unlimited": true,
+        "is_unspecified": false
+      },
+      {
+        "job_name": "愛之味-調配操作技術員/嘉義利樂包廠【輪班津貼/獎金另計】",
+        "job_url": "https://www.104.com.tw/job/91o73",
         "need_display": "不限",
         "is_unlimited": true,
         "is_unspecified": false
@@ -8594,6 +8620,13 @@
         "is_unspecified": false
       },
       {
+        "job_name": "OP技術員_樹林廠_研磨解決方案中心 製造課 成形組",
+        "job_url": "https://www.104.com.tw/job/8lrdh",
+        "need_display": "1人",
+        "is_unlimited": false,
+        "is_unspecified": false
+      },
+      {
         "job_name": "【鑽石事業部】【上市公司】CMP先進品保技術員｜35,100起｜無經驗可",
         "job_url": "https://www.104.com.tw/job/6wzgh",
         "need_display": "1~2人",
@@ -8796,13 +8829,6 @@
         "job_name": "『中壢龍岡廠』現場技術員/作業員",
         "job_url": "https://www.104.com.tw/job/6lnte",
         "need_display": "1~10人",
-        "is_unlimited": false,
-        "is_unspecified": false
-      },
-      {
-        "job_name": "『平鎮總部/中壢龍岡廠/平鎮工業區湧豐廠』產線品質人員",
-        "job_url": "https://www.104.com.tw/job/7vl7f",
-        "need_display": "1~3人",
         "is_unlimited": false,
         "is_unspecified": false
       },
@@ -9367,13 +9393,6 @@
     ],
     "1909": [
       {
-        "job_name": "彰化二林-廢水輪班人員",
-        "job_url": "https://www.104.com.tw/job/5gh89",
-        "need_display": "不限",
-        "is_unlimited": true,
-        "is_unspecified": false
-      },
-      {
         "job_name": "神岡-現場技術員",
         "job_url": "https://www.104.com.tw/job/7zps8",
         "need_display": "1~6人",
@@ -9472,13 +9491,6 @@
         "job_name": "技術員(汐止)",
         "job_url": "https://www.104.com.tw/job/68ped",
         "need_display": "3人",
-        "is_unlimited": false,
-        "is_unspecified": false
-      },
-      {
-        "job_name": "技術員-倉儲 (龍潭-鋼構廠)",
-        "job_url": "https://www.104.com.tw/job/6zd4n",
-        "need_display": "2人",
         "is_unlimited": false,
         "is_unspecified": false
       },
@@ -10218,6 +10230,13 @@
         "is_unspecified": false
       },
       {
+        "job_name": "電測技術人員【正職】【加班費/津貼/獎金另計】【固定班別,無需輪班】",
+        "job_url": "https://www.104.com.tw/job/92hm4",
+        "need_display": "4~6人",
+        "is_unlimited": false,
+        "is_unspecified": false
+      },
+      {
         "job_name": "PCB 化驗/品檢人員 【日夜班/正職/高額津貼/加班費、獎金另計】",
         "job_url": "https://www.104.com.tw/job/8xot4",
         "need_display": "2~4人",
@@ -10330,13 +10349,6 @@
       {
         "job_name": "【桃園廠】製造測試技術員-日班",
         "job_url": "https://www.104.com.tw/job/8px6o",
-        "need_display": "1~10人",
-        "is_unlimited": false,
-        "is_unspecified": false
-      },
-      {
-        "job_name": "【竹北廠】維修技術員-夜班",
-        "job_url": "https://www.104.com.tw/job/8e468",
         "need_display": "1~10人",
         "is_unlimited": false,
         "is_unspecified": false
@@ -11765,6 +11777,13 @@
         "is_unspecified": false
       },
       {
+        "job_name": "【週二、週四13:30到廠面試】DL-產線技術員 (新安日/夜班)",
+        "job_url": "https://www.104.com.tw/job/8pz2m",
+        "need_display": "不限",
+        "is_unlimited": true,
+        "is_unspecified": false
+      },
+      {
         "job_name": "【週一~週五13:30到廠面試】DL-產線技術員_湖口(夜班)",
         "job_url": "https://www.104.com.tw/job/8ccjn",
         "need_display": "1~20人",
@@ -12174,6 +12193,13 @@
     ],
     "3406": [
       {
+        "job_name": "【暑假工讀專區】無塵室作業人員_可固定班別/全時段冷氣廠房/免費供餐/免費機車位",
+        "job_url": "https://www.104.com.tw/job/92k6k",
+        "need_display": "15~20人",
+        "is_unlimited": false,
+        "is_unspecified": false
+      },
+      {
         "job_name": "【四班二輪/無經驗可】夜班設備技術員",
         "job_url": "https://www.104.com.tw/job/87jqm",
         "need_display": "5~6人",
@@ -12352,13 +12378,6 @@
       {
         "job_name": "燒錄作業員",
         "job_url": "https://www.104.com.tw/job/8w2n7",
-        "need_display": "不限",
-        "is_unlimited": true,
-        "is_unspecified": false
-      },
-      {
-        "job_name": "組/包裝作業員",
-        "job_url": "https://www.104.com.tw/job/5d7zj",
         "need_display": "不限",
         "is_unlimited": true,
         "is_unspecified": false
@@ -13544,6 +13563,13 @@
     ],
     "4566": [
       {
+        "job_name": "品管人員【新屋廠】(無經驗可培訓)",
+        "job_url": "https://www.104.com.tw/job/8ecow",
+        "need_display": "3人",
+        "is_unlimited": false,
+        "is_unspecified": false
+      },
+      {
         "job_name": "品管人員【幼獅廠】(無經驗可培訓)",
         "job_url": "https://www.104.com.tw/job/8zpfh",
         "need_display": "2人",
@@ -13827,6 +13853,13 @@
       }
     ],
     "4739": [
+      {
+        "job_name": "新竹產業園區(西區)-輪班技術員(月薪36,000~45,000)",
+        "job_url": "https://www.104.com.tw/job/8e1mw",
+        "need_display": "1~10人",
+        "is_unlimited": false,
+        "is_unspecified": false
+      },
       {
         "job_name": "品管分析員-頭份廠",
         "job_url": "https://www.104.com.tw/job/86p9s",
@@ -14392,13 +14425,6 @@
       }
     ],
     "5344": [
-      {
-        "job_name": "夜班技術員(CIS)",
-        "job_url": "https://www.104.com.tw/job/8da1o",
-        "need_display": "3人",
-        "is_unlimited": false,
-        "is_unspecified": false
-      },
       {
         "job_name": "夜班技術員(CP)",
         "job_url": "https://www.104.com.tw/job/8ycdp",
@@ -15524,13 +15550,6 @@
     ],
     "6491": [
       {
-        "job_name": "【大溪廠短期約聘12H】包裝技術員(隨到隨談)_01",
-        "job_url": "https://www.104.com.tw/job/905bf",
-        "need_display": "不限",
-        "is_unlimited": true,
-        "is_unspecified": false
-      },
-      {
         "job_name": "檢驗技術員(可固定班別)【享有高額自我推薦獎金、適用桃園青年安薪就業讚方案】_01",
         "job_url": "https://www.104.com.tw/job/3jge6",
         "need_display": "5~10人",
@@ -16386,6 +16405,15 @@
         "job_name": "B03技術員",
         "job_url": "https://www.104.com.tw/job/3o6dj",
         "need_display": "2~3人",
+        "is_unlimited": false,
+        "is_unspecified": false
+      }
+    ],
+    "6797": [
+      {
+        "job_name": "中壢廠-技術員《無經驗可！》",
+        "job_url": "https://www.104.com.tw/job/73bkj",
+        "need_display": "1~2人",
         "is_unlimited": false,
         "is_unspecified": false
       }
@@ -18031,6 +18059,13 @@
         "need_display": "1~2人",
         "is_unlimited": false,
         "is_unspecified": false
+      },
+      {
+        "job_name": "竹東_02CS02  助理工程師/技術員",
+        "job_url": "https://www.104.com.tw/job/7iy37",
+        "need_display": "1~2人",
+        "is_unlimited": false,
+        "is_unspecified": false
       }
     ],
     "8182": [
@@ -18891,6 +18926,13 @@
         "need_display": "1~3人",
         "is_unlimited": false,
         "is_unspecified": false
+      },
+      {
+        "job_name": "製造管理處-技術員(神岡)",
+        "job_url": "https://www.104.com.tw/job/8ytcw",
+        "need_display": "1人",
+        "is_unlimited": false,
+        "is_unspecified": false
       }
     ],
     "9919": [
@@ -18938,13 +18980,6 @@
         "job_url": "https://www.104.com.tw/job/826kb",
         "need_display": "不限",
         "is_unlimited": true,
-        "is_unspecified": false
-      },
-      {
-        "job_name": "CNC銑床人員",
-        "job_url": "https://www.104.com.tw/job/8rfgu",
-        "need_display": "1~2人",
-        "is_unlimited": false,
         "is_unspecified": false
       }
     ],
@@ -19078,7 +19113,7 @@
     ]
   },
   "counts": {
-    "company_count": 629,
-    "job_count": 1466
+    "company_count": 630,
+    "job_count": 1469
   }
 }
