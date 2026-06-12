@@ -1,0 +1,97 @@
+#!/bin/bash
+# =============================================================================
+# Local launcher for the independent hiring-demand project.
+#
+# This file is generated on the internal disk from the SSD repo template.
+# launchd runs this local launcher first, then the launcher delegates to the
+# SSD project scripts. This avoids macOS blocking launchd from directly
+# spawning scripts/logs on an external SSD.
+# =============================================================================
+
+set -euo pipefail
+
+HIRING_DIR="__HIRING_DIR__"
+LOCAL_LOG_DIR="__LOCAL_LOG_DIR__"
+LOCAL_VENV_PYTHON="__LOCAL_VENV_PYTHON__"
+LOCAL_MAIN_WRAPPER="__LOCAL_MAIN_WRAPPER__"
+LOCAL_PROBE_WRAPPER="__LOCAL_PROBE_WRAPPER__"
+LOCAL_STOCK_CODES_WRAPPER="__LOCAL_STOCK_CODES_WRAPPER__"
+LOCAL_LOG_FILE="$LOCAL_LOG_DIR/launcher.log"
+MODE="${1:-run-main}"
+
+mkdir -p "$LOCAL_LOG_DIR"
+
+log() {
+    printf '%s [%s] %s\n' "$(date '+%Y-%m-%d %H:%M:%S')" "$MODE" "$*" >> "$LOCAL_LOG_FILE"
+}
+
+fail() {
+    log "FAIL: $*"
+    exit 78
+}
+
+check_common() {
+    [ -d "$HIRING_DIR" ] || fail "HIRING_DIR missing: $HIRING_DIR"
+    [ -d "$HIRING_DIR/stage3_web" ] || fail "stage3_web missing: $HIRING_DIR/stage3_web"
+    [ -x "$LOCAL_VENV_PYTHON" ] || fail "local scheduler venv python missing or not executable: $LOCAL_VENV_PYTHON"
+}
+
+export HIRING_PYTHON="$LOCAL_VENV_PYTHON"
+export HIRING_SCRIPT_DIR="$HIRING_DIR"
+
+run_main() {
+    check_common
+    [ -x "$LOCAL_MAIN_WRAPPER" ] || fail "local main wrapper missing or not executable: $LOCAL_MAIN_WRAPPER"
+    [ -f "$HIRING_DIR/run_hiring_demand.sh" ] || fail "SSD main wrapper missing: $HIRING_DIR/run_hiring_demand.sh"
+    log "delegating to local main wrapper: $LOCAL_MAIN_WRAPPER with HIRING_SCRIPT_DIR=$HIRING_DIR"
+    cd "$HIRING_DIR"
+    exec "$LOCAL_MAIN_WRAPPER"
+}
+
+run_probe() {
+    check_common
+    [ -x "$LOCAL_PROBE_WRAPPER" ] || fail "local probe wrapper missing or not executable: $LOCAL_PROBE_WRAPPER"
+    [ -f "$HIRING_DIR/run_telegram_recipient_probe.sh" ] || fail "SSD probe wrapper missing: $HIRING_DIR/run_telegram_recipient_probe.sh"
+    log "delegating to local probe wrapper: $LOCAL_PROBE_WRAPPER with HIRING_SCRIPT_DIR=$HIRING_DIR"
+    cd "$HIRING_DIR"
+    exec "$LOCAL_PROBE_WRAPPER"
+}
+
+run_stock_codes() {
+    check_common
+    [ -x "$LOCAL_STOCK_CODES_WRAPPER" ] || fail "local stock codes wrapper missing or not executable: $LOCAL_STOCK_CODES_WRAPPER"
+    [ -f "$HIRING_DIR/run_stock_codes_update.sh" ] || fail "SSD stock codes wrapper missing: $HIRING_DIR/run_stock_codes_update.sh"
+    log "delegating to local stock codes wrapper: $LOCAL_STOCK_CODES_WRAPPER with HIRING_SCRIPT_DIR=$HIRING_DIR"
+    cd "$HIRING_DIR"
+    exec "$LOCAL_STOCK_CODES_WRAPPER"
+}
+
+self_test() {
+    check_common
+    [ -x "$LOCAL_MAIN_WRAPPER" ] || fail "local main wrapper missing or not executable: $LOCAL_MAIN_WRAPPER"
+    [ -x "$LOCAL_PROBE_WRAPPER" ] || fail "local probe wrapper missing or not executable: $LOCAL_PROBE_WRAPPER"
+    [ -x "$LOCAL_STOCK_CODES_WRAPPER" ] || fail "local stock codes wrapper missing or not executable: $LOCAL_STOCK_CODES_WRAPPER"
+    [ -f "$HIRING_DIR/run_hiring_demand.sh" ] || fail "SSD main wrapper missing: $HIRING_DIR/run_hiring_demand.sh"
+    [ -f "$HIRING_DIR/run_telegram_recipient_probe.sh" ] || fail "SSD probe wrapper missing: $HIRING_DIR/run_telegram_recipient_probe.sh"
+    [ -f "$HIRING_DIR/run_stock_codes_update.sh" ] || fail "SSD stock codes wrapper missing: $HIRING_DIR/run_stock_codes_update.sh"
+    log "SELF_TEST PASS"
+    printf 'SELF_TEST PASS: %s\n' "$HIRING_DIR"
+}
+
+case "$MODE" in
+    run-main)
+        run_main
+        ;;
+    run-probe)
+        run_probe
+        ;;
+    run-stock-codes)
+        run_stock_codes
+        ;;
+    self-test)
+        self_test
+        ;;
+    *)
+        fail "unknown mode: $MODE"
+        ;;
+esac

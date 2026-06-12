@@ -50,9 +50,10 @@ class HiringPipelinePathContractTest(unittest.TestCase):
             self.assertIn('dirname "${BASH_SOURCE[0]}"', text)
             self.assertIn("HIRING_PROJECT_ROOT", text)
 
-    def test_config_paths_are_project_relative_for_ssd_portability(self):
+    def test_config_paths_keep_stock_codes_inside_hiring_project(self):
         config = (EXPECTED_HIRING_DIR / "config.yaml").read_text(encoding="utf-8")
-        self.assertIn('stock_codes_dir: "../台股上市櫃公司名稱確認與自動定時更新/Stock_codes"', config)
+        self.assertIn('stock_codes_dir: "data/stock_codes"', config)
+        self.assertNotIn("台股上市櫃公司名稱確認與自動定時更新/Stock_codes", config)
         self.assertIn('db_path: "stage3_web/investment.db"', config)
         self.assertIn('output_dir: "data"', config)
 
@@ -67,8 +68,10 @@ class HiringPipelinePathContractTest(unittest.TestCase):
 
         self.assertIn("def _resolve_hiring_path", text)
         self.assertIn("path = HIRING_DIR / path", text)
+        self.assertIn("paths['stock_codes_dir'] = _resolve_hiring_path", text)
         self.assertIn("paths['db_path'] = _resolve_hiring_path", text)
         self.assertIn("paths['output_dir'] = _resolve_hiring_path", text)
+        self.assertIn("paths.get('stock_codes_dir', 'data/stock_codes')", text)
         self.assertIn("paths.get('db_path', 'stage3_web/investment.db')", text)
         self.assertIn("paths.get('output_dir', 'data')", text)
 
@@ -116,10 +119,11 @@ class HiringPipelinePathContractTest(unittest.TestCase):
         wrapper = EXPECTED_HIRING_DIR / "run_hiring_demand.sh"
         text = wrapper.read_text(encoding="utf-8")
 
-        self.assertIn('"$GIT" add hiring_reports data/hiring_reports', text)
-        self.assertIn('[ ! -d "$STAGE3_DIR/.git" ]', text)
+        self.assertIn('"$GIT" add stage3_web/hiring_reports stage3_web/data/hiring_reports', text)
+        self.assertIn('"$GIT" rev-parse --show-toplevel', text)
+        self.assertNotIn('[ ! -d "$STAGE3_DIR/.git" ]', text)
         self.assertNotIn('"$GIT" add investment.db hiring_reports data/hiring_reports', text)
-        self.assertIn("grep -Ev '^(hiring_reports/|data/hiring_reports/)'", text)
+        self.assertIn("grep -Ev '^stage3_web/(hiring_reports/|data/hiring_reports/)'", text)
         self.assertNotIn("grep -Ev '^(investment\\.db|hiring_reports/|data/hiring_reports/)'", text)
 
     def test_daily_wrapper_auto_remediates_missing_revenue_summary(self):
@@ -170,7 +174,8 @@ class HiringPipelinePathContractTest(unittest.TestCase):
         self.assertIn("telegram_recipients.json", text)
         self.assertIn("telegram_recipient_probe_receipt_", text)
         self.assertIn("launchd_telegram_probe.log", text)
-        self.assertNotIn("telegram_sender.py", text)
+        self.assertNotIn("TELEGRAM_SCRIPT", text)
+        self.assertNotIn('run_python_script "$TELEGRAM_SCRIPT"', text)
         self.assertNotIn("--send-document", text)
         self.assertNotIn("fetch_hiring_demand.py", text)
         self.assertNotIn("render_unlimited_hiring_revenue_media.py", text)
@@ -178,15 +183,39 @@ class HiringPipelinePathContractTest(unittest.TestCase):
     def test_hourly_telegram_recipient_probe_plist_runs_every_hour(self):
         plist = EXPECTED_HIRING_DIR / "scheduler_templates" / "com.hiring.telegram.recipient.probe.plist.template"
         text = plist.read_text(encoding="utf-8")
+        launcher = (EXPECTED_HIRING_DIR / "scheduler_templates" / "run_hiring_demand_launcher.sh.template").read_text(encoding="utf-8")
 
         self.assertIn("com.hiring.telegram.recipient.probe", text)
-        self.assertIn("run_telegram_recipient_probe.sh", text)
-        self.assertIn("__HIRING_DIR__", text)
+        self.assertIn("__LOCAL_LAUNCHER_PATH__", text)
+        self.assertIn("run-probe", text)
         self.assertIn("<key>StartInterval</key>", text)
         self.assertIn("<integer>3600</integer>", text)
-        self.assertIn("launchd_telegram_probe_stdout.log", text)
-        self.assertIn("launchd_telegram_probe_stderr.log", text)
+        self.assertIn("telegram_probe_stdout.log", text)
+        self.assertIn("telegram_probe_stderr.log", text)
         self.assertNotIn("run_hiring_demand.sh", text)
+        self.assertIn("run_telegram_recipient_probe.sh", launcher)
+
+    def test_stock_codes_updater_has_independent_scheduler_and_output_dir(self):
+        plist = EXPECTED_HIRING_DIR / "scheduler_templates" / "com.hiring.stock.codes.updater.plist.template"
+        text = plist.read_text(encoding="utf-8")
+        launcher = (EXPECTED_HIRING_DIR / "scheduler_templates" / "run_hiring_demand_launcher.sh.template").read_text(encoding="utf-8")
+        installer = (EXPECTED_HIRING_DIR / "install_scheduler.sh").read_text(encoding="utf-8")
+        wrapper = (EXPECTED_HIRING_DIR / "run_stock_codes_update.sh").read_text(encoding="utf-8")
+
+        self.assertIn("com.hiring.stock.codes.updater", text)
+        self.assertIn("__LOCAL_LAUNCHER_PATH__", text)
+        self.assertIn("run-stock-codes", text)
+        self.assertIn("<integer>5</integer>", text)
+        self.assertIn("<integer>0</integer>", text)
+        self.assertIn("stock_codes_stdout.log", text)
+        self.assertIn("stock_codes_stderr.log", text)
+        self.assertIn("run_stock_codes_update.sh", launcher)
+        self.assertIn("install-stock-codes", installer)
+        self.assertIn("status-stock-codes", installer)
+        self.assertIn("run-stock-codes", installer)
+        self.assertIn("stock_codes_updater.py", wrapper)
+        self.assertIn("data/stock_codes", wrapper)
+        self.assertNotIn("com.stock.updater", text)
 
     def test_raw_monthly_revenue_plists_match_market_schedule(self):
         listed_otc = (EXPECTED_HIRING_DIR / "scheduler_templates" / "com.stock.monthly.revenue.raw.updater.plist.template").read_text(encoding="utf-8")
@@ -241,7 +270,14 @@ class HiringPipelinePathContractTest(unittest.TestCase):
 
         for template in templates:
             text = template.read_text(encoding="utf-8")
-            self.assertIn("__HIRING_DIR__", text)
+            if template.name in {
+                "com.hiring.demand.updater.plist.template",
+                "com.hiring.telegram.recipient.probe.plist.template",
+                "com.hiring.stock.codes.updater.plist.template",
+            }:
+                self.assertIn("__LOCAL_LAUNCHER_PATH__", text)
+            else:
+                self.assertIn("__HIRING_DIR__", text)
             self.assertNotIn("/Users/chiufengjui/D槽", text)
             if template.name != "com.hiring.daily.artifacts.backup.plist.template":
                 self.assertNotIn("/Volumes/Extreme SSD", text)

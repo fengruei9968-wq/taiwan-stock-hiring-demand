@@ -5,6 +5,7 @@
 
 PLIST_NAME="com.hiring.demand.updater.plist"
 PROBE_PLIST_NAME="com.hiring.telegram.recipient.probe.plist"
+STOCK_CODES_PLIST_NAME="com.hiring.stock.codes.updater.plist"
 BACKUP_PLIST_NAME="com.hiring.daily.artifacts.backup.plist"
 RAW_REVENUE_PLIST_NAME="com.stock.monthly.revenue.raw.updater.plist"
 RAW_REVENUE_PLIST_NAMES=(
@@ -17,11 +18,24 @@ PROJECT_ROOT="${HIRING_PROJECT_ROOT:-$(cd "$HIRING_DIR/.." && pwd -P)}"
 SCHEDULER_TEMPLATE_DIR="${HIRING_SCHEDULER_TEMPLATE_DIR:-$HIRING_DIR/scheduler_templates}"
 SCHEDULER_RENDER_DIR="${HIRING_SCHEDULER_RENDER_DIR:-$HIRING_DIR/_local_runtime/launchd_rendered}"
 ARTIFACT_BACKUP_ROOT="${HIRING_ARTIFACT_BACKUP_ROOT:-/Volumes/Extreme SSD/Backup/徵人需求度每日產物Backup}"
+LOCAL_LAUNCHER_DIR="${HIRING_LOCAL_LAUNCHER_DIR:-$HOME/Library/Application Support/HiringDemandLauncher}"
+LOCAL_LAUNCHER_PATH="${HIRING_LOCAL_LAUNCHER_PATH:-$LOCAL_LAUNCHER_DIR/run_hiring_demand_launcher.sh}"
+LOCAL_MAIN_WRAPPER_PATH="${HIRING_LOCAL_MAIN_WRAPPER_PATH:-$LOCAL_LAUNCHER_DIR/run_hiring_demand.sh}"
+LOCAL_PROBE_WRAPPER_PATH="${HIRING_LOCAL_PROBE_WRAPPER_PATH:-$LOCAL_LAUNCHER_DIR/run_telegram_recipient_probe.sh}"
+LOCAL_STOCK_CODES_WRAPPER_PATH="${HIRING_LOCAL_STOCK_CODES_WRAPPER_PATH:-$LOCAL_LAUNCHER_DIR/run_stock_codes_update.sh}"
+LOCAL_LOG_DIR="${HIRING_LOCAL_LOG_DIR:-$HOME/Library/Logs/HiringDemand}"
+LOCAL_VENV_DIR="${HIRING_LOCAL_VENV_DIR:-$LOCAL_LAUNCHER_DIR/venv}"
+LOCAL_VENV_PYTHON="${HIRING_LOCAL_VENV_PYTHON:-$LOCAL_VENV_DIR/bin/python3}"
+LOCAL_VENV_BOOTSTRAP_PYTHON="${HIRING_LOCAL_VENV_BOOTSTRAP_PYTHON:-/opt/homebrew/opt/python@3.13/bin/python3.13}"
+LOCAL_VENV_REQUIREMENTS="${HIRING_LOCAL_VENV_REQUIREMENTS:-$HIRING_DIR/scheduler_requirements.txt}"
+LOCAL_LAUNCHER_TEMPLATE="${SCHEDULER_TEMPLATE_DIR}/run_hiring_demand_launcher.sh.template"
 RENDER_ONLY="${HIRING_SCHEDULER_RENDER_ONLY:-0}"
 PLIST_SOURCE="${SCHEDULER_TEMPLATE_DIR}/${PLIST_NAME}.template"
 PLIST_DEST="$HOME/Library/LaunchAgents/${PLIST_NAME}"
 PROBE_PLIST_SOURCE="${SCHEDULER_TEMPLATE_DIR}/${PROBE_PLIST_NAME}.template"
 PROBE_PLIST_DEST="$HOME/Library/LaunchAgents/${PROBE_PLIST_NAME}"
+STOCK_CODES_PLIST_SOURCE="${SCHEDULER_TEMPLATE_DIR}/${STOCK_CODES_PLIST_NAME}.template"
+STOCK_CODES_PLIST_DEST="$HOME/Library/LaunchAgents/${STOCK_CODES_PLIST_NAME}"
 BACKUP_PLIST_SOURCE="${SCHEDULER_TEMPLATE_DIR}/${BACKUP_PLIST_NAME}.template"
 BACKUP_PLIST_DEST="$HOME/Library/LaunchAgents/${BACKUP_PLIST_NAME}"
 RAW_REVENUE_PLIST_SOURCE="${SCHEDULER_TEMPLATE_DIR}/${RAW_REVENUE_PLIST_NAME}.template"
@@ -44,7 +58,88 @@ render_plist_template() {
         -e "s|__HIRING_DIR__|$HIRING_DIR|g" \
         -e "s|__PROJECT_ROOT__|$PROJECT_ROOT|g" \
         -e "s|__ARTIFACT_BACKUP_ROOT__|$ARTIFACT_BACKUP_ROOT|g" \
+        -e "s|__LOCAL_LAUNCHER_DIR__|$LOCAL_LAUNCHER_DIR|g" \
+        -e "s|__LOCAL_LAUNCHER_PATH__|$LOCAL_LAUNCHER_PATH|g" \
+        -e "s|__LOCAL_LOG_DIR__|$LOCAL_LOG_DIR|g" \
         "$source" > "$dest"
+}
+
+render_launcher_template() {
+    local dest="$1"
+    if [ ! -f "$LOCAL_LAUNCHER_TEMPLATE" ]; then
+        echo "錯誤: launcher template 不存在：$LOCAL_LAUNCHER_TEMPLATE"
+        exit 1
+    fi
+    mkdir -p "$(dirname "$dest")"
+    sed \
+        -e "s|__HIRING_DIR__|$HIRING_DIR|g" \
+        -e "s|__LOCAL_LOG_DIR__|$LOCAL_LOG_DIR|g" \
+        -e "s|__LOCAL_VENV_PYTHON__|$LOCAL_VENV_PYTHON|g" \
+        -e "s|__LOCAL_MAIN_WRAPPER__|$LOCAL_MAIN_WRAPPER_PATH|g" \
+        -e "s|__LOCAL_PROBE_WRAPPER__|$LOCAL_PROBE_WRAPPER_PATH|g" \
+        -e "s|__LOCAL_STOCK_CODES_WRAPPER__|$LOCAL_STOCK_CODES_WRAPPER_PATH|g" \
+        "$LOCAL_LAUNCHER_TEMPLATE" > "$dest"
+    chmod 755 "$dest"
+}
+
+install_local_wrapper_copies() {
+    local main_dest="$LOCAL_MAIN_WRAPPER_PATH"
+    local probe_dest="$LOCAL_PROBE_WRAPPER_PATH"
+    local stock_codes_dest="$LOCAL_STOCK_CODES_WRAPPER_PATH"
+    if [ "$RENDER_ONLY" = "1" ]; then
+        main_dest="$SCHEDULER_RENDER_DIR/$(basename "$LOCAL_MAIN_WRAPPER_PATH")"
+        probe_dest="$SCHEDULER_RENDER_DIR/$(basename "$LOCAL_PROBE_WRAPPER_PATH")"
+        stock_codes_dest="$SCHEDULER_RENDER_DIR/$(basename "$LOCAL_STOCK_CODES_WRAPPER_PATH")"
+    fi
+    mkdir -p "$(dirname "$main_dest")"
+    install -m 755 "$HIRING_DIR/run_hiring_demand.sh" "$main_dest"
+    install -m 755 "$HIRING_DIR/run_telegram_recipient_probe.sh" "$probe_dest"
+    install -m 755 "$HIRING_DIR/run_stock_codes_update.sh" "$stock_codes_dest"
+    if [ "$RENDER_ONLY" = "1" ]; then
+        echo "render-only: $main_dest"
+        echo "render-only: $probe_dest"
+        echo "render-only: $stock_codes_dest"
+    fi
+}
+
+install_local_scheduler_venv() {
+    if [ "$RENDER_ONLY" = "1" ]; then
+        return
+    fi
+    if [ ! -x "$LOCAL_VENV_PYTHON" ]; then
+        if [ ! -x "$LOCAL_VENV_BOOTSTRAP_PYTHON" ]; then
+            echo "錯誤: 建立本機排程 venv 的 Python 不存在或不可執行：$LOCAL_VENV_BOOTSTRAP_PYTHON"
+            exit 1
+        fi
+        echo "建立本機排程專用 venv：$LOCAL_VENV_DIR"
+        mkdir -p "$LOCAL_LAUNCHER_DIR"
+        "$LOCAL_VENV_BOOTSTRAP_PYTHON" -m venv "$LOCAL_VENV_DIR"
+    fi
+    if [ ! -f "$LOCAL_VENV_REQUIREMENTS" ]; then
+        echo "錯誤: 本機排程 venv requirements 不存在：$LOCAL_VENV_REQUIREMENTS"
+        exit 1
+    fi
+    echo "確認本機排程 venv 依賴：$LOCAL_VENV_REQUIREMENTS"
+    "$LOCAL_VENV_PYTHON" -m pip install -r "$LOCAL_VENV_REQUIREMENTS"
+}
+
+install_local_launcher() {
+    local render_dest="$LOCAL_LAUNCHER_PATH"
+    if [ "$RENDER_ONLY" = "1" ]; then
+        render_dest="$SCHEDULER_RENDER_DIR/$(basename "$LOCAL_LAUNCHER_PATH")"
+        echo "render-only：產生 local launcher，不安裝到內建磁碟..."
+    else
+        echo "安裝 local launcher..."
+        mkdir -p "$LOCAL_LAUNCHER_DIR" "$LOCAL_LOG_DIR"
+        install_local_scheduler_venv
+    fi
+    render_launcher_template "$render_dest"
+    install_local_wrapper_copies
+    if [ "$RENDER_ONLY" = "1" ]; then
+        echo "render-only: $render_dest"
+        return
+    fi
+    echo "local launcher 已安裝：$LOCAL_LAUNCHER_PATH"
 }
 
 install_plist_from_template() {
@@ -64,7 +159,7 @@ install_plist_from_template() {
 }
 
 show_help() {
-    echo "用法: $0 [--render-only] [install|uninstall|status|run|install-probe|uninstall-probe|status-probe|run-probe|install-raw-revenue|uninstall-raw-revenue|status-raw-revenue|run-raw-revenue|install-artifact-backup|uninstall-artifact-backup|status-artifact-backup|run-artifact-backup]"
+    echo "用法: $0 [--render-only] [install|uninstall|status|run|install-probe|uninstall-probe|status-probe|run-probe|install-stock-codes|uninstall-stock-codes|status-stock-codes|run-stock-codes|install-all-local|doctor|install-raw-revenue|uninstall-raw-revenue|status-raw-revenue|run-raw-revenue|install-artifact-backup|uninstall-artifact-backup|status-artifact-backup|run-artifact-backup]"
     echo ""
     echo "指令:"
     echo "  install   - 安裝排程（每天 11:30 自動執行）"
@@ -75,6 +170,12 @@ show_help() {
     echo "  uninstall-probe - 移除 Telegram recipient probe"
     echo "  status-probe    - 查看 Telegram recipient probe 狀態"
     echo "  run-probe       - 立即執行一次 Telegram recipient probe"
+    echo "  install-stock-codes   - 安裝徵人需求度專用 Stock_codes 更新（每天 05:00）"
+    echo "  uninstall-stock-codes - 移除徵人需求度專用 Stock_codes 更新"
+    echo "  status-stock-codes    - 查看徵人需求度專用 Stock_codes 更新狀態"
+    echo "  run-stock-codes       - 立即執行一次徵人需求度專用 Stock_codes 更新"
+    echo "  install-all-local - 安裝本機 launcher + 主排程 + Telegram recipient probe"
+    echo "  doctor           - 檢查本機 launcher / LaunchAgent 是否正確安裝（可加 --notify-ntfy）"
     echo "  install-artifact-backup   - 安裝每日產物 SSD 備份（每月 5 號 20:00）"
     echo "  uninstall-artifact-backup - 移除每日產物 SSD 備份"
     echo "  status-artifact-backup    - 查看每日產物 SSD 備份狀態"
@@ -97,6 +198,7 @@ install_scheduler() {
     if [ "$RENDER_ONLY" != "1" ]; then
         mkdir -p "$HOME/Library/LaunchAgents"
     fi
+    install_local_launcher
 
     # 複製 plist 檔案
     install_plist_from_template "$PLIST_SOURCE" "$PLIST_DEST"
@@ -106,6 +208,11 @@ install_scheduler() {
     fi
     echo "排程已安裝！"
     echo "  - 執行時間: 每天 11:30"
+    echo "  - local launcher: $LOCAL_LAUNCHER_PATH"
+    echo "  - local main wrapper: $LOCAL_MAIN_WRAPPER_PATH"
+    echo "  - local probe wrapper: $LOCAL_PROBE_WRAPPER_PATH"
+    echo "  - local stock codes wrapper: $LOCAL_STOCK_CODES_WRAPPER_PATH"
+    echo "  - local scheduler venv: $LOCAL_VENV_DIR"
     echo "  - 設定檔: $PLIST_DEST"
     echo ""
     echo "查看狀態: $0 status"
@@ -160,6 +267,7 @@ install_probe_scheduler() {
     if [ "$RENDER_ONLY" != "1" ]; then
         mkdir -p "$HOME/Library/LaunchAgents"
     fi
+    install_local_launcher
     install_plist_from_template "$PROBE_PLIST_SOURCE" "$PROBE_PLIST_DEST"
 
     if [ "$RENDER_ONLY" = "1" ]; then
@@ -167,6 +275,9 @@ install_probe_scheduler() {
     fi
     echo "Telegram recipient probe 排程已安裝！"
     echo "  - 執行頻率: 每 1 小時"
+    echo "  - local launcher: $LOCAL_LAUNCHER_PATH"
+    echo "  - local probe wrapper: $LOCAL_PROBE_WRAPPER_PATH"
+    echo "  - local scheduler venv: $LOCAL_VENV_DIR"
     echo "  - 設定檔: $PROBE_PLIST_DEST"
     echo "  - 邊界: 只更新 telegram_recipients.json，不發 PNG、不部署"
     echo ""
@@ -207,6 +318,90 @@ run_probe_now() {
 
     cd "$HIRING_DIR"
     ./run_telegram_recipient_probe.sh
+}
+
+install_stock_codes_scheduler() {
+    if [ "$RENDER_ONLY" = "1" ]; then
+        echo "render-only：產生徵人需求度專用 Stock_codes 更新 plist，不安裝、不載入 launchd..."
+    else
+        echo "安裝徵人需求度專用 Stock_codes 更新排程..."
+    fi
+
+    if [ "$RENDER_ONLY" != "1" ]; then
+        mkdir -p "$HOME/Library/LaunchAgents"
+    fi
+    install_local_launcher
+    install_plist_from_template "$STOCK_CODES_PLIST_SOURCE" "$STOCK_CODES_PLIST_DEST"
+
+    if [ "$RENDER_ONLY" = "1" ]; then
+        return
+    fi
+    echo "徵人需求度專用 Stock_codes 更新排程已安裝！"
+    echo "  - 執行時間: 每天 05:00"
+    echo "  - label: com.hiring.stock.codes.updater"
+    echo "  - output: $HIRING_DIR/data/stock_codes"
+    echo "  - local launcher: $LOCAL_LAUNCHER_PATH"
+    echo "  - 設定檔: $STOCK_CODES_PLIST_DEST"
+    echo "  - 舊 com.stock.updater 不會被本指令修改；驗證新排程 PASS 後再手動停用舊排程。"
+    echo ""
+    echo "查看狀態: $0 status-stock-codes"
+}
+
+uninstall_stock_codes_scheduler() {
+    echo "移除徵人需求度專用 Stock_codes 更新排程..."
+
+    launchctl unload "$STOCK_CODES_PLIST_DEST" 2>/dev/null || true
+    rm -f "$STOCK_CODES_PLIST_DEST"
+
+    echo "徵人需求度專用 Stock_codes 更新排程已移除！"
+}
+
+show_stock_codes_status() {
+    echo "徵人需求度專用 Stock_codes 更新排程狀態:"
+    echo ""
+
+    if [ -f "$STOCK_CODES_PLIST_DEST" ]; then
+        echo "設定檔: 已安裝"
+        echo ""
+        launchctl list | grep com.hiring.stock.codes.updater
+        if [ $? -eq 0 ]; then
+            echo ""
+            echo "徵人需求度專用 Stock_codes 更新排程已載入並運行中"
+        else
+            echo "徵人需求度專用 Stock_codes 更新排程未載入（可能需要重新安裝）"
+        fi
+    else
+        echo "設定檔: 未安裝"
+    fi
+}
+
+run_stock_codes_now() {
+    echo "立即執行徵人需求度專用 Stock_codes 更新..."
+    echo ""
+
+    cd "$HIRING_DIR"
+    ./run_stock_codes_update.sh
+}
+
+install_all_local() {
+    install_stock_codes_scheduler
+    install_scheduler
+    install_probe_scheduler
+    doctor_scheduler
+}
+
+doctor_scheduler() {
+    local notify_arg=""
+    if [ "${2:-}" = "--notify-ntfy" ] || [ "${1:-}" = "--notify-ntfy" ]; then
+        notify_arg="--notify-ntfy"
+    fi
+    if [ -x "$LOCAL_VENV_PYTHON" ]; then
+        HIRING_LOCAL_VENV_DIR="$LOCAL_VENV_DIR" "$LOCAL_VENV_PYTHON" "$HIRING_DIR/check_scheduler_installation.py" --root "$HIRING_DIR" $notify_arg
+    elif [ -x "$HIRING_DIR/venv/bin/python3" ]; then
+        HIRING_LOCAL_VENV_DIR="$LOCAL_VENV_DIR" "$HIRING_DIR/venv/bin/python3" "$HIRING_DIR/check_scheduler_installation.py" --root "$HIRING_DIR" $notify_arg
+    else
+        HIRING_LOCAL_VENV_DIR="$LOCAL_VENV_DIR" python3 "$HIRING_DIR/check_scheduler_installation.py" --root "$HIRING_DIR" $notify_arg
+    fi
 }
 
 install_artifact_backup_scheduler() {
@@ -368,6 +563,24 @@ case "$1" in
         ;;
     run-probe)
         run_probe_now
+        ;;
+    install-stock-codes)
+        install_stock_codes_scheduler
+        ;;
+    uninstall-stock-codes)
+        uninstall_stock_codes_scheduler
+        ;;
+    status-stock-codes)
+        show_stock_codes_status
+        ;;
+    run-stock-codes)
+        run_stock_codes_now
+        ;;
+    install-all-local)
+        install_all_local
+        ;;
+    doctor)
+        doctor_scheduler "$@"
         ;;
     install-artifact-backup)
         install_artifact_backup_scheduler

@@ -2,6 +2,16 @@ schema_version: hiring_data_contract_v1
 updated_at: 2026-06-11
 
 source_of_truth:
+  stock_codes:
+    primary_artifact: data/stock_codes/YYYYMMDD_stock_codes_all.csv
+    updater: stock_codes_updater.py
+    wrapper: run_stock_codes_update.sh
+    scheduler_label: com.hiring.stock.codes.updater
+    schedule: daily 05:00 Asia/Taipei
+    source_apis:
+      - https://openapi.twse.com.tw/v1/opendata/t187ap03_L
+      - https://www.tpex.org.tw/openapi/v1/mopsfin_t187ap03_O
+      - https://www.tpex.org.tw/openapi/v1/mopsfin_t187ap03_R
   hiring_scrape:
     primary_artifact: data/YYYYMMDD_hiring_demand.csv
     manifest: data/runs/{run_id}/hiring_run_manifest.json
@@ -14,6 +24,74 @@ source_of_truth:
   monthly_revenue:
     snapshot_csv: data/revenue_snapshots/monthly_revenue_summary_{YYYYMMDD}.csv
     snapshot_manifest: data/revenue_snapshots/monthly_revenue_snapshot_manifest_{YYYYMMDD}.json
+
+path_boundary_contract:
+  repo_root: 上市櫃公司徵人需求度
+  default_relative_path_base: hiring_repo_root
+  rationale: the project is independent; relative runtime paths must not resolve to the parent full-project folder.
+  repo_local_paths:
+    stock_codes_dir: data/stock_codes
+    db_path: stage3_web/investment.db
+    output_dir: data
+  allowed_env_overrides:
+    - STOCK_CODES_DIR
+    - DB_PATH
+    - HIRING_OUTPUT_DIR
+  forbidden_resolution:
+    - stock_codes_dir_from_parent_project_root
+    - stock_codes_dir_from_old_d_slot_by_default
+    - stage3_web_from_parent_project
+  release_gate: check_release_readiness.py path_boundary_violation
+  required_fetcher_markers:
+    - paths['stock_codes_dir'] = _resolve_hiring_path
+    - paths.get('stock_codes_dir', 'data/stock_codes')
+    - paths['db_path'] = _resolve_hiring_path
+    - paths['output_dir'] = _resolve_hiring_path
+
+job_detail_cache_contract:
+  path_pattern: data/runs/job_detail_cache/YYYYMMDD_need_emp_cache.json
+  role: local_runtime_resume_cache
+  cache_key: linkJobId
+  value_field: need_emp_raw
+  lifecycle: same_day_runtime_cache
+  deploy_policy: not_deployable_web_artifact
+  commit_policy: do_not_commit
+  source_of_truth_policy: not_source_of_truth
+  empty_value_policy: do_not_cache_empty_need_emp
+  rationale: 104 search/list API does not include needEmp; successful per-job detail lookups can be reused on same-day reruns, but failed or empty lookups must not be preserved as confirmed values.
+
+report_artifact_retention_contract:
+  local_report_paths:
+    - data/reports/YYYYMMDD/*.png
+    - data/reports/YYYYMMDD/*.pdf
+    - data/reports/YYYYMMDD/*.html
+  role: local_runtime_artifact_for_telegram_and_human_review
+  deploy_policy: not_deployable_web_artifact
+  commit_policy: do_not_commit_daily_png_pdf_history
+  web_policy: rebuild_summary_from_stage3_web_hiring_reports_json
+  default_local_retention_days: 30
+  cleanup_tool: cleanup_report_artifacts.py
+  cleanup_default_mode: dry_run_review_only
+  archive_root: /Volumes/Extreme SSD/Python/台股子公司投資資訊擷取與展示/_archives/上市櫃公司徵人需求度
+  archive_policy: repo_external_archive_after_user_authorization
+
+stock_codes_contract:
+  path_pattern: data/stock_codes/YYYYMMDD_stock_codes_all.csv
+  role: local_runtime_input_for_company_name_matching
+  required_columns:
+    - 股票代碼
+    - 公司簡稱
+    - 公司全名
+    - 市場類別
+    - 資料來源
+    - 更新時間
+  completeness_threshold: 2310
+  incomplete_suffix: _不完整
+  commit_policy: do_not_commit_daily_csv_history
+  deploy_policy: not_deployable_web_artifact
+  scheduler_label: com.hiring.stock.codes.updater
+  output_dir: data/stock_codes
+  old_scheduler_transition_policy: old com.stock.updater may remain installed only if it writes to a separate D-slot Stock_codes directory
 
 local_db_contract:
   db_path: stage3_web/investment.db
@@ -52,6 +130,7 @@ freshness_expectations:
 
 forbidden_value_sources:
   - old_parent_stage3_web_db_as_primary
+  - old_d_slot_stock_codes_as_active_truth
   - chat_summary
   - backup_folder
   - launchd_log_only

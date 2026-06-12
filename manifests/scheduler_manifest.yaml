@@ -1,0 +1,106 @@
+schema_version: hiring_scheduler_manifest_v1
+updated_at: 2026-06-12
+contract_name: hiring_demand_local_launcher_scheduler
+
+active_repo:
+  root: /Volumes/Extreme SSD/Python/台股子公司投資資訊擷取與展示/台股投資資訊系統_完整專案/上市櫃公司徵人需求度
+  role: SSD active truth for scraper, web artifacts, governance, and stage3_web runtime
+
+local_launcher:
+  path: /Users/chiufengjui/Library/Application Support/HiringDemandLauncher/run_hiring_demand_launcher.sh
+  template: scheduler_templates/run_hiring_demand_launcher.sh.template
+  log_dir: /Users/chiufengjui/Library/Logs/HiringDemand
+  reason: launchd on this Mac can trigger calendar events but may be blocked when spawning or reading /bin/bash scripts directly from the external SSD
+
+local_wrapper_copies:
+  main: /Users/chiufengjui/Library/Application Support/HiringDemandLauncher/run_hiring_demand.sh
+  telegram_probe: /Users/chiufengjui/Library/Application Support/HiringDemandLauncher/run_telegram_recipient_probe.sh
+  stock_codes: /Users/chiufengjui/Library/Application Support/HiringDemandLauncher/run_stock_codes_update.sh
+  source_scripts:
+    main: run_hiring_demand.sh
+    telegram_probe: run_telegram_recipient_probe.sh
+    stock_codes: run_stock_codes_update.sh
+  repo_pointer_env: HIRING_SCRIPT_DIR
+  reason: local wrapper copies execute from internal disk and point back to SSD repo through HIRING_SCRIPT_DIR
+
+local_scheduler_venv:
+  path: /Users/chiufengjui/Library/Application Support/HiringDemandLauncher/venv
+  python: /Users/chiufengjui/Library/Application Support/HiringDemandLauncher/venv/bin/python3
+  requirements: scheduler_requirements.txt
+  reason: launchd can enter the SSD wrapper but macOS may block background Python from reading an external-SSD venv such as venv/pyvenv.cfg
+
+launch_agents:
+  main:
+    label: com.hiring.demand.updater
+    plist: /Users/chiufengjui/Library/LaunchAgents/com.hiring.demand.updater.plist
+    template: scheduler_templates/com.hiring.demand.updater.plist.template
+    schedule: daily 11:30 Asia/Taipei
+    program_arguments:
+      - /Users/chiufengjui/Library/Application Support/HiringDemandLauncher/run_hiring_demand_launcher.sh
+      - run-main
+    delegated_script: run_hiring_demand.sh
+    delegated_local_wrapper: /Users/chiufengjui/Library/Application Support/HiringDemandLauncher/run_hiring_demand.sh
+    live_effects: formal crawler, report generation, optional Telegram and deploy depending on env
+
+  telegram_probe:
+    label: com.hiring.telegram.recipient.probe
+    plist: /Users/chiufengjui/Library/LaunchAgents/com.hiring.telegram.recipient.probe.plist
+    template: scheduler_templates/com.hiring.telegram.recipient.probe.plist.template
+    schedule: every 3600 seconds
+    program_arguments:
+      - /Users/chiufengjui/Library/Application Support/HiringDemandLauncher/run_hiring_demand_launcher.sh
+      - run-probe
+    delegated_script: run_telegram_recipient_probe.sh
+    delegated_local_wrapper: /Users/chiufengjui/Library/Application Support/HiringDemandLauncher/run_telegram_recipient_probe.sh
+    live_effects: Telegram getUpdates only, updates ignored local telegram_recipients.json
+
+  stock_codes:
+    label: com.hiring.stock.codes.updater
+    plist: /Users/chiufengjui/Library/LaunchAgents/com.hiring.stock.codes.updater.plist
+    template: scheduler_templates/com.hiring.stock.codes.updater.plist.template
+    schedule: daily 05:00 Asia/Taipei
+    program_arguments:
+      - /Users/chiufengjui/Library/Application Support/HiringDemandLauncher/run_hiring_demand_launcher.sh
+      - run-stock-codes
+    delegated_script: run_stock_codes_update.sh
+    delegated_local_wrapper: /Users/chiufengjui/Library/Application Support/HiringDemandLauncher/run_stock_codes_update.sh
+    output_dir: data/stock_codes
+    live_effects: official TWSE/TPEx API fetch; writes local Stock_codes CSV and receipt only
+    old_scheduler_transition: old com.stock.updater may remain loaded only while it writes to a different D-slot output directory
+
+new_machine_first_run:
+  command: ./install_scheduler.sh doctor --notify-ntfy
+  expected_if_missing: checker fails and sends ntfy alert when local launcher, local scheduler venv, or LaunchAgents are missing and NTFY_TOPIC is available
+  install_command: ./install_scheduler.sh install-all-local
+
+benchmark_isolation:
+  purpose: measure one complete formal crawler duration without launchd starting a second crawler
+  main_launchagent_label: com.hiring.demand.updater
+  probe_launchagent_label: com.hiring.telegram.recipient.probe
+  unload_before_benchmark: main_only
+  keep_probe_loaded_by_default: true
+  preflight_checker: python3 check_scheduler_installation.py --root . --benchmark-preflight
+  restore_checker: python3 check_scheduler_installation.py --root . --benchmark-restore-check
+  fresh_detail_cache_env:
+    HIRING_JOB_DETAIL_CACHE_MODE: refresh
+    HIRING_JOB_DETAIL_CACHE_REFRESH_KEY: benchmark_YYYYMMDD_HHMMSS
+  invalid_if_second_crawler_starts: true
+  invalid_if_process_markers_seen:
+    - HiringDemandLauncher
+    - run_hiring_demand.sh
+    - fetch_hiring_demand.py
+  restore_required_immediately_after_benchmark: true
+  restore_success_requires:
+    - com.hiring.demand.updater is loaded
+    - ProgramArguments points to /Users/chiufengjui/Library/Application Support/HiringDemandLauncher/run_hiring_demand_launcher.sh
+    - ProgramArguments includes run-main
+
+forbidden:
+  - launchd main/probe plist points directly to /Volumes/Extreme SSD scripts
+  - local launcher execs /Volumes/Extreme SSD/*.sh directly instead of internal-disk wrapper copies
+  - launchd main/probe plist contains old /Users/chiufengjui/D槽 path
+  - com.hiring.stock.codes.updater writes to the old D-slot Stock_codes output directory
+  - both com.stock.updater and com.hiring.stock.codes.updater write to the same Stock_codes directory
+  - local launcher points scheduled HIRING_PYTHON at SSD venv/bin/python3
+  - launcher template sends Telegram PNG directly
+  - launcher self-test runs the formal crawler

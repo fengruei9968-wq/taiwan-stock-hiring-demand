@@ -1,6 +1,6 @@
 # Hiring Demand Current Execution
 
-Updated: 2026-06-11
+Updated: 2026-06-13 00:20 Asia/Taipei
 
 ## Plain Summary
 
@@ -53,4 +53,142 @@ This document is the short active-truth entrypoint. Detailed legacy rules remain
 
 ## Next Exact Step
 
-Finish the hiring-demand governance template, run no-live verification, then use this folder as the model for `群組每日討論`. Daily memo must replace the data contract with its Railway Volume / DB restore contract before any repo split or deploy decision.
+Treat the hiring-demand project as functionally complete pending one final release-candidate review and an observed 11:30 scheduled run with the fixed stock-code path. Do not run another live 104 benchmark until the main LaunchAgent benchmark isolation preflight is used.
+
+## 2026-06-13 Functional Closeout Snapshot
+
+Plain status: the independent hiring-demand project is operationally complete as a local SSD project template: it has governed source, governed local scheduler, repo-local Stock_codes input, 104 crawler, Telegram/report/web artifact flow, deploy boundary checker, release readiness checker, tests, and protected-path rules.
+
+Confirmed current scheduler state:
+
+- `com.hiring.stock.codes.updater`: daily 05:00 Asia/Taipei.
+- `com.hiring.demand.updater`: daily 11:30 Asia/Taipei.
+- Both jobs go through `/Users/chiufengjui/Library/Application Support/HiringDemandLauncher/run_hiring_demand_launcher.sh`.
+- Stock_codes writes to `data/stock_codes/`.
+- The hiring scraper reads `config.yaml` `paths.stock_codes_dir: "data/stock_codes"`.
+
+Stock_codes auto-update evidence:
+
+- Temporary launchd test at 2026-06-13 00:09 Asia/Taipei triggered automatically.
+- `launchctl` reported `runs=1`, `last exit code=0`.
+- Generated `data/stock_codes/20260613_stock_codes.csv` and `data/stock_codes/20260613_stock_codes_all.csv`.
+- Both generated files have 2321 lines.
+- Receipt `data/runs/stock_codes_update/stock_codes_update_receipt_20260613.json` recorded `total_count=2320`, `is_complete=true`, `gate_result=PASS`.
+- Formal schedule was restored to 05:00 after the test.
+
+Important fix after the iPhone failure notification:
+
+- The iPhone notification came from a 2026-06-12 late-night `com.hiring.demand.updater` run, not from the 2026-06-13 Stock_codes scheduler.
+- Root cause: `fetch_hiring_demand.py` resolved relative `stock_codes_dir: "data/stock_codes"` against the parent project root, producing `/Volumes/Extreme SSD/Python/台股子公司投資資訊擷取與展示/台股投資資訊系統_完整專案/data/stock_codes`.
+- Fix: `stock_codes_dir` now uses `_resolve_hiring_path(...)`, same as `db_path` and `output_dir`, so it resolves to `/Volumes/Extreme SSD/Python/台股子公司投資資訊擷取與展示/台股投資資訊系統_完整專案/上市櫃公司徵人需求度/data/stock_codes`.
+- Targeted tests for the path contract passed after the fix.
+- Governance hardening: this is now a formal path boundary rule in `AGENTS.md` and `manifests/data_contract.yaml`.
+- Release gate: `check_release_readiness.py` now emits `path_boundary_violation` if `fetch_hiring_demand.py` resolves `stock_codes_dir` from the parent project root or old D-slot path.
+- Negative control: `tests/test_release_readiness.py::test_stock_codes_relative_path_resolving_outside_hiring_root_fails` verifies the bad resolver is blocked.
+
+Remaining authorization points:
+
+- Do not disable old `com.stock.updater` until the 05:00 Stock_codes job and the 11:30 main scraper have both been observed once in normal schedule order.
+- Do not stage/commit/push this governance/runtime batch until the release-candidate file list is reviewed.
+- Protected DB and `.env` files remain out of release candidates.
+
+## 2026-06-12 Stock Codes Scheduler Integration
+
+Plain status: the hiring-demand project now owns its own stock-code input pipeline. The active input directory is repo-local `data/stock_codes/`, and `config.yaml` reads that directory instead of the old D-slot stock-code updater output.
+
+Installed local scheduler state as of 2026-06-12 23:11 Asia/Taipei:
+
+- New LaunchAgent label: `com.hiring.stock.codes.updater`.
+- Installed plist: `/Users/chiufengjui/Library/LaunchAgents/com.hiring.stock.codes.updater.plist`.
+- Local launcher path: `/Users/chiufengjui/Library/Application Support/HiringDemandLauncher/run_hiring_demand_launcher.sh`.
+- Local Stock_codes wrapper path: `/Users/chiufengjui/Library/Application Support/HiringDemandLauncher/run_stock_codes_update.sh`.
+- Local scheduler venv: `/Users/chiufengjui/Library/Application Support/HiringDemandLauncher/venv`.
+- Schedule: daily 05:00 Asia/Taipei, before the main 11:30 hiring scraper. This avoids the main scraper reading Stock_codes while the updater is still writing.
+- Output directory: `data/stock_codes/`.
+- Local seed copied from the old D-slot 2026-06-12 complete CSVs so the next scraper has an immediate repo-local input.
+
+Transition rule:
+
+- Old `com.stock.updater` is still loaded and was not modified by this change.
+- It is not a conflict while it writes only to its old D-slot `Stock_codes` directory.
+- Do not point both `com.stock.updater` and `com.hiring.stock.codes.updater` to the same output directory.
+- After the new 05:00 scheduler is observed writing a fresh complete CSV before the main scraper starts, the old `com.stock.updater` can be disabled with explicit user authorization.
+
+Verification already run:
+
+- `bash -n install_scheduler.sh run_hiring_demand.sh run_telegram_recipient_probe.sh run_stock_codes_update.sh scheduler_templates/run_hiring_demand_launcher.sh.template` PASS.
+- `plutil -lint` for demand, Telegram probe, and Stock_codes plist templates PASS.
+- `venv/bin/python3 -m py_compile stock_codes_updater.py check_release_readiness.py check_scheduler_installation.py fetch_hiring_demand.py` PASS.
+- `TMPDIR="/Volumes/Extreme SSD/tmp" ./run_tests.sh` PASS, 112 tests.
+- `check_release_readiness.py --root . --output-dir _test_runtime/release_readiness_stock_codes_v2` PASS.
+- `check_hiring_deploy_boundary.py --hiring-dir . --stage3-dir stage3_web --output-dir _test_runtime/deploy_boundary_stock_codes_v2` PASS.
+- `check_scheduler_installation.py --root .` PASS, finding count 0.
+
+## 2026-06-12 Active Handoff: 104 Formal Run And Company Index
+
+Plain status: the 2026-06-12 rerun is not stuck at company matching anymore. The company-name matching optimization has passed the slow section and the active run is currently querying 104 job detail records to fetch `needEmp` demand counts.
+
+Important distinction:
+
+- The 104 search/list API returns job list data such as company name, job title, job id, link id, and employee-count range.
+- The 104 search/list API does not include the final demand-count field used by this project.
+- The demand-count field (`needEmp`, including values such as explicit headcount or `不限`) comes from the per-job detail API.
+- Therefore the scraper is one operational workflow, but it still has two data-source phases: search/list first, then detail lookup for matched jobs.
+
+Current live evidence as of 2026-06-12 16:50 Asia/Taipei:
+
+- Launcher process remained active: `/Users/chiufengjui/Library/Application Support/HiringDemandLauncher/run_hiring_demand.sh`.
+- Main Python process remained active: `fetch_hiring_demand.py`.
+- Stock code source is now governed inside this repo at `data/stock_codes/`, not the old D-slot stock-code updater output.
+- Latest D-slot stock-code CSV before the transition was `/Users/chiufengjui/D槽/Python/台股子公司投資資訊擷取與展示/台股上市櫃公司名稱確認與自動定時更新/Stock_codes/20260612_stock_codes_all.csv`; it may be used only as a one-time seed or comparison input, not as active truth.
+- Company index log: `已建立公司名稱比對索引，共 6619 個名稱 key，2320 個包含比對 entries`.
+- Company matching completed and moved into detail lookup: `開始查詢 1474 筆職缺的需求人數...`.
+- Latest observed progress: `已查詢 900/1474 筆職缺詳情`.
+
+Completion evidence still required before claiming the formal run is complete:
+
+- `職缺詳情查詢完成`
+- local calculation/write completion (`計算完成`, `已儲存`, `已寫入`)
+- report/media generation completion if triggered by the wrapper
+- Telegram publication result
+- guarded git add/commit/push result from the scheduler wrapper
+- final wrapper success line such as `程式執行完成`
+
+Current implementation changes pending review:
+
+- `fetch_hiring_demand.py`: added prebuilt company-name index and progress logs during company matching.
+- `config.yaml`: `paths.stock_codes_dir` now points to repo-local `data/stock_codes`.
+- `tests/test_company_match_index.py`: added coverage for exact, suffix-stripped, and contains matching without falling back to pandas row scans.
+- `tests/test_hiring_pipeline_path_contract.py`: updated the stock-code path contract to expect repo-local `data/stock_codes` and the independent `com.hiring.stock.codes.updater` scheduler template.
+
+Verification already run before the live rerun:
+
+- `./run_tests.sh tests/test_company_match_index.py tests/test_hiring_pipeline_path_contract.py tests/test_release_readiness.py tests/test_hiring_manifest.py tests/test_hiring_workflow_governance.py` passed.
+- `python3 -m py_compile fetch_hiring_demand.py tests/test_company_match_index.py` passed.
+- `python3 check_release_readiness.py --root . --output-dir _test_runtime/release_readiness_company_index_v2` passed with blocker count 0.
+
+Known next improvement after this run finishes:
+
+- Done on 2026-06-12: added same-day job-detail cache keyed by `linkJobId` so reruns do not re-query already fetched `needEmp` values.
+- Done on 2026-06-12: detail lookup is now resumable at the successful-record level because each successful detail lookup is persisted immediately.
+- Consider small, rate-limited parallel detail lookup only after confirming it does not increase 104 blocking risk.
+
+## 2026-06-12 Detail Cache / Resume Implementation
+
+Plain status: future reruns can reuse same-day successful 104 job-detail lookups. If a run is interrupted after hundreds of detail records, the next run should skip cached `linkJobId` records and only call 104 for missing records.
+
+Engineering details:
+
+- Cache path: `data/runs/job_detail_cache/YYYYMMDD_need_emp_cache.json`.
+- Cache key: `linkJobId`.
+- Cached value: raw `needEmp` text, for example `2人` or `不限`.
+- Persistence timing: immediately after each successful non-empty detail lookup.
+- Empty `needEmp` values are not cached, because the current 104 helper returns an empty string both for a legitimate missing field and for failed / unreachable detail requests. This avoids preserving network failures as if they were confirmed unspecified jobs.
+- `aggregate_company_data()` now loads the same-day cache before detail lookup and uses `fetch_job_detail_need_emp_cached()` for each matched job.
+
+Fresh verification:
+
+- `./run_tests.sh tests/test_job_detail_cache.py` passed.
+- `./run_tests.sh tests/test_job_detail_cache.py tests/test_company_match_index.py tests/test_hiring_pipeline_path_contract.py tests/test_release_readiness.py tests/test_hiring_manifest.py tests/test_hiring_workflow_governance.py` passed with 35 tests.
+- `venv/bin/python3 -m py_compile fetch_hiring_demand.py tests/test_job_detail_cache.py tests/test_company_match_index.py` passed.
+- `venv/bin/python3 check_release_readiness.py --root . --output-dir _test_runtime/release_readiness_detail_cache` passed with `gate_result=PASS`, `blocker_count=0`, `warning_count=0`.

@@ -77,6 +77,94 @@ entrypoints:
     requires_explicit_authorization_for_manual_run: true
     source_templates: scheduler_templates/*.plist.template
 
+  - id: scheduler_install_all_local
+    type: local_scheduler_install
+    path: install_scheduler.sh
+    command: ./install_scheduler.sh install-all-local
+    live_external_effects: false
+    git_effects: false
+    launchd_effects: true
+    local_launcher_effects: true
+    requires_explicit_authorization_for_manual_run: true
+    source_templates:
+      - scheduler_templates/*.plist.template
+      - scheduler_templates/run_hiring_demand_launcher.sh.template
+    local_launcher_path: /Users/chiufengjui/Library/Application Support/HiringDemandLauncher/run_hiring_demand_launcher.sh
+    local_main_wrapper_path: /Users/chiufengjui/Library/Application Support/HiringDemandLauncher/run_hiring_demand.sh
+    local_probe_wrapper_path: /Users/chiufengjui/Library/Application Support/HiringDemandLauncher/run_telegram_recipient_probe.sh
+    local_stock_codes_wrapper_path: /Users/chiufengjui/Library/Application Support/HiringDemandLauncher/run_stock_codes_update.sh
+    local_scheduler_venv_path: /Users/chiufengjui/Library/Application Support/HiringDemandLauncher/venv
+    local_scheduler_venv_requirements: scheduler_requirements.txt
+
+  - id: stock_codes_updater
+    type: scheduled_input_refresh
+    path: run_stock_codes_update.sh
+    command: ./run_stock_codes_update.sh
+    live_external_effects: true
+    git_effects: false
+    launchd_label: com.hiring.stock.codes.updater
+    default_schedule: daily 05:00 Asia/Taipei
+    output_dir: data/stock_codes
+    receipt_dir: data/runs/stock_codes_update
+    requires_explicit_authorization_for_manual_run: true
+    forbidden:
+      - write_to_old_d_slot_stock_codes
+      - run_104_scraper
+      - send_telegram_png
+      - git_commit_or_push
+
+  - id: stock_codes_scheduler_install
+    type: local_scheduler_install
+    path: install_scheduler.sh
+    command: ./install_scheduler.sh install-stock-codes
+    live_external_effects: false
+    git_effects: false
+    launchd_effects: true
+    requires_explicit_authorization_for_manual_run: true
+    source_template: scheduler_templates/com.hiring.stock.codes.updater.plist.template
+
+  - id: scheduler_doctor
+    type: local_scheduler_check
+    path: check_scheduler_installation.py
+    command: python3 check_scheduler_installation.py --root .
+    live_external_effects: false
+    git_effects: false
+    launchd_effects: false
+    optional_notification_command: python3 check_scheduler_installation.py --root . --notify-ntfy
+    optional_notification_channel: ntfy
+    verifies:
+      - local launcher exists and is executable
+      - local wrapper copies exist and are executable
+      - local scheduler venv exists and is executable
+      - launchd main schedule remains 11:30
+      - launchd Stock_codes schedule remains 05:00
+      - stock_codes_dir resolves inside the hiring repo, not the parent project
+
+  - id: scheduler_benchmark_preflight
+    type: local_scheduler_benchmark_check
+    path: check_scheduler_installation.py
+    command: python3 check_scheduler_installation.py --root . --benchmark-preflight
+    live_external_effects: false
+    git_effects: false
+    launchd_effects: false
+    requires_prior_manual_action: launchctl bootout gui/$(id -u) ~/Library/LaunchAgents/com.hiring.demand.updater.plist
+    verifies:
+      - main LaunchAgent com.hiring.demand.updater is unloaded before benchmark
+      - no HiringDemandLauncher, run_hiring_demand.sh, or fetch_hiring_demand.py process is running
+
+  - id: scheduler_benchmark_restore_check
+    type: local_scheduler_benchmark_check
+    path: check_scheduler_installation.py
+    command: python3 check_scheduler_installation.py --root . --benchmark-restore-check
+    live_external_effects: false
+    git_effects: false
+    launchd_effects: false
+    requires_prior_manual_action: launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.hiring.demand.updater.plist
+    verifies:
+      - main LaunchAgent com.hiring.demand.updater is loaded after benchmark
+      - main LaunchAgent points to local launcher
+      - main LaunchAgent arguments include run-main
+
   - id: hiring_scraper_wrapper
     type: scheduled_pipeline
     path: run_hiring_demand.sh
@@ -84,6 +172,13 @@ entrypoints:
     live_external_effects: true
     git_effects: possible_only_when_deploy_mode_enabled
     requires_explicit_authorization_for_manual_run: true
+    required_inputs:
+      - data/stock_codes/YYYYMMDD_stock_codes_all.csv
+    path_boundary:
+      default_relative_path_base: hiring_repo_root
+      forbidden_default_input_roots:
+        - parent_project_root/data/stock_codes
+        - old_d_slot_stock_codes
 
   - id: monthly_revenue_wrapper
     type: scheduled_pipeline

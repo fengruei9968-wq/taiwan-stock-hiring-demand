@@ -7,22 +7,22 @@
 
     <key>ProgramArguments</key>
     <array>
-        <string>/bin/bash</string>
-        <string>__HIRING_DIR__/run_telegram_recipient_probe.sh</string>
+        <string>__LOCAL_LAUNCHER_PATH__</string>
+        <string>run-probe</string>
     </array>
 
     <key>WorkingDirectory</key>
-    <string>__HIRING_DIR__</string>
+    <string>__LOCAL_LAUNCHER_DIR__</string>
 
     <!-- 每 1 小時讀取一次 Telegram /start updates，只更新 telegram_recipients.json -->
     <key>StartInterval</key>
     <integer>3600</integer>
 
     <key>StandardOutPath</key>
-    <string>__HIRING_DIR__/launchd_telegram_probe_stdout.log</string>
+    <string>__LOCAL_LOG_DIR__/telegram_probe_stdout.log</string>
 
     <key>StandardErrorPath</key>
-    <string>__HIRING_DIR__/launchd_telegram_probe_stderr.log</string>
+    <string>__LOCAL_LOG_DIR__/telegram_probe_stderr.log</string>
 
     <key>EnvironmentVariables</key>
     <dict>

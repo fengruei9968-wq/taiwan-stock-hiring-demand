@@ -5,7 +5,8 @@
 # 排程：每天 11:30 由 launchd 呼叫
 # =============================================================================
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+SCRIPT_SELF_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+SCRIPT_DIR="${HIRING_SCRIPT_DIR:-$SCRIPT_SELF_DIR}"
 PROJECT_ROOT="${HIRING_PROJECT_ROOT:-$(cd "$SCRIPT_DIR/.." && pwd -P)}"
 PYTHON="${HIRING_PYTHON:-$SCRIPT_DIR/venv/bin/python3}"
 MAIN_SCRIPT="$SCRIPT_DIR/fetch_hiring_demand.py"
@@ -41,6 +42,60 @@ from tools.notify import send_notification
 send_notification('$title', '$message', channels=['ntfy'])
 " 2>/dev/null || true
     fi
+}
+
+run_python_script() {
+    local script_path="$1"
+    shift
+    "$PYTHON" -c '
+import importlib.abc
+import importlib.util
+from pathlib import Path
+import sys
+
+script = Path(sys.argv[1]).resolve()
+script_dir = script.parent
+
+LOCAL_MODULES = {
+    "generate_unlimited_hiring_revenue_report": "generate_unlimited_hiring_revenue_report.py",
+    "hiring_anomaly_detector": "hiring_anomaly_detector.py",
+    "hiring_workflow_governance": "hiring_workflow_governance.py",
+    "telegram_sender": "telegram_sender.py",
+}
+
+
+class RepoLocalLoader(importlib.abc.MetaPathFinder, importlib.abc.Loader):
+    def find_spec(self, fullname, path=None, target=None):
+        filename = LOCAL_MODULES.get(fullname)
+        if not filename:
+            return None
+        module_path = script_dir / filename
+        if not module_path.exists():
+            return None
+        return importlib.util.spec_from_loader(fullname, self, origin=str(module_path))
+
+    def create_module(self, spec):
+        return None
+
+    def exec_module(self, module):
+        module_path = Path(module.__spec__.origin)
+        module.__file__ = str(module_path)
+        module.__package__ = ""
+        code = compile(module_path.read_text(encoding="utf-8"), str(module_path), "exec")
+        exec(code, module.__dict__)
+
+
+sys.meta_path.insert(0, RepoLocalLoader())
+sys.argv = [str(script)] + sys.argv[2:]
+globals_dict = {
+    "__name__": "__main__",
+    "__file__": str(script),
+    "__package__": None,
+    "__cached__": None,
+}
+code = compile(script.read_text(encoding="utf-8"), str(script), "exec")
+exec(code, globals_dict)
+' "$script_path" "$@"
 }
 
 # 記錄時間
@@ -121,7 +176,7 @@ for PROBE_DELAY in $PROBE_RETRY_DELAYS; do
 
     PROBE_RECEIPT="$PROBE_ROOT/api_probe_receipt_attempt_${PROBE_ATTEMPT}.json"
     echo "--- 104 API probe attempt ${PROBE_ATTEMPT} ---" >> "$LOG_FILE"
-    "$PYTHON" "$PROBE_SCRIPT" \
+    run_python_script "$PROBE_SCRIPT" \
         --keyword "$PROBE_KEYWORD" \
         --timeout "$PROBE_TIMEOUT" \
         --output "$PROBE_RECEIPT" >> "$LOG_FILE" 2>&1
@@ -167,7 +222,7 @@ if [ "$DEPLOY_MODE" = "deploy" ] && [ -z "${HIRING_DEMAND_RUN_MODE:-}" ]; then
 fi
 export HIRING_DEMAND_RUN_MODE="$RUN_MODE"
 echo "Run mode: $HIRING_DEMAND_RUN_MODE / Deploy mode: $DEPLOY_MODE" >> "$LOG_FILE"
-"$PYTHON" "$MAIN_SCRIPT" >> "$LOG_FILE" 2>&1
+run_python_script "$MAIN_SCRIPT" >> "$LOG_FILE" 2>&1
 EXIT_CODE=$?
 
 if [ $EXIT_CODE -ne 0 ]; then
@@ -186,7 +241,7 @@ if [ $EXIT_CODE -eq 0 ]; then
     MANIFEST="$SCRIPT_DIR/data/runs/latest_hiring_run_manifest.json"
     CHECK_ROOT="$SCRIPT_DIR/data/runs/check_$(date '+%Y%m%d_%H%M%S')"
     echo "--- 開始徵人需求度 checker ---" >> "$LOG_FILE"
-    "$PYTHON" "$CHECKER_SCRIPT" --manifest "$MANIFEST" --output-dir "$CHECK_ROOT" >> "$LOG_FILE" 2>&1
+    run_python_script "$CHECKER_SCRIPT" --manifest "$MANIFEST" --output-dir "$CHECK_ROOT" >> "$LOG_FILE" 2>&1
     CHECK_EXIT=$?
     if [ $CHECK_EXIT -ne 0 ]; then
         echo "checker 失敗，exit code: $CHECK_EXIT" >> "$LOG_FILE"
@@ -198,7 +253,7 @@ if [ $EXIT_CODE -eq 0 ]; then
     REPORT_MANIFEST="$SCRIPT_DIR/data/reports/latest_unlimited_hiring_revenue_report_manifest.json"
     REPORT_CHECK_ROOT="$SCRIPT_DIR/data/reports/report_check_$(date '+%Y%m%d_%H%M%S')"
     echo "--- 開始人數不限公司近六月營收報表 ---" >> "$LOG_FILE"
-    "$PYTHON" "$REPORT_SCRIPT" \
+    run_python_script "$REPORT_SCRIPT" \
         --data-dir "$SCRIPT_DIR/data" \
         --db-path "$DB_PATH" \
         --latest-manifest-path "$REPORT_MANIFEST" >> "$LOG_FILE" 2>&1
@@ -209,7 +264,7 @@ if [ $EXIT_CODE -eq 0 ]; then
         exit $REPORT_EXIT
     fi
 
-    "$PYTHON" "$REPORT_CHECKER_SCRIPT" \
+    run_python_script "$REPORT_CHECKER_SCRIPT" \
         --manifest "$REPORT_MANIFEST" \
         --output-dir "$REPORT_CHECK_ROOT" >> "$LOG_FILE" 2>&1
     REPORT_CHECK_EXIT=$?
@@ -236,7 +291,7 @@ PY
             echo "偵測到缺月營收公司，開始自動補抓: $MISSING_REVENUE_CODES" >> "$LOG_FILE"
             REVENUE_REMEDIATION_ROOT="$SCRIPT_DIR/data/reports/revenue_remediation_$(date '+%Y%m%d_%H%M%S')"
             mkdir -p "$REVENUE_REMEDIATION_ROOT"
-            "$PYTHON" "$MONTHLY_REVENUE_SCRIPT" \
+            run_python_script "$MONTHLY_REVENUE_SCRIPT" \
                 --codes "$MISSING_REVENUE_CODES" \
                 --skip-git \
                 --output-receipt "$REVENUE_REMEDIATION_ROOT/monthly_revenue_backfill_receipt.json" >> "$LOG_FILE" 2>&1
@@ -248,7 +303,7 @@ PY
             fi
 
             echo "缺月營收補抓完成，重新產生報表並重跑 checker" >> "$LOG_FILE"
-            "$PYTHON" "$REPORT_SCRIPT" \
+            run_python_script "$REPORT_SCRIPT" \
                 --data-dir "$SCRIPT_DIR/data" \
                 --db-path "$DB_PATH" \
                 --latest-manifest-path "$REPORT_MANIFEST" >> "$LOG_FILE" 2>&1
@@ -260,7 +315,7 @@ PY
             fi
 
             REPORT_CHECK_ROOT="$SCRIPT_DIR/data/reports/report_check_retry_$(date '+%Y%m%d_%H%M%S')"
-            "$PYTHON" "$REPORT_CHECKER_SCRIPT" \
+            run_python_script "$REPORT_CHECKER_SCRIPT" \
                 --manifest "$REPORT_MANIFEST" \
                 --output-dir "$REPORT_CHECK_ROOT" >> "$LOG_FILE" 2>&1
             REPORT_CHECK_EXIT=$?
@@ -282,7 +337,7 @@ PY
     REPORT_MEDIA_RECEIPT="$REPORT_OUTPUT_DIR/unlimited_hiring_revenue_media_receipt_${REPORT_KEY}.json"
 
     echo "--- 開始 PNG/PDF media render ---" >> "$LOG_FILE"
-    "$PYTHON" "$REPORT_RENDER_SCRIPT" \
+    run_python_script "$REPORT_RENDER_SCRIPT" \
         --manifest "$REPORT_MANIFEST" \
         --png-scale "${HIRING_REPORT_PNG_SCALE:-1.5}" \
         --png-dpi "${HIRING_REPORT_PNG_DPI:-150}" >> "$LOG_FILE" 2>&1
@@ -294,7 +349,7 @@ PY
     fi
 
     REPORT_MEDIA_CHECK_ROOT="$SCRIPT_DIR/data/reports/report_media_check_$(date '+%Y%m%d_%H%M%S')"
-    "$PYTHON" "$REPORT_CHECKER_SCRIPT" \
+    run_python_script "$REPORT_CHECKER_SCRIPT" \
         --manifest "$REPORT_MANIFEST" \
         --output-dir "$REPORT_MEDIA_CHECK_ROOT" \
         --require-media \
@@ -308,7 +363,7 @@ PY
     echo "PNG/PDF media checker PASS: $REPORT_MEDIA_CHECK_ROOT" >> "$LOG_FILE"
 
     echo "--- 同步異常偵測摘要到 stage3_web/hiring_reports 與 data/hiring_reports ---" >> "$LOG_FILE"
-    "$PYTHON" "$WEB_SYNC_SCRIPT" \
+    run_python_script "$WEB_SYNC_SCRIPT" \
         --manifest "$REPORT_MANIFEST" \
         --stage3-dir "$STAGE3_DIR" >> "$LOG_FILE" 2>&1
     WEB_SYNC_EXIT=$?
@@ -325,7 +380,7 @@ PY
     TELEGRAM_RECEIPT="$REPORT_OUTPUT_DIR/telegram_send_receipt_${REPORT_KEY}.json"
     if [ "${HIRING_TELEGRAM_SEND_MODE:-disabled}" = "enabled" ]; then
         echo "--- Telegram sendDocument 已啟用，開始發送 PNG 文件（無文字說明） ---" >> "$LOG_FILE"
-        "$PYTHON" "$TELEGRAM_SCRIPT" \
+        run_python_script "$TELEGRAM_SCRIPT" \
             --env-path "$SCRIPT_DIR/.env" \
             --recipients-path "$SCRIPT_DIR/telegram_recipients.json" \
             --photo-path "$REPORT_PNG_PATH" \
@@ -352,7 +407,7 @@ PY
     fi
 
     DEPLOY_CHECK_ROOT="$SCRIPT_DIR/data/runs/deploy_check_$(date '+%Y%m%d_%H%M%S')"
-    "$PYTHON" "$CHECKER_SCRIPT" --manifest "$MANIFEST" --output-dir "$DEPLOY_CHECK_ROOT" --require-deploy-mode >> "$LOG_FILE" 2>&1
+    run_python_script "$CHECKER_SCRIPT" --manifest "$MANIFEST" --output-dir "$DEPLOY_CHECK_ROOT" --require-deploy-mode >> "$LOG_FILE" 2>&1
     DEPLOY_CHECK_EXIT=$?
     if [ $DEPLOY_CHECK_EXIT -ne 0 ]; then
         echo "deploy checker 失敗，exit code: $DEPLOY_CHECK_EXIT" >> "$LOG_FILE"
@@ -364,34 +419,34 @@ PY
     GIT="/usr/bin/git"
     TODAY=$(date '+%Y/%m/%d %H:%M')
 
-    if [ ! -d "$STAGE3_DIR/.git" ]; then
-        echo "內部 stage3_web 尚未初始化 Git repo，停止自動 commit/push：$STAGE3_DIR" >> "$LOG_FILE"
-        notify "徵人需求度部署需初始化" "內部 stage3_web 尚未設定 Git remote，未 commit/push"
+    cd "$SCRIPT_DIR"
+    if ! "$GIT" rev-parse --show-toplevel >/dev/null 2>&1; then
+        echo "徵人需求度外層資料夾尚未初始化 Git repo，停止自動 commit/push：$SCRIPT_DIR" >> "$LOG_FILE"
+        notify "徵人需求度部署需初始化" "外層徵人需求度 repo 尚未設定 Git remote，未 commit/push"
         exit 1
     fi
 
-    cd "$STAGE3_DIR"
     PRE_STAGED=$("$GIT" diff --cached --name-only)
     if [ -n "$PRE_STAGED" ]; then
-        echo "stage3_web 已有 staged changes，停止自動部署：" >> "$LOG_FILE"
+        echo "外層 repo 已有 staged changes，停止自動部署：" >> "$LOG_FILE"
         echo "$PRE_STAGED" >> "$LOG_FILE"
-        notify "徵人需求度部署停止" "stage3_web 已有 staged changes，請人工確認"
+        notify "徵人需求度部署停止" "外層 repo 已有 staged changes，請人工確認"
         exit 1
     fi
 
-    "$GIT" add hiring_reports data/hiring_reports >> "$LOG_FILE" 2>&1
+    "$GIT" add stage3_web/hiring_reports stage3_web/data/hiring_reports >> "$LOG_FILE" 2>&1
     STAGED_AFTER_ADD=$("$GIT" diff --cached --name-only)
-    UNRELATED_STAGED=$(printf '%s\n' "$STAGED_AFTER_ADD" | grep -Ev '^(hiring_reports/|data/hiring_reports/)' || true)
+    UNRELATED_STAGED=$(printf '%s\n' "$STAGED_AFTER_ADD" | grep -Ev '^stage3_web/(hiring_reports/|data/hiring_reports/)' || true)
     if [ -n "$UNRELATED_STAGED" ]; then
-        echo "自動部署只允許 stage hiring_reports 與 data/hiring_reports，停止：" >> "$LOG_FILE"
+        echo "自動部署只允許 stage3_web/hiring_reports 與 stage3_web/data/hiring_reports，停止：" >> "$LOG_FILE"
         echo "$UNRELATED_STAGED" >> "$LOG_FILE"
-        notify "徵人需求度部署停止" "偵測到非 hiring_reports / data/hiring_reports staged changes"
+        notify "徵人需求度部署停止" "偵測到非 stage3_web hiring_reports staged changes"
         exit 1
     fi
 
-    if "$GIT" diff --cached --quiet -- hiring_reports data/hiring_reports; then
-        echo "hiring_reports 與 data/hiring_reports 無 staged 變更，略過 commit/push。" >> "$LOG_FILE"
-        notify "徵人需求度更新完成" "checker PASS；hiring_reports / data/hiring_reports 無需部署 ${TODAY}"
+    if "$GIT" diff --cached --quiet -- stage3_web/hiring_reports stage3_web/data/hiring_reports; then
+        echo "stage3_web/hiring_reports 與 stage3_web/data/hiring_reports 無 staged 變更，略過 commit/push。" >> "$LOG_FILE"
+        notify "徵人需求度更新完成" "checker PASS；stage3_web hiring_reports 無需部署 ${TODAY}"
         echo "" >> "$LOG_FILE"
         exit 0
     fi

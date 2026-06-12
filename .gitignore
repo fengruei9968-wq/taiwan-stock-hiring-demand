@@ -47,7 +47,9 @@ data/reports/latest_unlimited_hiring_revenue_report_manifest.json
 data/[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]_hiring_demand.csv
 data/reports/
 data/runs/
+data/runs/job_detail_cache/
 data/revenue_snapshots/
+data/stock_codes/
 data/stock_monthly_revenue_raw/
 
 # Web deploy keeps latest JSON visible; dated web report history stays local.

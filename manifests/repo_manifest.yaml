@@ -36,6 +36,7 @@ railway:
 
 source_surfaces:
   pipeline:
+    - stock_codes_updater.py
     - fetch_hiring_demand.py
     - fetch_monthly_revenue.py
     - fetch_emerging_revenue.py
@@ -50,6 +51,7 @@ source_surfaces:
     - check_release_readiness.py
     - hiring_workflow_governance.py
   scheduler:
+    - run_stock_codes_update.sh
     - run_hiring_demand.sh
     - run_monthly_revenue.sh
     - run_stock_monthly_revenue_raw.sh
@@ -76,6 +78,16 @@ local_only_paths:
   - logs/**
   - "*.log"
   - Backup/**
+  - data/runs/job_detail_cache/**
+  - data/stock_codes/**
+  - data/reports/**/*.png
+  - data/reports/**/*.pdf
+  - data/reports/**/*.html
+
+repo_external_archive:
+  report_artifacts_root: /Volumes/Extreme SSD/Python/台股子公司投資資訊擷取與展示/_archives/上市櫃公司徵人需求度/report_artifacts
+  receipts_root: /Volumes/Extreme SSD/Python/台股子公司投資資訊擷取與展示/_archives/上市櫃公司徵人需求度/receipts
+  archive_requires_explicit_user_authorization: true
 
 release_readiness:
   checker: check_release_readiness.py

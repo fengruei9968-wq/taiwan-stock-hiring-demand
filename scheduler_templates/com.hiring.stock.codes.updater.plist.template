@@ -2,39 +2,33 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <!-- 任務標識符 -->
     <key>Label</key>
-    <string>com.hiring.demand.updater</string>
+    <string>com.hiring.stock.codes.updater</string>
 
-    <!-- 執行的程式：launchd 先跑內建磁碟上的 local launcher，再由 launcher 轉呼叫 SSD wrapper -->
     <key>ProgramArguments</key>
     <array>
         <string>__LOCAL_LAUNCHER_PATH__</string>
-        <string>run-main</string>
+        <string>run-stock-codes</string>
     </array>
 
-    <!-- 工作目錄 -->
     <key>WorkingDirectory</key>
     <string>__LOCAL_LAUNCHER_DIR__</string>
 
-    <!-- 排程時間：每天 11:30 -->
+    <!-- 每天 05:00 更新徵人需求度專用 Stock_codes，早於 11:30 主爬蟲 -->
     <key>StartCalendarInterval</key>
     <dict>
         <key>Hour</key>
-        <integer>11</integer>
+        <integer>5</integer>
         <key>Minute</key>
-        <integer>30</integer>
+        <integer>0</integer>
     </dict>
 
-    <!-- 標準輸出日誌 -->
     <key>StandardOutPath</key>
-    <string>__LOCAL_LOG_DIR__/hiring_demand_stdout.log</string>
+    <string>__LOCAL_LOG_DIR__/stock_codes_stdout.log</string>
 
-    <!-- 標準錯誤日誌 -->
     <key>StandardErrorPath</key>
-    <string>__LOCAL_LOG_DIR__/hiring_demand_stderr.log</string>
+    <string>__LOCAL_LOG_DIR__/stock_codes_stderr.log</string>
 
-    <!-- 環境變數 -->
     <key>EnvironmentVariables</key>
     <dict>
         <key>PATH</key>
@@ -43,7 +37,6 @@
         <string>zh_TW.UTF-8</string>
     </dict>
 
-    <!-- 如果錯過執行時間，開機後立即執行 -->
     <key>StartOnMount</key>
     <true/>
 </dict>

@@ -53,6 +53,6 @@ api:
 
 # 路徑設定
 paths:
-  stock_codes_dir: "../台股上市櫃公司名稱確認與自動定時更新/Stock_codes"
+  stock_codes_dir: "data/stock_codes"
   db_path: "stage3_web/investment.db"
   output_dir: "data"

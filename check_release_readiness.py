@@ -20,23 +20,37 @@ REQUIRED_FILES = [
     "AGENTS.md",
     "docs/CURRENT_EXECUTION.md",
     "docs/COMMANDS.md",
+    "docs/SCHEDULER.md",
     "docs/ADR/ADR-001-governance-import-policy.md",
     "manifests/repo_manifest.yaml",
     "manifests/data_contract.yaml",
     "manifests/allowed_entrypoints.yaml",
+    "manifests/scheduler_manifest.yaml",
     "run_tests.sh",
     "install_scheduler.sh",
+    "scheduler_requirements.txt",
+    "config.yaml",
+    "fetch_hiring_demand.py",
+    "stock_codes_updater.py",
+    "run_stock_codes_update.sh",
     "cleanup_test_runtime.py",
+    "cleanup_report_artifacts.py",
+    "check_scheduler_installation.py",
     "scheduler_templates/com.hiring.daily.artifacts.backup.plist.template",
     "scheduler_templates/com.hiring.demand.updater.plist.template",
+    "scheduler_templates/com.hiring.stock.codes.updater.plist.template",
     "scheduler_templates/com.hiring.telegram.recipient.probe.plist.template",
     "scheduler_templates/com.hiring.test-runtime.cleanup.plist.template",
     "scheduler_templates/com.monthly.revenue.updater.plist.template",
     "scheduler_templates/com.stock.monthly.revenue.raw.emerging.updater.plist.template",
     "scheduler_templates/com.stock.monthly.revenue.raw.missing.retry.plist.template",
     "scheduler_templates/com.stock.monthly.revenue.raw.updater.plist.template",
+    "scheduler_templates/run_hiring_demand_launcher.sh.template",
     "tests/test_release_readiness.py",
     "tests/test_cleanup_test_runtime.py",
+    "tests/test_cleanup_report_artifacts.py",
+    "tests/test_stock_codes_updater.py",
+    "tests/test_scheduler_local_runtime.py",
     "check_hiring_deploy_boundary.py",
     "check_hiring_runtime_governance.py",
     "check_release_readiness.py",
@@ -62,6 +76,13 @@ MANIFEST_MARKERS = {
     "manifests/data_contract.yaml": [
         "schema_version: hiring_data_contract_v1",
         "source_of_truth:",
+        "path_boundary_contract:",
+        "job_detail_cache_contract:",
+        "stock_codes_contract:",
+        "data/stock_codes/YYYYMMDD_stock_codes_all.csv",
+        "report_artifact_retention_contract:",
+        "need_emp_raw",
+        "not_deployable_web_artifact",
         "web_artifact_contract:",
         "latest_hiring_demand_web_data.json",
         "telegram_contract:",
@@ -71,9 +92,26 @@ MANIFEST_MARKERS = {
         "schema_version: hiring_allowed_entrypoints_v1",
         "release_readiness_check",
         "deploy_boundary_check",
+        "scheduler_doctor",
+        "scheduler_benchmark_preflight",
+        "scheduler_benchmark_restore_check",
         "hiring_scraper_wrapper",
         "telegram_sender",
         "forbidden_entrypoint_patterns:",
+    ],
+    "manifests/scheduler_manifest.yaml": [
+        "schema_version: hiring_scheduler_manifest_v1",
+        "local_launcher:",
+        "local_scheduler_venv:",
+        "benchmark_isolation:",
+        "preflight_checker:",
+        "restore_checker:",
+        "invalid_if_second_crawler_starts: true",
+        "run_hiring_demand_launcher.sh",
+        "install-all-local",
+        "doctor --notify-ntfy",
+        "com.hiring.stock.codes.updater",
+        "run-stock-codes",
     ],
 }
 
@@ -97,6 +135,8 @@ LOCAL_ONLY_PATTERNS = [
     "logs/**",
     "*.log",
     "Backup/**",
+    "data/runs/job_detail_cache/**",
+    "data/stock_codes/**",
 ]
 
 DEPLOY_JSON_FILES = [
@@ -112,6 +152,14 @@ ALLOWED_DAILY_PUBLISH_PATTERNS = [
     "stage3_web/hiring_reports/**",
     "stage3_web/data/hiring_reports/**",
 ]
+
+BINARY_REPORT_ARTIFACT_EXTENSIONS = {
+    ".png",
+    ".pdf",
+    ".jpg",
+    ".jpeg",
+    ".webp",
+}
 
 
 @dataclass
@@ -364,6 +412,121 @@ def check_allowed_publish_surface(root: Path) -> list[Finding]:
     return findings
 
 
+def check_binary_report_artifacts(root: Path) -> list[Finding]:
+    findings: list[Finding] = []
+    publish_roots = [
+        root / "stage3_web" / "hiring_reports",
+        root / "stage3_web" / "data" / "hiring_reports",
+    ]
+    for publish_root in publish_roots:
+        if not publish_root.exists():
+            continue
+        for path in publish_root.rglob("*"):
+            if not path.is_file() or path.suffix.lower() not in BINARY_REPORT_ARTIFACT_EXTENSIONS:
+                continue
+            rel_path = rel(path, root)
+            findings.append(
+                Finding(
+                    "blocker",
+                    "binary_report_artifact_in_publish_surface",
+                    rel_path,
+                    "PNG/PDF/JPG 類報告檔出現在 Railway/GitHub publish surface；每日網頁摘要應由 JSON 重建，不直接部署圖片或 PDF。",
+                    "移出 `stage3_web/hiring_reports/**` 與 `stage3_web/data/hiring_reports/**`，保留本機 `data/reports/**` 或 repo 外 archive。",
+                )
+            )
+    return findings
+
+
+def check_runtime_cache_boundary(root: Path) -> list[Finding]:
+    findings: list[Finding] = []
+    cache_root = root / "data" / "runs" / "job_detail_cache"
+    cache_files = [path for path in cache_root.glob("**/*") if path.is_file()] if cache_root.exists() else []
+
+    for path in cache_files:
+        rel_path = rel(path, root)
+        if not is_ignored(root, rel_path):
+            findings.append(
+                Finding(
+                    "blocker",
+                    "runtime_cache_not_ignored",
+                    rel_path,
+                    "104 detail needEmp 同日快取是 local runtime cache，但目前沒有被 Git ignore 擋住。",
+                    "確認 `.gitignore` 或 repo manifest 將 `data/runs/job_detail_cache/**` 視為 local-only，不得納入 release candidate。",
+                )
+            )
+
+    status_state, status_lines = git_status_for_paths(root, ["data/runs/job_detail_cache"])
+    if status_state == "available":
+        for line in status_lines:
+            path = line[3:].strip()
+            findings.append(
+                Finding(
+                    "blocker",
+                    "runtime_cache_dirty_or_staged",
+                    path,
+                    "104 detail needEmp 同日快取出現在 Git status 中；這是續跑用 runtime cache，不是正式 release artifact。",
+                    "不要 stage/commit 這個 cache；正式資料以 CSV、DB、run manifest 與 web JSON 為準。",
+                )
+            )
+    return findings
+
+
+def check_path_boundary_contract(root: Path) -> list[Finding]:
+    findings: list[Finding] = []
+    config = root / "config.yaml"
+    fetcher = root / "fetch_hiring_demand.py"
+
+    if config.exists():
+        config_text = read_text(config)
+        if 'stock_codes_dir: "data/stock_codes"' not in config_text:
+            findings.append(
+                Finding(
+                    "blocker",
+                    "path_boundary_violation",
+                    "config.yaml",
+                    "Stock_codes 設定不是 repo-local `data/stock_codes`，容易解析到舊 D 槽或上一層專案。",
+                    "將 `paths.stock_codes_dir` 固定為 `data/stock_codes`，除非使用明確環境變數覆寫。",
+                )
+            )
+
+    if fetcher.exists():
+        fetcher_text = read_text(fetcher)
+        required_markers = [
+            "HIRING_DIR = BASE_DIR.resolve()",
+            "paths['stock_codes_dir'] = _resolve_hiring_path",
+            "paths.get('stock_codes_dir', 'data/stock_codes')",
+            "paths['db_path'] = _resolve_hiring_path",
+            "paths['output_dir'] = _resolve_hiring_path",
+        ]
+        for marker in required_markers:
+            if marker not in fetcher_text:
+                findings.append(
+                    Finding(
+                        "blocker",
+                        "path_boundary_violation",
+                        "fetch_hiring_demand.py",
+                        f"主爬蟲缺少獨立 repo path boundary 標記 `{marker}`。",
+                        "所有相對 runtime path 必須相對於徵人需求度 repo root 解析，不得默默落到上一層完整專案。",
+                    )
+                )
+        forbidden_markers = [
+            "paths['stock_codes_dir'] = _resolve_project_path",
+            "../台股上市櫃公司名稱確認與自動定時更新/Stock_codes",
+        ]
+        for marker in forbidden_markers:
+            if marker in fetcher_text:
+                findings.append(
+                    Finding(
+                        "blocker",
+                        "path_boundary_violation",
+                        "fetch_hiring_demand.py",
+                        f"主爬蟲仍包含會導向舊路徑或上一層專案的邏輯 `{marker}`。",
+                        "改用 `_resolve_hiring_path(..., env_name='STOCK_CODES_DIR')`，預設值為 `data/stock_codes`。",
+                    )
+                )
+    return findings
+
+
 def write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     fieldnames = ["severity", "finding_type", "affected_file", "plain_description", "required_fix"]
@@ -410,6 +573,9 @@ def run_check(root: Path, output_dir: Path) -> dict[str, Any]:
     findings.extend(git_findings)
     findings.extend(check_deploy_json(root))
     findings.extend(check_allowed_publish_surface(root))
+    findings.extend(check_binary_report_artifacts(root))
+    findings.extend(check_runtime_cache_boundary(root))
+    findings.extend(check_path_boundary_contract(root))
 
     receipt = build_receipt(root, output_dir, findings, git_scope)
     (output_dir / "hiring_release_readiness_receipt.json").write_text(

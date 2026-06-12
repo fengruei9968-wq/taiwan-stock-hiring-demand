@@ -114,8 +114,8 @@ def load_config() -> dict:
         config = yaml.safe_load(f)
 
     paths = config.setdefault('paths', {})
-    paths['stock_codes_dir'] = _resolve_project_path(
-        paths.get('stock_codes_dir', '../台股上市櫃公司名稱確認與自動定時更新/Stock_codes'),
+    paths['stock_codes_dir'] = _resolve_hiring_path(
+        paths.get('stock_codes_dir', 'data/stock_codes'),
         env_name='STOCK_CODES_DIR',
     )
     paths['db_path'] = _resolve_hiring_path(
@@ -379,6 +379,98 @@ def fetch_job_detail_need_emp(link_job_id: str, config: dict) -> str:
             return str(need_emp)
 
     return ""
+
+
+def _job_detail_cache_date(config: dict) -> str:
+    runtime_config = config.get('runtime', {})
+    configured_date = runtime_config.get('run_date')
+    if configured_date:
+        return str(configured_date)
+    return datetime.now().strftime('%Y%m%d')
+
+
+def get_job_detail_cache_path(config: dict) -> Path:
+    """Return the same-day job-detail cache path for resumable 104 detail lookup."""
+    output_dir = Path(config.get('paths', {}).get('output_dir', 'data'))
+    cache_key = _job_detail_cache_date(config)
+    cache_mode = os.environ.get('HIRING_JOB_DETAIL_CACHE_MODE', '').strip().lower()
+    if cache_mode == 'refresh':
+        refresh_key = os.environ.get('HIRING_JOB_DETAIL_CACHE_REFRESH_KEY', '').strip()
+        if not refresh_key:
+            refresh_key = datetime.now().strftime('%H%M%S')
+        cache_key = f"{cache_key}_refresh_{refresh_key}"
+    return output_dir / 'runs' / 'job_detail_cache' / f"{cache_key}_need_emp_cache.json"
+
+
+def load_job_detail_cache(config: dict) -> dict:
+    """Load same-day job detail cache. Missing or malformed cache starts empty."""
+    cache_path = get_job_detail_cache_path(config)
+    cache_date = _job_detail_cache_date(config)
+    cache_mode = os.environ.get('HIRING_JOB_DETAIL_CACHE_MODE', '').strip().lower()
+    cache_state = {
+        'version': 1,
+        'date': cache_date,
+        'mode': cache_mode or 'resume',
+        'records': {},
+        '_path': str(cache_path),
+    }
+    if cache_mode == 'refresh':
+        logger.info(f"職缺詳情快取模式 refresh：本輪不讀舊快取，將寫入新的 benchmark 快取 {cache_path}")
+        return cache_state
+    if not cache_path.exists():
+        return cache_state
+
+    try:
+        data = json.loads(cache_path.read_text(encoding='utf-8'))
+    except (OSError, json.JSONDecodeError) as e:
+        logger.warning(f"職缺詳情快取讀取失敗，改用空快取: {e}")
+        return cache_state
+
+    if data.get('date') != cache_date or not isinstance(data.get('records'), dict):
+        return cache_state
+
+    cache_state['records'] = data['records']
+    return cache_state
+
+
+def save_job_detail_cache(cache_state: dict) -> Path:
+    """Persist job detail cache atomically enough for single-process scheduler use."""
+    cache_path = Path(cache_state['_path'])
+    cache_path.parent.mkdir(parents=True, exist_ok=True)
+    serializable = {
+        'version': cache_state.get('version', 1),
+        'date': cache_state.get('date', ''),
+        'mode': cache_state.get('mode', 'resume'),
+        'updated_at': datetime.now().isoformat(timespec='seconds'),
+        'records': cache_state.get('records', {}),
+    }
+    tmp_path = cache_path.with_suffix(cache_path.suffix + '.tmp')
+    tmp_path.write_text(
+        json.dumps(serializable, ensure_ascii=False, indent=2, sort_keys=True),
+        encoding='utf-8',
+    )
+    tmp_path.replace(cache_path)
+    return cache_path
+
+
+def fetch_job_detail_need_emp_cached(link_job_id: str, config: dict, cache_state: dict) -> str:
+    """Fetch needEmp with same-day cache so interrupted reruns can resume detail lookup."""
+    if not link_job_id:
+        return ""
+
+    records = cache_state.setdefault('records', {})
+    cached = records.get(link_job_id)
+    if isinstance(cached, dict) and 'need_emp_raw' in cached:
+        return str(cached.get('need_emp_raw') or '')
+
+    need_emp_str = fetch_job_detail_need_emp(link_job_id, config)
+    if need_emp_str:
+        records[link_job_id] = {
+            'need_emp_raw': str(need_emp_str),
+            'fetched_at': datetime.now().isoformat(timespec='seconds'),
+        }
+        save_job_detail_cache(cache_state)
+    return need_emp_str
 
 
 # ==================== 員工人數解析 ====================
@@ -664,13 +756,54 @@ def parse_need_emp(need_emp_str: str) -> tuple:
 
 # ==================== 公司名稱比對 ====================
 
-def match_company(company_name_104: str, stock_df: pd.DataFrame) -> dict:
+COMPANY_SUFFIXES = ('股份有限公司', '有限公司')
+COMPANY_CONTAINS_ENTRIES_KEY = '__contains_entries__'
+
+
+def strip_company_suffix(company_name: str) -> str:
+    """Remove common Taiwan company suffixes for deterministic name matching."""
+    clean_name = str(company_name or '').strip()
+    for suffix in COMPANY_SUFFIXES:
+        clean_name = clean_name.replace(suffix, '')
+    return clean_name.strip()
+
+
+def build_company_match_index(stock_df: pd.DataFrame) -> dict:
+    """
+    建立公司名稱快速查找索引。
+
+    每次執行都從最新 Stock_codes CSV 的 DataFrame 建立，不跨 run 快取，
+    避免股票代碼表更新後吃到舊索引。
+    """
+    index = {}
+    contains_entries = []
+    for _, row in stock_df.iterrows():
+        row_dict = row.to_dict()
+        clean_full_name = strip_company_suffix(row.get('公司全名', ''))
+        names = [
+            row.get('公司全名', ''),
+            row.get('公司簡稱', ''),
+            clean_full_name,
+            strip_company_suffix(row.get('公司簡稱', '')),
+        ]
+        for name in names:
+            key = str(name or '').strip()
+            if key:
+                index.setdefault(key, row_dict)
+        if clean_full_name:
+            contains_entries.append((clean_full_name, row_dict))
+    index[COMPANY_CONTAINS_ENTRIES_KEY] = contains_entries
+    return index
+
+
+def match_company(company_name_104: str, stock_df: pd.DataFrame, company_index: dict | None = None) -> dict:
     """
     將 104 上的公司名稱比對到股票代碼表
 
     Args:
         company_name_104: 104 上的公司名稱
         stock_df: 股票代碼 DataFrame
+        company_index: 由最新股票代碼表建立的本次執行記憶體索引
 
     Returns:
         匹配的公司資訊 dict，或 None
@@ -678,48 +811,25 @@ def match_company(company_name_104: str, stock_df: pd.DataFrame) -> dict:
     if not company_name_104:
         return None
 
-    # 正規化名稱
     normalized = company_name_104.strip()
+    if company_index is None:
+        company_index = build_company_match_index(stock_df)
 
-    # 1. 精確匹配公司全名
-    match = stock_df[stock_df['公司全名'] == normalized]
-    if not match.empty:
-        return match.iloc[0].to_dict()
+    # 1. 快速索引匹配：全名、簡稱、去後綴全名、去後綴簡稱
+    matched = company_index.get(normalized)
+    if matched:
+        return matched
 
-    # 2. 精確匹配公司簡稱
-    match = stock_df[stock_df['公司簡稱'] == normalized]
-    if not match.empty:
-        return match.iloc[0].to_dict()
+    # 2. 104 公司名稱去後綴後匹配
+    clean_104 = strip_company_suffix(normalized)
+    matched = company_index.get(clean_104)
+    if matched:
+        return matched
 
-    # 3. 移除常見後綴後匹配
-    suffixes = ['股份有限公司', '有限公司']
-    clean_104 = normalized
-    for suffix in suffixes:
-        clean_104 = clean_104.replace(suffix, '')
-    clean_104 = clean_104.strip()
-
-    for _, row in stock_df.iterrows():
-        full_name = str(row['公司全名'])
-        clean_full = full_name
-        for suffix in suffixes:
-            clean_full = clean_full.replace(suffix, '')
-        clean_full = clean_full.strip()
-
-        # 去後綴精確匹配
-        if clean_104 == clean_full:
-            return row.to_dict()
-
-    # 4. 包含匹配（較寬鬆）
-    if len(clean_104) >= 3:
-        for _, row in stock_df.iterrows():
-            full_name = str(row['公司全名'])
-            clean_full = full_name
-            for suffix in suffixes:
-                clean_full = clean_full.replace(suffix, '')
-            clean_full = clean_full.strip()
-
-            if clean_104 in clean_full or clean_full in clean_104:
-                return row.to_dict()
+    # 3. 包含匹配（較寬鬆，保留原本 fallback，但用預建 entries 避免 pandas iterrows）
+    for clean_full, row_dict in company_index.get(COMPANY_CONTAINS_ENTRIES_KEY, []):
+        if len(clean_104) >= 3 and (clean_104 in clean_full or clean_full in clean_104):
+            return row_dict
 
     return None
 
@@ -762,16 +872,22 @@ def aggregate_company_data(all_jobs: list, stock_df: pd.DataFrame, config: dict)
     logger.info(f"職缺名稱篩選後共 {len(filtered_jobs)} 筆")
 
     # 比對公司名稱
+    company_index = build_company_match_index(stock_df)
+    contains_entry_count = len(company_index.get(COMPANY_CONTAINS_ENTRIES_KEY, []))
+    logger.info(f"已建立公司名稱比對索引，共 {len(company_index) - 1} 個名稱 key，{contains_entry_count} 個包含比對 entries")
     company_cache = {}  # 快取比對結果
     matched_jobs = []   # 比對成功的職缺
     unmatched = set()
 
-    for job in filtered_jobs:
+    for i, job in enumerate(filtered_jobs, start=1):
         cust_name = job.get('custName', '')
 
         # 查快取
         if cust_name not in company_cache:
-            company_cache[cust_name] = match_company(cust_name, stock_df)
+            company_cache[cust_name] = match_company(cust_name, stock_df, company_index)
+
+        if i % 500 == 0:
+            logger.info(f"  公司名稱比對進度 {i}/{len(filtered_jobs)} 筆")
 
         matched = company_cache[cust_name]
         if not matched:
@@ -788,14 +904,18 @@ def aggregate_company_data(all_jobs: list, stock_df: pd.DataFrame, config: dict)
 
     # 呼叫詳情 API 取得每筆職缺的 needEmp
     logger.info(f"開始查詢 {len(matched_jobs)} 筆職缺的需求人數...")
+    detail_cache = load_job_detail_cache(config)
+    cached_before = len(detail_cache.get('records', {}))
+    if cached_before:
+        logger.info(f"已載入職缺詳情快取 {cached_before} 筆，可續跑已完成的 needEmp 查詢")
     company_data = {}
 
     for i, (job, matched_company) in enumerate(matched_jobs):
         stock_code = str(matched_company['股票代碼'])
         link_job_id = job.get('linkJobId', '')
 
-        # 呼叫詳情 API 取得 needEmp（使用 link 中的 job ID）
-        need_emp_str = fetch_job_detail_need_emp(link_job_id, config)
+        # 呼叫詳情 API 取得 needEmp（使用 link 中的 job ID），同日已查過則直接讀快取
+        need_emp_str = fetch_job_detail_need_emp_cached(link_job_id, config, detail_cache)
 
         if (i + 1) % 50 == 0:
             logger.info(f"  已查詢 {i + 1}/{len(matched_jobs)} 筆職缺詳情")
@@ -834,7 +954,8 @@ def aggregate_company_data(all_jobs: list, stock_df: pd.DataFrame, config: dict)
             'is_unspecified': is_unspecified,
         })
 
-    logger.info(f"職缺詳情查詢完成，共 {len(company_data)} 家上市櫃公司")
+    cached_after = len(detail_cache.get('records', {}))
+    logger.info(f"職缺詳情查詢完成，共 {len(company_data)} 家上市櫃公司；職缺詳情快取 {cached_after} 筆（本輪新增 {cached_after - cached_before} 筆）")
 
     return company_data
 

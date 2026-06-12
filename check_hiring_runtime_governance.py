@@ -264,7 +264,7 @@ REQUIRED_FILE_MARKERS = {
         "stage3_web/hiring_reports",
         "data/hiring_reports",
         "--require-deploy-mode",
-        '"$GIT" add hiring_reports data/hiring_reports',
+        '"$GIT" add stage3_web/hiring_reports stage3_web/data/hiring_reports',
     ],
     "install_scheduler.sh": [
         "install-probe",
