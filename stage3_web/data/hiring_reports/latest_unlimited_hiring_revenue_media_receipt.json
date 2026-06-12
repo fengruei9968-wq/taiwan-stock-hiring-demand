@@ -1,6 +1,6 @@
 {
   "receipt_type": "unlimited_hiring_revenue_media_render",
-  "generated_at": "2026-06-13T06:24:08",
+  "generated_at": "2026-06-13T07:26:55",
   "manifest_path": "/Volumes/Extreme SSD/Python/台股子公司投資資訊擷取與展示/台股投資資訊系統_完整專案/上市櫃公司徵人需求度/data/reports/latest_unlimited_hiring_revenue_report_manifest.json",
   "report_date": "2026-06-13",
   "pdf_path": "/Volumes/Extreme SSD/Python/台股子公司投資資訊擷取與展示/台股投資資訊系統_完整專案/上市櫃公司徵人需求度/data/reports/20260613/unlimited_hiring_revenue_report_20260613.pdf",
@@ -14,7 +14,7 @@
   "png_scale": 1.5,
   "png_dpi": 150,
   "png_pixel_width": 2520,
-  "png_pixel_height": 6666,
+  "png_pixel_height": 7422,
   "png_font_profile": "hiragino_mixed",
   "png_fonts": {
     "chinese": "/System/Library/Fonts/Hiragino Sans GB.ttc",
@@ -29,8 +29,8 @@
   "pdf_chart_bar_count": 6,
   "png_sections": {
     "today_new_unlimited": {
-      "total_count": 2,
-      "displayed_count": 2
+      "total_count": 6,
+      "displayed_count": 6
     },
     "revenue_turnaround": {
       "total_count": 8,
