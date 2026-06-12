@@ -136,6 +136,13 @@ The dedicated LaunchAgent label is `com.hiring.stock.codes.updater`. It runs dai
 
 The old D-slot `com.stock.updater` writes to a different folder. Do not point both jobs at the same Stock_codes output directory.
 
+Main and Stock_codes LaunchAgents must be calendar-only jobs. Confirm they do not contain filesystem-triggered keys:
+
+```bash
+plutil -p "$HOME/Library/LaunchAgents/com.hiring.demand.updater.plist" | rg 'StartOnMount|WatchPaths|QueueDirectories' || true
+plutil -p "$HOME/Library/LaunchAgents/com.hiring.stock.codes.updater.plist" | rg 'StartOnMount|WatchPaths|QueueDirectories' || true
+```
+
 Deploy boundary dry-run:
 
 ```bash

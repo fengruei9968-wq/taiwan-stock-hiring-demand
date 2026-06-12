@@ -22,6 +22,7 @@ MAIN_CRAWLER_PROCESS_MARKERS = (
     "run_hiring_demand.sh",
     "fetch_hiring_demand.py",
 )
+PROHIBITED_PLIST_TRIGGER_KEYS = ("StartOnMount", "WatchPaths", "QueueDirectories")
 
 
 def default_launcher_path() -> Path:
@@ -239,6 +240,14 @@ def check_plist(
     text = json.dumps(plist, ensure_ascii=False)
     if OLD_D_DRIVE in text:
         add_finding(findings, "FAIL", f"{label}_old_d_drive_path", f"Plist contains old D drive path: {plist_path}")
+    for trigger_key in PROHIBITED_PLIST_TRIGGER_KEYS:
+        if trigger_key in plist:
+            add_finding(
+                findings,
+                "FAIL",
+                f"{label}_prohibited_trigger_{trigger_key}",
+                f"Plist must not use {trigger_key}; only the explicit schedule should trigger this job: {plist_path}",
+            )
     if not args:
         add_finding(findings, "FAIL", f"{label}_args_missing", f"ProgramArguments missing: {plist_path}")
         return

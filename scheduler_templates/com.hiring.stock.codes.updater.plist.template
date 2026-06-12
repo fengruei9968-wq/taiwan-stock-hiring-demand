@@ -37,7 +37,5 @@
         <string>zh_TW.UTF-8</string>
     </dict>
 
-    <key>StartOnMount</key>
-    <true/>
 </dict>
 </plist>

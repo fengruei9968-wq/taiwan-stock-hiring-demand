@@ -40,6 +40,7 @@ launch_agents:
       - run-main
     delegated_script: run_hiring_demand.sh
     delegated_local_wrapper: /Users/chiufengjui/Library/Application Support/HiringDemandLauncher/run_hiring_demand.sh
+    trigger_policy: calendar_only_no_StartOnMount_WatchPaths_QueueDirectories
     live_effects: formal crawler, report generation, optional Telegram and deploy depending on env
 
   telegram_probe:
@@ -64,6 +65,7 @@ launch_agents:
       - run-stock-codes
     delegated_script: run_stock_codes_update.sh
     delegated_local_wrapper: /Users/chiufengjui/Library/Application Support/HiringDemandLauncher/run_stock_codes_update.sh
+    trigger_policy: calendar_only_no_StartOnMount_WatchPaths_QueueDirectories
     output_dir: data/stock_codes
     live_effects: official TWSE/TPEx API fetch; writes local Stock_codes CSV and receipt only
     old_scheduler_transition: old com.stock.updater may remain loaded only while it writes to a different D-slot output directory
@@ -101,6 +103,7 @@ forbidden:
   - launchd main/probe plist contains old /Users/chiufengjui/D槽 path
   - com.hiring.stock.codes.updater writes to the old D-slot Stock_codes output directory
   - both com.stock.updater and com.hiring.stock.codes.updater write to the same Stock_codes directory
+  - main or Stock_codes LaunchAgent contains StartOnMount, WatchPaths, or QueueDirectories
   - local launcher points scheduled HIRING_PYTHON at SSD venv/bin/python3
   - launcher template sends Telegram PNG directly
   - launcher self-test runs the formal crawler

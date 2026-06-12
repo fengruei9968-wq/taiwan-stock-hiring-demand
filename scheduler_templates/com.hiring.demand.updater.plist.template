@@ -43,8 +43,5 @@
         <string>zh_TW.UTF-8</string>
     </dict>
 
-    <!-- 如果錯過執行時間，開機後立即執行 -->
-    <key>StartOnMount</key>
-    <true/>
 </dict>
 </plist>

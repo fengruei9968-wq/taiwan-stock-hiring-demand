@@ -83,6 +83,8 @@ Check installed scheduler state:
 
 The Stock_codes job should be `05:00` and point to the local launcher with argument `run-stock-codes`. The main daily job should be `11:30` and should point to the local launcher with argument `run-main`; keep this order so the scraper reads a complete Stock_codes CSV.
 
+The main and Stock_codes LaunchAgents must be calendar-only jobs. Do not add `StartOnMount`, `WatchPaths`, or `QueueDirectories`, because external SSD mount events can trigger duplicate formal runs outside the expected 05:00 and 11:30 windows.
+
 The local launcher should export:
 
 ```bash
@@ -153,6 +155,7 @@ If a second crawler starts during the benchmark, the measurement is invalid. Sto
 - `doctor` is read-only except for optional ntfy notification when `--notify-ntfy` is passed.
 - `install-all-local` modifies local macOS launcher and LaunchAgent files only.
 - `launchd` must not execute SSD `.sh` files directly; it should execute internal-disk wrapper copies.
+- Main and Stock_codes LaunchAgents must not use filesystem-triggered plist keys such as `StartOnMount`, `WatchPaths`, or `QueueDirectories`.
 - `com.hiring.stock.codes.updater` writes only `data/stock_codes/**` and `data/runs/stock_codes_update/**`; it does not run the 104 scraper, send Telegram PNG, or deploy.
 - Benchmark preflight may temporarily unload only `com.hiring.demand.updater`; restore it immediately after the benchmark.
 - Do not commit `.env`, `telegram_recipients.json`, local logs, local launcher output, or protected DB files.

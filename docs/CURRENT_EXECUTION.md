@@ -64,6 +64,7 @@ Confirmed current scheduler state:
 - `com.hiring.stock.codes.updater`: daily 05:00 Asia/Taipei.
 - `com.hiring.demand.updater`: daily 11:30 Asia/Taipei.
 - Both jobs go through `/Users/chiufengjui/Library/Application Support/HiringDemandLauncher/run_hiring_demand_launcher.sh`.
+- Main and Stock_codes jobs must be calendar-only. `StartOnMount`, `WatchPaths`, and `QueueDirectories` are forbidden because SSD mount events can create duplicate off-schedule runs.
 - Stock_codes writes to `data/stock_codes/`.
 - The hiring scraper reads `config.yaml` `paths.stock_codes_dir: "data/stock_codes"`.
 

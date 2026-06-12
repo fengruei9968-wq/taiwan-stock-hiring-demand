@@ -57,6 +57,7 @@ Daily deployable web data is limited to:
 - The hiring-demand scraper must read stock-code/company-name mapping from this repo's `data/stock_codes/` directory.
 - `stock_codes_updater.py` is the governed updater for `data/stock_codes/`; it fetches official TWSE / TPEx listed, OTC, and emerging company data and writes `YYYYMMDD_stock_codes_all.csv`.
 - The dedicated scheduler label is `com.hiring.stock.codes.updater`, scheduled at 05:00 before the 11:30 hiring scraper to avoid a Stock_codes read/write race.
+- Main and Stock_codes LaunchAgents must not use filesystem-triggered keys such as `StartOnMount`, `WatchPaths`, or `QueueDirectories`; only explicit calendar schedules should trigger them.
 - Do not make the hiring-demand scraper depend on the old D-slot `com.stock.updater` output as active truth.
 - Do not run two writers against the same Stock_codes output directory. The old `com.stock.updater` may stay installed during transition only because it writes to a different D-slot directory.
 - `data/stock_codes/**` is local runtime input data and should not be committed unless the user explicitly authorizes a snapshot.

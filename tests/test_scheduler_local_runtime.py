@@ -4,12 +4,15 @@
 from __future__ import annotations
 
 import os
+import plistlib
 import subprocess
 import sys
 import tempfile
 import textwrap
 import unittest
 from pathlib import Path
+
+import check_scheduler_installation as scheduler_check
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -185,6 +188,46 @@ class SchedulerLocalRuntimeTests(unittest.TestCase):
             self.assertEqual(proc.returncode, 0, proc.stderr + proc.stdout)
             self.assertIn('"gate_result": "PASS"', proc.stdout)
             self.assertIn("benchmark_restore_check", proc.stdout)
+
+    def test_scheduler_templates_do_not_start_on_mount(self) -> None:
+        for template_name in [
+            "com.hiring.demand.updater.plist.template",
+            "com.hiring.stock.codes.updater.plist.template",
+        ]:
+            text = (ROOT / "scheduler_templates" / template_name).read_text(encoding="utf-8")
+
+            self.assertIn("<key>StartCalendarInterval</key>", text)
+            self.assertNotIn("StartOnMount", text)
+            self.assertNotIn("WatchPaths", text)
+            self.assertNotIn("QueueDirectories", text)
+
+    def test_scheduler_doctor_blocks_mount_triggered_plists(self) -> None:
+        with tempfile.TemporaryDirectory(dir=ROOT / "_test_runtime") as tmp:
+            plist_path = Path(tmp) / "com.hiring.demand.updater.plist"
+            launcher = Path(tmp) / "run_hiring_demand_launcher.sh"
+            plist_payload = {
+                "Label": "com.hiring.demand.updater",
+                "ProgramArguments": [str(launcher), "run-main"],
+                "StartCalendarInterval": {"Hour": 11, "Minute": 30},
+                "StartOnMount": True,
+            }
+            with plist_path.open("wb") as handle:
+                plistlib.dump(plist_payload, handle)
+
+            findings: list[dict] = []
+            scheduler_check.check_plist(
+                findings,
+                plist_path,
+                "com.hiring.demand.updater",
+                launcher,
+                "run-main",
+                {"Hour": 11, "Minute": 30},
+            )
+
+            self.assertTrue(
+                any(item["check_id"] == "com.hiring.demand.updater_prohibited_trigger_StartOnMount" for item in findings),
+                findings,
+            )
 
     def test_shell_wrappers_do_not_execute_ssd_python_scripts_as_script_paths(self) -> None:
         main_wrapper = (ROOT / "run_hiring_demand.sh").read_text(encoding="utf-8")
