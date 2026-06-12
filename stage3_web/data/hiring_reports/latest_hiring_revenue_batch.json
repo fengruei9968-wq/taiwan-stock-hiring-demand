@@ -1,8 +1,8 @@
 {
   "schema_version": "hiring_revenue_batch_v1",
-  "generated_at": "2026-06-13T03:20:17",
+  "generated_at": "2026-06-13T04:04:30",
   "source_manifest_report_key": "20260613",
-  "source_manifest_generated_at": "2026-06-13T03:20:14",
+  "source_manifest_generated_at": "2026-06-13T04:04:27",
   "report_date": "2026-06-13",
   "data": {
     "4773": {
