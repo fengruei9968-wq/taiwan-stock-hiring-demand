@@ -19,7 +19,7 @@ LOG_FILE="$HIRING_DIR/logs/stock_monthly_revenue_raw_run.log"
 
 export HIRING_STAGE3_DIR="$STAGE3_DIR"
 export DB_PATH="${DB_PATH:-$STAGE3_DIR/investment.db}"
-export STOCK_CODES_DIR="${STOCK_CODES_DIR:-$(cd "$PROJECT_ROOT/.." && pwd -P)/台股上市櫃公司名稱確認與自動定時更新/Stock_codes}"
+export STOCK_CODES_DIR="${STOCK_CODES_DIR:-$HIRING_DIR/data/stock_codes}"
 export RAW_MONTHLY_REVENUE_SKIP_GIT="${RAW_MONTHLY_REVENUE_SKIP_GIT:-1}"
 export PYTHONUNBUFFERED="${PYTHONUNBUFFERED:-1}"
 
@@ -63,17 +63,16 @@ END_MONTH="${RAW_REVENUE_END_MONTH:-$DEFAULT_END_MONTH}"
 MARKET_TYPES="${RAW_REVENUE_MARKET_TYPES:-上市,上櫃,興櫃}"
 RAW_REVENUE_MISSING_ONLY="${RAW_REVENUE_MISSING_ONLY:-0}"
 
-EXTRA_ARGS=()
-if [ "$RAW_REVENUE_MISSING_ONLY" = "1" ]; then
-    EXTRA_ARGS+=("--missing-only")
-fi
-
-cd "$HIRING_DIR"
-"$PYTHON" "$SCRIPT" \
+set -- \
     --start-month "$START_MONTH" \
     --end-month "$END_MONTH" \
     --market-types "$MARKET_TYPES" \
-    "${EXTRA_ARGS[@]}" \
-    "$@" >> "$LOG_FILE" 2>&1
+    "$@"
+if [ "$RAW_REVENUE_MISSING_ONLY" = "1" ]; then
+    set -- --missing-only "$@"
+fi
+
+cd "$HIRING_DIR"
+"$PYTHON" "$SCRIPT" "$@" >> "$LOG_FILE" 2>&1
 
 echo "完成" >> "$LOG_FILE"

@@ -207,7 +207,15 @@ def fetch_mops_official_revenue(
         return []
 
     stock_codes_csv = raw.latest_stock_codes_csv(raw.STOCK_CODES_DIR)
-    stock_meta = raw.load_stock_codes(stock_codes_csv, codes, market_types={'上市', '上櫃', '興櫃'})
+    all_stock_meta = raw.load_stock_codes(stock_codes_csv, None, market_types={'上市', '上櫃', '興櫃'})
+    requested_code_set = set(codes)
+    stock_meta = {code: meta for code, meta in all_stock_meta.items() if code in requested_code_set}
+    missing_stock_codes = sorted(requested_code_set - set(stock_meta))
+    if missing_stock_codes:
+        logger.warning(
+            'MOPS fallback 略過 Stock_codes 缺少的代碼：%s',
+            ','.join(missing_stock_codes),
+        )
     grouped: dict[str, dict[str, raw.StockMeta]] = defaultdict(dict)
     for code, meta in stock_meta.items():
         grouped[meta.market_type][code] = meta

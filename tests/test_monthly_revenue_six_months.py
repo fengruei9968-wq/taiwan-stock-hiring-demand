@@ -98,6 +98,41 @@ class MonthlyRevenueSixMonthTests(unittest.TestCase):
             }
         ])
 
+    def test_monthly_revenue_mops_fallback_skips_codes_missing_from_stock_codes(self) -> None:
+        meta = {
+            "2211": raw_revenue.StockMeta(
+                stock_code="2211",
+                short_name="長榮鋼",
+                market_type="上市",
+            )
+        }
+        mops_record = raw_revenue.RevenueRecord(
+            stock_code="2211",
+            revenue_year=2026,
+            revenue_month=5,
+            revenue_amount=123456,
+            revenue_unit="thousand_twd",
+            source="mops_sii",
+            source_url="https://mops.example/t21sc03_115_5.csv",
+            market_type_at_fetch="上市",
+            company_short_name="長榮鋼",
+            company_full_name="",
+            fetched_at="2026-06-12T00:00:00",
+            run_id="unit",
+        )
+
+        with patch("fetch_stock_monthly_revenue_raw.latest_stock_codes_csv", return_value=Path("stock_codes.csv")), \
+             patch("fetch_stock_monthly_revenue_raw.load_stock_codes", return_value=meta), \
+             patch("fetch_stock_monthly_revenue_raw.iter_months", return_value=[(2026, 5)]), \
+             patch("fetch_stock_monthly_revenue_raw.fetch_mops_market_month_records", return_value=([mops_record], {"status": "ok"})):
+            records = fetch_monthly_revenue.fetch_mops_official_revenue(
+                requested_codes=["2211", "9999"],
+                start_month=(2026, 5),
+                end_month=(2026, 5),
+            )
+
+        self.assertEqual([record["stock_id"] for record in records], ["2211"])
+
     def test_finmind_summary_outputs_latest_six_months_old_to_new(self) -> None:
         records = []
         for year, month, revenue in [

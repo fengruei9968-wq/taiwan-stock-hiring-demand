@@ -234,6 +234,17 @@ class StockMonthlyRevenueRawTests(unittest.TestCase):
         self.assertIn('RAW_REVENUE_MISSING_ONLY="${RAW_REVENUE_MISSING_ONLY:-0}"', wrapper_text)
         self.assertIn('if [ "$RAW_REVENUE_MISSING_ONLY" = "1" ]', wrapper_text)
         self.assertIn('--missing-only', wrapper_text)
+        self.assertIn('set -- --missing-only "$@"', wrapper_text)
+        self.assertNotIn('EXTRA_ARGS[@]', wrapper_text)
+
+    def test_raw_revenue_uses_repo_local_stock_codes_by_default(self) -> None:
+        wrapper_text = (ROOT / "run_stock_monthly_revenue_raw.sh").read_text(encoding="utf-8")
+        source_text = (ROOT / "fetch_stock_monthly_revenue_raw.py").read_text(encoding="utf-8")
+
+        self.assertIn('export STOCK_CODES_DIR="${STOCK_CODES_DIR:-$HIRING_DIR/data/stock_codes}"', wrapper_text)
+        self.assertIn('BASE_DIR / "data" / "stock_codes"', source_text)
+        self.assertNotIn("台股上市櫃公司名稱確認與自動定時更新", wrapper_text)
+        self.assertNotIn("台股上市櫃公司名稱確認與自動定時更新", source_text)
 
 
 if __name__ == "__main__":

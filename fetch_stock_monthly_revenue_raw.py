@@ -37,7 +37,7 @@ DB_PATH = Path(os.environ.get("DB_PATH", STAGE3_DIR / "investment.db"))
 STOCK_CODES_DIR = Path(
     os.environ.get(
         "STOCK_CODES_DIR",
-        PROJECT_ROOT.parent / "台股上市櫃公司名稱確認與自動定時更新" / "Stock_codes",
+        BASE_DIR / "data" / "stock_codes",
     )
 )
 OUTPUT_ROOT = BASE_DIR / "data" / "stock_monthly_revenue_raw"
