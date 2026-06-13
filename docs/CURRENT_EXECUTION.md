@@ -1,6 +1,6 @@
 # Hiring Demand Current Execution
 
-Updated: 2026-06-13 00:20 Asia/Taipei
+Updated: 2026-06-13 08:17 Asia/Taipei
 
 ## Plain Summary
 
@@ -53,7 +53,38 @@ This document is the short active-truth entrypoint. Detailed legacy rules remain
 
 ## Next Exact Step
 
-Treat the hiring-demand project as functionally complete pending one final release-candidate review and an observed 11:30 scheduled run with the fixed stock-code path. Do not run another live 104 benchmark until the main LaunchAgent benchmark isolation preflight is used.
+Treat the hiring-demand project as functionally complete pending observation of the next normal Stock_codes 05:00 run and the next normal 11:30 main crawler run. Do not run another live 104 benchmark until the main LaunchAgent benchmark isolation preflight is used.
+
+## 2026-06-13 Scheduler Trigger Closeout
+
+Plain status: the off-schedule repeated hiring-demand runs were traced to filesystem-triggered launchd behavior, not to 104 blocking or Python restarting itself. The main and Stock_codes LaunchAgents have been corrected to calendar-only triggers.
+
+Current installed LaunchAgent state verified at 2026-06-13 08:17 Asia/Taipei:
+
+- `com.hiring.stock.codes.updater`: loaded, not running, calendar trigger only, daily 05:00 Asia/Taipei.
+- `com.hiring.demand.updater`: loaded, not running, calendar trigger only, daily 11:30 Asia/Taipei.
+- Both installed plist files pass `plutil -lint`.
+- Both installed plist files contain no `StartOnMount`, `WatchPaths`, or `QueueDirectories`.
+- `launchctl print` shows `properties = inferred program`, not `start on fs mount`.
+- No formal crawler was manually triggered during this closeout verification.
+
+Governance state:
+
+- `scheduler_templates/com.hiring.demand.updater.plist.template` and `scheduler_templates/com.hiring.stock.codes.updater.plist.template` no longer contain `StartOnMount`.
+- `check_scheduler_installation.py` now blocks `StartOnMount`, `WatchPaths`, and `QueueDirectories` for scheduled plists.
+- `tests/test_scheduler_local_runtime.py` covers both the template rule and the checker failure path.
+- Commit pushed: `aa7dff8 chore: remove mount-triggered hiring schedulers`.
+
+Verification for this closeout:
+
+- `TMPDIR="/Volumes/Extreme SSD/tmp" ./run_tests.sh` PASS, 115 tests.
+- `check_scheduler_installation.py --root .` PASS.
+- `check_release_readiness.py --root .` PASS.
+- `check_hiring_deploy_boundary.py --hiring-dir . --stage3-dir stage3_web` PASS.
+
+Remaining note:
+
+- The old D-slot `com.stock.updater` was not modified by this closeout. It remains a separate transitional updater and should only be disabled after explicit authorization.
 
 ## 2026-06-13 Functional Closeout Snapshot
 
