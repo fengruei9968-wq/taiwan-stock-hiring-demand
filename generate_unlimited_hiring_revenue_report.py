@@ -262,9 +262,19 @@ def build_report_rows(
 
     report_rows = [merge_row(row, today_new=row.get("股票代碼", "") in new_codes, require_revenue=True) for row in latest_unlimited]
     new_rows = [row for row in report_rows if row["今日新增公司"] == "YES"]
-    current_month_revenue_increase_rows = [row for row in report_rows if is_current_month_revenue_increase_row(row)]
-    revenue_turnaround_rows = [row for row in report_rows if is_revenue_turnaround_row(row)]
     revenue_growth_rows = [row for row in report_rows if is_revenue_growth_row(row)]
+    revenue_growth_codes = {row.get("股票代碼", "") for row in revenue_growth_rows}
+    revenue_turnaround_rows = [
+        row for row in report_rows
+        if row.get("股票代碼", "") not in revenue_growth_codes and is_revenue_turnaround_row(row)
+    ]
+    revenue_turnaround_codes = {row.get("股票代碼", "") for row in revenue_turnaround_rows}
+    current_month_revenue_increase_rows = [
+        row for row in report_rows
+        if row.get("股票代碼", "") not in revenue_growth_codes
+        and row.get("股票代碼", "") not in revenue_turnaround_codes
+        and is_current_month_revenue_increase_row(row)
+    ]
     return report_rows, new_rows, current_month_revenue_increase_rows, revenue_turnaround_rows, revenue_growth_rows, sorted(missing_revenue_set)
 
 
@@ -280,8 +290,6 @@ def is_current_month_revenue_increase_row(row: dict[str, Any]) -> bool:
 
 
 def is_revenue_turnaround_row(row: dict[str, Any]) -> bool:
-    if is_current_month_revenue_increase_row(row):
-        return False
     entries = revenue_entries(row)
     if len(entries) < 2:
         return False
@@ -508,7 +516,7 @@ def build_manifest(
         "new_unlimited_rule": "latest_unlimited_codes_minus_previous_unlimited_codes",
         "current_month_revenue_increase_rule": "latest_month_mom_gt_previous_month_mom_and_latest_month_yoy_gt_previous_month_yoy_and_previous_month_mom_or_yoy_non_positive",
         "current_month_revenue_increase_count": len(current_month_revenue_increase_rows),
-        "revenue_turnaround_rule": "latest_month_yoy_turns_positive_and_latest_month_mom_positive_excluding_current_month_increase",
+        "revenue_turnaround_rule": "latest_month_yoy_turns_positive_and_latest_month_mom_positive",
         "revenue_turnaround_count": len(revenue_turnaround_rows),
         "revenue_growth_rule": "latest_three_available_months_mom_and_yoy_strictly_increasing",
         "revenue_growth_count": len(revenue_growth_rows),

@@ -359,7 +359,7 @@ class UnlimitedHiringRevenueReportTests(unittest.TestCase):
         self.assertEqual(manifest["latest_unlimited_count"], 3)
         self.assertEqual(manifest["previous_unlimited_count"], 1)
         self.assertEqual(manifest["new_unlimited_count"], 2)
-        self.assertEqual(manifest["current_month_revenue_increase_count"], 2)
+        self.assertEqual(manifest["current_month_revenue_increase_count"], 1)
         self.assertEqual(manifest["revenue_growth_count"], 1)
         self.assertEqual(manifest["revenue_missing_count"], 0)
         self.assertIn("anomaly_summary_json", manifest["outputs"])
@@ -372,7 +372,7 @@ class UnlimitedHiringRevenueReportTests(unittest.TestCase):
         self.assertTrue(anomaly_summary["alert_required"])
         self.assertEqual(anomaly_summary["alert_policy"]["revenue_change_direction"], "increase_only")
         self.assertEqual(anomaly_summary["events"]["today_new_unlimited"]["count"], 2)
-        self.assertEqual(anomaly_summary["events"]["current_month_revenue_increase"]["count"], 2)
+        self.assertEqual(anomaly_summary["events"]["current_month_revenue_increase"]["count"], 1)
         self.assertEqual(anomaly_summary["events"]["three_month_revenue_growth"]["count"], 1)
         self.assertEqual(anomaly_summary["web"]["hiring_demand_url"], "https://financial-report-data-processing.up.railway.app/hiring-demand")
 
@@ -391,7 +391,7 @@ class UnlimitedHiringRevenueReportTests(unittest.TestCase):
 
         with Path(manifest["outputs"]["current_month_revenue_increase_csv"]).open(encoding="utf-8-sig", newline="") as handle:
             current_month_rows = list(csv.DictReader(handle))
-        self.assertEqual({row["股票代碼"] for row in current_month_rows}, {"3333", "4444"})
+        self.assertEqual({row["股票代碼"] for row in current_month_rows}, {"4444"})
 
         with Path(manifest["outputs"]["revenue_growth_csv"]).open(encoding="utf-8-sig", newline="") as handle:
             growth_rows = list(csv.DictReader(handle))
@@ -441,7 +441,7 @@ class UnlimitedHiringRevenueReportTests(unittest.TestCase):
         self.assertFalse(is_revenue_growth_row(mom_only))
         self.assertTrue(is_revenue_growth_row(both_three_months))
 
-    def test_revenue_turnaround_signal_requires_yoy_turn_positive_mom_and_not_current_month_increase(self) -> None:
+    def test_revenue_turnaround_signal_requires_yoy_turn_positive_and_latest_mom_positive(self) -> None:
         turnaround = {
             "m5_label": "2026/3",
             "m5_mom": 9.87,
@@ -458,7 +458,7 @@ class UnlimitedHiringRevenueReportTests(unittest.TestCase):
         self.assertFalse(is_current_month_revenue_increase_row(turnaround))
         self.assertFalse(is_revenue_turnaround_row(yoy_turn_but_negative_mom))
         self.assertFalse(is_revenue_turnaround_row(already_positive_yoy))
-        self.assertFalse(is_revenue_turnaround_row(also_current_month_increase))
+        self.assertTrue(is_revenue_turnaround_row(also_current_month_increase))
 
     def test_generator_outputs_revenue_turnaround_event_without_monthly_new_section(self) -> None:
         monthly_base_rows = [
@@ -598,7 +598,7 @@ class UnlimitedHiringRevenueReportTests(unittest.TestCase):
         self.assertEqual(receipt["report_date"], "2026-05-14")
         self.assertEqual(receipt["new_unlimited_count"], 2)
         self.assertEqual(receipt["previous_unlimited_count"], 1)
-        self.assertEqual(receipt["current_month_revenue_increase_count"], 2)
+        self.assertEqual(receipt["current_month_revenue_increase_count"], 1)
         self.assertEqual(receipt["revenue_growth_count"], 1)
         self.assertEqual(receipt["revenue_snapshot_row_count"], 3)
 
