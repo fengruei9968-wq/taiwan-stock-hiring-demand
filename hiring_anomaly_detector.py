@@ -67,7 +67,7 @@ def build_anomaly_summary(
             revenue_turnaround_rows,
         ),
         "current_month_revenue_increase": build_anomaly_event(
-            "latest_month_mom_gt_previous_month_mom_and_latest_month_yoy_gt_previous_month_yoy",
+            "latest_month_mom_gt_previous_month_mom_and_latest_month_yoy_gt_previous_month_yoy_and_previous_month_mom_or_yoy_non_positive",
             "營收雙指標改善觀察",
             current_month_revenue_increase_rows,
         ),

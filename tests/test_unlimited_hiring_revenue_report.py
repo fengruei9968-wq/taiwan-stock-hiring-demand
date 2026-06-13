@@ -347,8 +347,8 @@ class UnlimitedHiringRevenueReportTests(unittest.TestCase):
             self.db_path,
             ["2222", "3333", "4444"],
             overrides={
-                "3333": (1.0, 10.0, 2.0, 20.0, 3.0, 30.0),
-                "4444": (10.0, 10.0, 1.0, 20.0, 5.0, 30.0),
+                "3333": (-2.0, -10.0, -1.0, -5.0, 3.0, 30.0),
+                "4444": (10.0, 10.0, -1.0, 20.0, 5.0, 30.0),
             },
         )
         proc = self.run_generator()
@@ -412,7 +412,7 @@ class UnlimitedHiringRevenueReportTests(unittest.TestCase):
         self.assertEqual(snapshot_manifest["row_count"], 3)
         self.assertEqual(snapshot_manifest["snapshot_csv_path"], str(snapshot_csv))
 
-    def test_current_month_signal_requires_mom_and_yoy_growth(self) -> None:
+    def test_current_month_signal_requires_mom_yoy_growth_and_prior_weakness(self) -> None:
         mom_only = {
             "m4_label": "2026/2",
             "m4_mom": 0.0,
@@ -425,12 +425,19 @@ class UnlimitedHiringRevenueReportTests(unittest.TestCase):
             "m6_yoy": 10.0,
         }
         yoy_only = mom_only | {"m6_mom": 0.5, "m6_yoy": 30.0}
-        both_latest_month = mom_only | {"m6_mom": 2.0, "m6_yoy": 30.0}
+        both_latest_month = mom_only | {"m5_yoy": -5.0, "m6_mom": 2.0, "m6_yoy": 30.0}
         both_three_months = mom_only | {"m4_mom": 0.0, "m4_yoy": 5.0, "m5_mom": 1.0, "m5_yoy": 10.0, "m6_mom": 2.0, "m6_yoy": 15.0}
+        already_strong_previous_month = mom_only | {
+            "m5_mom": 35.33,
+            "m5_yoy": 79.14,
+            "m6_mom": 46.05,
+            "m6_yoy": 172.05,
+        }
 
         self.assertFalse(is_current_month_revenue_increase_row(mom_only))
         self.assertFalse(is_current_month_revenue_increase_row(yoy_only))
         self.assertTrue(is_current_month_revenue_increase_row(both_latest_month))
+        self.assertFalse(is_current_month_revenue_increase_row(already_strong_previous_month))
         self.assertFalse(is_revenue_growth_row(mom_only))
         self.assertTrue(is_revenue_growth_row(both_three_months))
 
@@ -547,8 +554,8 @@ class UnlimitedHiringRevenueReportTests(unittest.TestCase):
             self.db_path,
             ["2222", "3333", "4444"],
             overrides={
-                "3333": (1.0, 10.0, 2.0, 20.0, 3.0, 30.0),
-                "4444": (10.0, 10.0, 1.0, 20.0, 5.0, 30.0),
+                "3333": (-2.0, -10.0, -1.0, -5.0, 3.0, 30.0),
+                "4444": (10.0, 10.0, -1.0, 20.0, 5.0, 30.0),
             },
         )
         proc = subprocess.run(
@@ -577,8 +584,8 @@ class UnlimitedHiringRevenueReportTests(unittest.TestCase):
             self.db_path,
             ["2222", "3333", "4444"],
             overrides={
-                "3333": (1.0, 10.0, 2.0, 20.0, 3.0, 30.0),
-                "4444": (10.0, 10.0, 1.0, 20.0, 5.0, 30.0),
+                "3333": (-2.0, -10.0, -1.0, -5.0, 3.0, 30.0),
+                "4444": (10.0, 10.0, -1.0, 20.0, 5.0, 30.0),
             },
         )
         self.assertEqual(self.run_generator().returncode, 0)
@@ -738,7 +745,7 @@ class UnlimitedHiringRevenueReportTests(unittest.TestCase):
         seed_revenue_db(
             self.db_path,
             [row["股票代碼"] for row in latest_rows],
-            overrides={row["股票代碼"]: (10.0, 10.0, 1.0, 20.0, 5.0, 30.0) for row in latest_rows},
+            overrides={row["股票代碼"]: (10.0, 10.0, -1.0, 20.0, 5.0, 30.0) for row in latest_rows},
         )
         self.assertEqual(self.run_generator().returncode, 0)
         manifest_path = self.output_dir / "unlimited_hiring_revenue_report_manifest_20260514.json"

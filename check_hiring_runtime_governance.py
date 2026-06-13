@@ -123,7 +123,7 @@ REQUIRED_FILE_MARKERS = {
         "revenue_turnaround_companies",
         "current_month_revenue_increase_rule",
         "revenue_turnaround_rule",
-        "latest_month_mom_gt_previous_month_mom_and_latest_month_yoy_gt_previous_month_yoy",
+        "latest_month_mom_gt_previous_month_mom_and_latest_month_yoy_gt_previous_month_yoy_and_previous_month_mom_or_yoy_non_positive",
         "latest_month_yoy_turns_positive_and_latest_month_mom_positive_excluding_current_month_increase",
         "營收雙指標改善觀察",
         "營收轉正觀察",
@@ -347,7 +347,7 @@ REQUIRED_FILE_MARKERS = {
     ],
     "tests/test_unlimited_hiring_revenue_report.py": [
         "test_generator_outputs_only_new_current_month_and_three_month_growth_tables",
-        "test_current_month_signal_requires_mom_and_yoy_growth",
+        "test_current_month_signal_requires_mom_yoy_growth_and_prior_weakness",
         "test_generator_outputs_revenue_turnaround_event_without_monthly_new_section",
         "test_revenue_turnaround_signal_requires_yoy_turn_positive_mom_and_not_current_month_increase",
         "test_renderer_outputs_anomaly_png_metadata_and_full_current_month_section",

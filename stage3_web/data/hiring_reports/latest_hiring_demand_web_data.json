@@ -1,8 +1,8 @@
 {
   "schema_version": "hiring_demand_web_data_v1",
-  "generated_at": "2026-06-13T15:55:09",
+  "generated_at": "2026-06-13T17:31:25",
   "source_manifest_report_key": "20260613",
-  "source_manifest_generated_at": "2026-06-13T15:24:40",
+  "source_manifest_generated_at": "2026-06-13T17:31:23",
   "fetch_date": "2026-06-13",
   "latest_created_at_utc": "2026-06-13 03:52:23",
   "data": [

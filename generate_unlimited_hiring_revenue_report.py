@@ -275,7 +275,8 @@ def is_current_month_revenue_increase_row(row: dict[str, Any]) -> bool:
     previous, current = entries[-2], entries[-1]
     if None in {previous["mom"], current["mom"], previous["yoy"], current["yoy"]}:
         return False
-    return current["mom"] > previous["mom"] and current["yoy"] > previous["yoy"]
+    previous_month_has_weakness = previous["mom"] <= 0 or previous["yoy"] <= 0
+    return previous_month_has_weakness and current["mom"] > previous["mom"] and current["yoy"] > previous["yoy"]
 
 
 def is_revenue_turnaround_row(row: dict[str, Any]) -> bool:
@@ -505,7 +506,7 @@ def build_manifest(
         "previous_unlimited_count": previous_unlimited_count,
         "new_unlimited_count": len(new_rows),
         "new_unlimited_rule": "latest_unlimited_codes_minus_previous_unlimited_codes",
-        "current_month_revenue_increase_rule": "latest_month_mom_gt_previous_month_mom_and_latest_month_yoy_gt_previous_month_yoy",
+        "current_month_revenue_increase_rule": "latest_month_mom_gt_previous_month_mom_and_latest_month_yoy_gt_previous_month_yoy_and_previous_month_mom_or_yoy_non_positive",
         "current_month_revenue_increase_count": len(current_month_revenue_increase_rows),
         "revenue_turnaround_rule": "latest_month_yoy_turns_positive_and_latest_month_mom_positive_excluding_current_month_increase",
         "revenue_turnaround_count": len(revenue_turnaround_rows),

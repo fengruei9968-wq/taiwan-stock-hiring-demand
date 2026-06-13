@@ -1,6 +1,6 @@
 {
   "receipt_type": "unlimited_hiring_revenue_media_render",
-  "generated_at": "2026-06-13T15:24:42",
+  "generated_at": "2026-06-13T17:31:25",
   "manifest_path": "data/reports/latest_unlimited_hiring_revenue_report_manifest.json",
   "report_date": "2026-06-13",
   "pdf_path": "data/reports/20260613/unlimited_hiring_revenue_report_20260613.pdf",
@@ -14,7 +14,7 @@
   "png_scale": 1.5,
   "png_dpi": 150,
   "png_pixel_width": 2520,
-  "png_pixel_height": 8745,
+  "png_pixel_height": 7044,
   "png_font_profile": "hiragino_mixed",
   "png_fonts": {
     "chinese": "/System/Library/Fonts/Hiragino Sans GB.ttc",
@@ -37,8 +37,8 @@
       "displayed_count": 0
     },
     "current_month_revenue_increase": {
-      "total_count": 28,
-      "displayed_count": 28
+      "total_count": 19,
+      "displayed_count": 19
     },
     "three_month_revenue_growth": {
       "total_count": 1,
