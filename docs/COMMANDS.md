@@ -236,6 +236,56 @@ Monthly revenue release boundary:
 - Do not stage/commit/push `stage3_web/investment.db`, `.env`, `telegram_recipients.json`, `data/stock_monthly_revenue_raw/**`, `data/reports/**/*.png`, `data/reports/**/*.pdf`, or `data/runs/**`.
 - Run `check_release_readiness.py` and `check_hiring_deploy_boundary.py` before any commit/push.
 
+## Revenue Signal Classification Verification
+
+Verify local deployable anomaly summary counts and mutually exclusive revenue buckets:
+
+```bash
+venv/bin/python3 - <<'PY'
+import json
+from pathlib import Path
+
+summary = json.loads(Path("stage3_web/hiring_reports/latest_anomaly_summary.json").read_text(encoding="utf-8"))
+print(json.dumps(summary["counts"], ensure_ascii=False, indent=2))
+for key in ["revenue_turnaround", "current_month_revenue_increase", "three_month_revenue_growth"]:
+    event = summary["events"][key]
+    print(key, event["count"], event["stock_codes"])
+PY
+```
+
+Verify production Railway anomaly summary after push:
+
+```bash
+venv/bin/python3 - <<'PY'
+import json
+import urllib.request
+
+url = "https://taiwan-stock-hiring-demand-production.up.railway.app/api/hiring-demand/anomaly-summaries/20260613"
+with urllib.request.urlopen(url, timeout=30) as response:
+    data = json.loads(response.read().decode("utf-8"))
+print("generated_at", data.get("generated_at"))
+print(json.dumps(data.get("counts", {}), ensure_ascii=False, indent=2))
+sections = {section.get("key"): section for section in data.get("sections", [])}
+for key in ["revenue_turnaround", "current_month_revenue_increase", "three_month_revenue_growth"]:
+    section = sections.get(key, {})
+    print(key, section.get("count"), [company.get("stock_code") for company in section.get("companies", [])])
+PY
+```
+
+Expected 2026-06-13 closeout values after commit `8958059`:
+
+```text
+revenue_turnaround_count=3 -> 7879, 4995, 4572
+current_month_revenue_increase_count=16
+three_month_revenue_growth_count=1 -> 2059
+```
+
+Classification rule:
+
+- Classify only `unlimited_job_count > 0` companies.
+- Use mutually exclusive priority: `three_month_revenue_growth` first, `revenue_turnaround` second, `current_month_revenue_increase` last.
+- Do not change one bucket without updating `generate_unlimited_hiring_revenue_report.py`, `hiring_anomaly_detector.py`, tests, and deployable anomaly JSON together.
+
 Deploy boundary dry-run:
 
 ```bash

@@ -75,6 +75,18 @@ Daily deployable web data is limited to:
 - Raw monthly revenue updates may write protected local `stage3_web/investment.db`, ignored `data/stock_monthly_revenue_raw/**`, and deployable JSON under `stage3_web/hiring_reports/**` only through explicit publication steps.
 - Do not commit or push protected DB files to refresh monthly revenue on the website; publish deployable JSON artifacts instead.
 
+## Revenue Signal Classification Rule
+
+- The daily anomaly report revenue signals must start from companies with `unlimited_job_count > 0`; do not classify from all hiring companies or the full Taiwan stock universe.
+- The three revenue trend buckets are mutually exclusive and must be evaluated in this priority order:
+  1. `three_month_revenue_growth` / `營收強勢延續公司` / `很好`
+  2. `revenue_turnaround` / `營收轉正觀察` / `好轉多了`
+  3. `current_month_revenue_increase` / `營收雙指標改善觀察` / `有點好轉`
+- `營收強勢延續公司` means the latest three valid months have strictly increasing MoM and strictly increasing YoY.
+- `營收轉正觀察` means previous month YoY <= 0, latest month YoY > 0, and latest month MoM > 0.
+- `營收雙指標改善觀察` means latest month MoM is higher than previous month MoM, latest month YoY is higher than previous month YoY, and previous month MoM or YoY was weak (`<= 0`).
+- A company matching a higher-priority bucket must not also appear in a lower-priority bucket. Keep this rule synchronized across `generate_unlimited_hiring_revenue_report.py`, `hiring_anomaly_detector.py`, tests, and deployable anomaly JSON.
+
 ## Path Boundary Rule
 
 - In this independent repo, relative runtime paths in `config.yaml` must resolve from this folder, not from the parent `台股投資資訊系統_完整專案` folder.

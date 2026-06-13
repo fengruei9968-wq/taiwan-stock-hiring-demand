@@ -1,6 +1,6 @@
 # Hiring Demand Current Execution
 
-Updated: 2026-06-13 15:45 Asia/Taipei
+Updated: 2026-06-13 20:44 Asia/Taipei
 
 ## Plain Summary
 
@@ -54,6 +54,34 @@ This document is the short active-truth entrypoint. Detailed legacy rules remain
 ## Next Exact Step
 
 Treat the hiring-demand project as functionally complete pending observation of the next normal Stock_codes 05:00 run and the next normal 11:30 main crawler run. Do not run another live 104 benchmark until the main LaunchAgent benchmark isolation preflight is used.
+
+## 2026-06-13 Revenue Signal Classification Closeout
+
+Plain status: the anomaly report revenue trend buckets now follow the intended business meaning for unlimited-hiring companies: `很好`, `好轉多了`, and `有點好轉`.
+
+Current active classification:
+
+- Mother population: companies in the latest hiring-demand data with `unlimited_job_count > 0`.
+- `很好`: `three_month_revenue_growth` / `營收強勢延續公司`; latest three valid months have strictly increasing MoM and strictly increasing YoY.
+- `好轉多了`: `revenue_turnaround` / `營收轉正觀察`; previous month YoY <= 0, latest month YoY > 0, and latest month MoM > 0.
+- `有點好轉`: `current_month_revenue_increase` / `營收雙指標改善觀察`; latest month MoM and YoY both improve from previous month, and previous month MoM or YoY was <= 0.
+- Mutual exclusion priority: `很好` first, then `好轉多了`, then `有點好轉`.
+
+Current 2026-06-13 evidence:
+
+- `latest_unlimited_count=90`
+- `revenue_covered_count=90`
+- `three_month_revenue_growth_count=1` (`2059`)
+- `revenue_turnaround_count=3` (`7879`, `4995`, `4572`)
+- `current_month_revenue_increase_count=16`
+- Production API verified `generated_at=2026-06-13T20:24:04`.
+
+Implementation evidence:
+
+- Commit pushed: `8958059 fix: classify revenue signals by priority`.
+- `TMPDIR="/Volumes/Extreme SSD/tmp" ./run_tests.sh` PASS, 120 tests.
+- `check_release_readiness.py --root .` PASS.
+- `check_hiring_deploy_boundary.py --hiring-dir . --stage3-dir stage3_web` PASS.
 
 ## 2026-06-13 MOPS Monthly Revenue Refresh Closeout
 
