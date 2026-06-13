@@ -143,6 +143,99 @@ plutil -p "$HOME/Library/LaunchAgents/com.hiring.demand.updater.plist" | rg 'Sta
 plutil -p "$HOME/Library/LaunchAgents/com.hiring.stock.codes.updater.plist" | rg 'StartOnMount|WatchPaths|QueueDirectories' || true
 ```
 
+## MOPS Monthly Revenue Refresh
+
+Use this when MOPS official monthly revenue should be refreshed for all repo-local listed, OTC, and emerging companies. This updates local/protected DB state and rebuilds deployable JSON; it must not commit protected DBs or report PNG/PDF files.
+
+Official source URLs:
+
+```text
+上市: https://mopsov.twse.com.tw/nas/t21/sii/t21sc03_{roc_year}_{month}.csv
+上櫃: https://mopsov.twse.com.tw/nas/t21/otc/t21sc03_{roc_year}_{month}.csv
+興櫃: https://mopsov.twse.com.tw/nas/t21/rotc/t21sc03_{roc_year}_{month}.csv
+興櫃 fallback: https://mopsov.twse.com.tw/nas/t21/rotc/t21sc03_{roc_year}_{month}_0.html
+```
+
+Preserve MOPS official percentage columns:
+
+```text
+營業收入-上月比較增減(%) -> MoM%
+營業收入-去年同月增減(%) -> YoY%
+```
+
+Refresh raw MOPS monthly revenue for the current validation window:
+
+```bash
+venv/bin/python3 fetch_stock_monthly_revenue_raw.py \
+  --start-month 2025-09 \
+  --end-month 2026-05 \
+  --skip-git \
+  --sleep 0
+```
+
+Recompute monthly revenue summary for all repo-local Stock_codes companies using MOPS:
+
+```bash
+venv/bin/python3 fetch_monthly_revenue.py \
+  --source mops \
+  --all-stock-codes \
+  --skip-git \
+  --output-receipt data/reports/monthly_revenue_mops_all_$(date +%Y%m%d)/monthly_revenue_fetch_receipt.json
+```
+
+Rebuild report/media/web artifacts from the refreshed DB:
+
+```bash
+venv/bin/python3 generate_unlimited_hiring_revenue_report.py \
+  --data-dir data \
+  --db-path stage3_web/investment.db \
+  --latest-manifest-path data/reports/latest_unlimited_hiring_revenue_report_manifest.json
+
+REPORT_MANIFEST="data/reports/latest_unlimited_hiring_revenue_report_manifest.json"
+REPORT_KEY="$(venv/bin/python3 -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["report_yyyymmdd"])' "$REPORT_MANIFEST")"
+REPORT_OUTPUT_DIR="$(venv/bin/python3 -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["outputs"]["output_dir"])' "$REPORT_MANIFEST")"
+
+venv/bin/python3 render_unlimited_hiring_revenue_media.py \
+  --manifest "$REPORT_MANIFEST" \
+  --png-scale 1.5 \
+  --png-dpi 150
+
+venv/bin/python3 check_unlimited_hiring_revenue_report.py \
+  --manifest "$REPORT_MANIFEST" \
+  --output-dir "data/reports/report_media_check_$(date +%Y%m%d_%H%M%S)" \
+  --require-media \
+  --media-receipt "$REPORT_OUTPUT_DIR/unlimited_hiring_revenue_media_receipt_${REPORT_KEY}.json"
+
+venv/bin/python3 sync_hiring_anomaly_web_artifacts.py \
+  --manifest "$REPORT_MANIFEST" \
+  --stage3-dir stage3_web
+```
+
+Verify a known emerging-company case:
+
+```bash
+venv/bin/python3 - <<'PY'
+import json
+from pathlib import Path
+payload = json.loads(Path("stage3_web/hiring_reports/latest_hiring_revenue_batch.json").read_text(encoding="utf-8"))
+print(json.dumps(payload["data"]["7689"], ensure_ascii=False, indent=2))
+PY
+```
+
+Expected 2026/5 evidence for 7689 大鵬科 after the 2026-06-13 fix:
+
+```text
+months[-1] = 2026/5
+mom[-1] = -29.84
+yoy[-1] = 19.26
+```
+
+Monthly revenue release boundary:
+
+- Allowed release surface: `stage3_web/hiring_reports/**` and `stage3_web/data/hiring_reports/**`.
+- Do not stage/commit/push `stage3_web/investment.db`, `.env`, `telegram_recipients.json`, `data/stock_monthly_revenue_raw/**`, `data/reports/**/*.png`, `data/reports/**/*.pdf`, or `data/runs/**`.
+- Run `check_release_readiness.py` and `check_hiring_deploy_boundary.py` before any commit/push.
+
 Deploy boundary dry-run:
 
 ```bash

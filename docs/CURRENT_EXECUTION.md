@@ -1,6 +1,6 @@
 # Hiring Demand Current Execution
 
-Updated: 2026-06-13 08:17 Asia/Taipei
+Updated: 2026-06-13 15:45 Asia/Taipei
 
 ## Plain Summary
 
@@ -54,6 +54,38 @@ This document is the short active-truth entrypoint. Detailed legacy rules remain
 ## Next Exact Step
 
 Treat the hiring-demand project as functionally complete pending observation of the next normal Stock_codes 05:00 run and the next normal 11:30 main crawler run. Do not run another live 104 benchmark until the main LaunchAgent benchmark isolation preflight is used.
+
+## 2026-06-13 MOPS Monthly Revenue Refresh Closeout
+
+Plain status: monthly revenue is now refreshed from official MOPS data for the full repo-local Taiwan stock universe, including listed, OTC, and emerging companies. The web-facing revenue JSON now reaches 2026/5, and the 7689 大鵬科 case is fixed.
+
+Important source rule:
+
+- Listed monthly revenue source: `https://mopsov.twse.com.tw/nas/t21/sii/t21sc03_{roc_year}_{month}.csv`.
+- OTC monthly revenue source: `https://mopsov.twse.com.tw/nas/t21/otc/t21sc03_{roc_year}_{month}.csv`.
+- Emerging monthly revenue source: `https://mopsov.twse.com.tw/nas/t21/rotc/t21sc03_{roc_year}_{month}.csv`, with HTML fallback `https://mopsov.twse.com.tw/nas/t21/rotc/t21sc03_{roc_year}_{month}_0.html`.
+- MOPS-provided `營業收入-上月比較增減(%)` and `營業收入-去年同月增減(%)` must be preserved as source MoM / YoY. Only recompute from local history when MOPS leaves those percentage fields blank.
+- Monthly refresh must cover all repo-local Stock_codes companies, not only currently matched hiring-demand companies.
+
+Current evidence:
+
+- Raw MOPS fetch command completed for 2025/9 through 2026/5 with `saved=20652`.
+- Full MOPS summary refresh completed with `codes=2316`, `range=2024/1-2026/6`, `gate_result=PASS`.
+- `monthly_revenue_summary` now has `2320` rows; `latest_hiring_revenue_batch.json` has `count=2320`.
+- 7689 大鵬科 now has months `2025/12` through `2026/5`; 2026/5 MoM is `-29.84`, YoY is `19.26`.
+- Production API verification at 2026-06-13 15:30 Asia/Taipei showed `report_date=2026-06-13`, `updated_at=2026-06-13 15:23:27`, `count=2320`, and 7689 values above.
+
+Commit / deploy evidence:
+
+- Commit pushed: `1459c35 fix: use MOPS monthly revenue percentages`.
+- Tests: `TMPDIR="/Volumes/Extreme SSD/tmp" ./run_tests.sh` PASS, 120 tests.
+- `check_release_readiness.py --root .` PASS.
+- `check_hiring_deploy_boundary.py --hiring-dir . --stage3-dir stage3_web` PASS.
+
+Monthly operating rule:
+
+- Use the monthly revenue commands in `docs/COMMANDS.md` after official monthly revenue is expected to be available.
+- Do not solve stale monthly revenue by committing protected DBs or PNG/PDF files. Rebuild deployable JSON under `stage3_web/hiring_reports/**` and `stage3_web/data/hiring_reports/**`, then commit/push only those allowed artifacts and required source/test changes.
 
 ## 2026-06-13 Raw Monthly Revenue Launcher Closeout
 

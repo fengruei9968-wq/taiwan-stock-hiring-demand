@@ -66,6 +66,12 @@ Daily deployable web data is limited to:
 
 - Raw monthly revenue LaunchAgents must use the same internal-disk local launcher pattern as the main scraper; launchd must not execute SSD `run_stock_monthly_revenue_raw.sh` directly.
 - The raw monthly revenue modes are `run-raw-revenue-listed-otc`, `run-raw-revenue-emerging`, and `run-raw-revenue-missing-retry`.
+- The governed official source is MOPS monthly revenue:
+  - Listed: `https://mopsov.twse.com.tw/nas/t21/sii/t21sc03_{roc_year}_{month}.csv`
+  - OTC: `https://mopsov.twse.com.tw/nas/t21/otc/t21sc03_{roc_year}_{month}.csv`
+  - Emerging: `https://mopsov.twse.com.tw/nas/t21/rotc/t21sc03_{roc_year}_{month}.csv`, with HTML fallback `..._{month}_0.html`.
+- Preserve MOPS-provided `營業收入-上月比較增減(%)` and `營業收入-去年同月增減(%)` as source MoM / YoY. Recompute MoM / YoY from local history only when MOPS leaves the percentage blank.
+- Each monthly refresh must cover all repo-local listed / OTC / emerging stock codes, not only companies currently appearing in the hiring-demand table.
 - Raw monthly revenue updates may write protected local `stage3_web/investment.db`, ignored `data/stock_monthly_revenue_raw/**`, and deployable JSON under `stage3_web/hiring_reports/**` only through explicit publication steps.
 - Do not commit or push protected DB files to refresh monthly revenue on the website; publish deployable JSON artifacts instead.
 
