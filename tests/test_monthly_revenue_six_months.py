@@ -77,6 +77,8 @@ class MonthlyRevenueSixMonthTests(unittest.TestCase):
             company_full_name="",
             fetched_at="2026-06-12T00:00:00",
             run_id="unit",
+            source_mom_pct=-12.34,
+            source_yoy_pct=56.78,
         )
 
         with patch("fetch_stock_monthly_revenue_raw.latest_stock_codes_csv", return_value=Path("stock_codes.csv")), \
@@ -95,6 +97,8 @@ class MonthlyRevenueSixMonthTests(unittest.TestCase):
                 "revenue_year": 2026,
                 "revenue_month": 5,
                 "revenue": 123456,
+                "mom": -12.34,
+                "yoy": 56.78,
             }
         ])
 
@@ -132,6 +136,71 @@ class MonthlyRevenueSixMonthTests(unittest.TestCase):
             )
 
         self.assertEqual([record["stock_id"] for record in records], ["2211"])
+
+    def test_source_provided_mops_mom_yoy_is_used_when_history_is_missing(self) -> None:
+        records = [
+            {
+                "stock_id": "7689",
+                "revenue_year": 2025,
+                "revenue_month": 12,
+                "revenue": 394662,
+                "mom": 7.05,
+                "yoy": -16.56,
+            },
+            {
+                "stock_id": "7689",
+                "revenue_year": 2026,
+                "revenue_month": 1,
+                "revenue": 463887,
+                "mom": 17.54,
+                "yoy": 37.52,
+            },
+            {
+                "stock_id": "7689",
+                "revenue_year": 2026,
+                "revenue_month": 2,
+                "revenue": 367473,
+                "mom": -20.78,
+                "yoy": 15.02,
+            },
+            {
+                "stock_id": "7689",
+                "revenue_year": 2026,
+                "revenue_month": 3,
+                "revenue": 399060,
+                "mom": 8.59,
+                "yoy": 20.57,
+            },
+            {
+                "stock_id": "7689",
+                "revenue_year": 2026,
+                "revenue_month": 4,
+                "revenue": 703035,
+                "mom": 76.17,
+                "yoy": 92.0,
+            },
+            {
+                "stock_id": "7689",
+                "revenue_year": 2026,
+                "revenue_month": 5,
+                "revenue": 493262,
+                "mom": -29.84,
+                "yoy": 19.26,
+            },
+        ]
+
+        summary = fetch_monthly_revenue.compute_summaries(records)["7689"]
+
+        self.assertEqual([summary[f"m{i}"]["label"] for i in range(1, 7)], [
+            "2025/12",
+            "2026/1",
+            "2026/2",
+            "2026/3",
+            "2026/4",
+            "2026/5",
+        ])
+        self.assertEqual(summary["m6"]["mom"], -29.84)
+        self.assertEqual(summary["m6"]["yoy"], 19.26)
 
     def test_finmind_summary_outputs_latest_six_months_old_to_new(self) -> None:
         records = []

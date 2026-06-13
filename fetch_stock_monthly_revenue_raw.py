@@ -85,6 +85,8 @@ class RevenueRecord:
     company_full_name: str
     fetched_at: str
     run_id: str
+    source_mom_pct: float | None = None
+    source_yoy_pct: float | None = None
 
     @property
     def period(self) -> str:
@@ -104,6 +106,8 @@ class RevenueRecord:
             "company_full_name": self.company_full_name,
             "fetched_at": self.fetched_at,
             "run_id": self.run_id,
+            "source_mom_pct": self.source_mom_pct,
+            "source_yoy_pct": self.source_yoy_pct,
         }
 
 
@@ -284,6 +288,8 @@ def ensure_raw_table(conn: sqlite3.Connection) -> None:
             company_full_name TEXT,
             fetched_at TEXT NOT NULL,
             run_id TEXT NOT NULL,
+            source_mom_pct REAL,
+            source_yoy_pct REAL,
             PRIMARY KEY (stock_code, revenue_year, revenue_month, source)
         )
         """
@@ -295,6 +301,8 @@ def ensure_raw_table(conn: sqlite3.Connection) -> None:
         "company_short_name": "TEXT",
         "company_full_name": "TEXT",
         "run_id": "TEXT",
+        "source_mom_pct": "REAL",
+        "source_yoy_pct": "REAL",
     }
     for column, column_type in expected_columns.items():
         if column not in existing_columns:
@@ -310,8 +318,8 @@ def save_records(conn: sqlite3.Connection, records: list[RevenueRecord]) -> int:
         INSERT OR REPLACE INTO stock_monthly_revenue (
             stock_code, revenue_year, revenue_month, revenue_amount, revenue_unit,
             source, source_url, market_type_at_fetch, company_short_name, company_full_name,
-            fetched_at, run_id
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            fetched_at, run_id, source_mom_pct, source_yoy_pct
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """,
         [
             (
@@ -327,6 +335,8 @@ def save_records(conn: sqlite3.Connection, records: list[RevenueRecord]) -> int:
                 record.company_full_name,
                 record.fetched_at,
                 record.run_id,
+                record.source_mom_pct,
+                record.source_yoy_pct,
             )
             for record in records
         ],
@@ -467,6 +477,18 @@ def parse_int(value: str) -> int | None:
         return None
     try:
         return int(round(float(cleaned)))
+    except ValueError:
+        return None
+
+
+def parse_float(value: str | None) -> float | None:
+    if value is None:
+        return None
+    cleaned = str(value).strip().replace(",", "").replace("%", "")
+    if cleaned in {"", "-", "－", "--"}:
+        return None
+    try:
+        return round(float(cleaned), 2)
     except ValueError:
         return None
 
@@ -699,6 +721,8 @@ def fetch_mops_market_month_records(
                 company_full_name=meta.full_name,
                 fetched_at=fetched_at,
                 run_id=run_id,
+                source_mom_pct=parse_float(row.get("營業收入-上月比較增減(%)")),
+                source_yoy_pct=parse_float(row.get("營業收入-去年同月增減(%)")),
             )
         )
     if folder == "rotc" and not records and fallback_source_url and source_url != fallback_source_url:
@@ -733,6 +757,8 @@ def fetch_mops_market_month_records(
                         company_full_name=meta.full_name,
                         fetched_at=fetched_at,
                         run_id=run_id,
+                        source_mom_pct=parse_float(row.get("營業收入-上月比較增減(%)")),
+                        source_yoy_pct=parse_float(row.get("營業收入-去年同月增減(%)")),
                     )
                 )
         except Exception as fallback_exc:
@@ -781,6 +807,8 @@ def write_outputs(
         "company_full_name",
         "fetched_at",
         "run_id",
+        "source_mom_pct",
+        "source_yoy_pct",
     ]
     with csv_path.open("w", encoding="utf-8-sig", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=fieldnames)

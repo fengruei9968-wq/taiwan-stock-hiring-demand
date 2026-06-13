@@ -173,6 +173,62 @@ class StockMonthlyRevenueRawTests(unittest.TestCase):
         self.assertEqual(records[0].revenue_amount, 4756)
         self.assertEqual(records[0].source, "mops_rotc")
 
+    def test_mops_csv_parser_keeps_source_mom_yoy_percentages(self) -> None:
+        csv_text = (
+            "出表日期,資料年月,公司代號,公司名稱,產業別,營業收入-當月營收,"
+            "營業收入-上月營收,營業收入-去年當月營收,營業收入-上月比較增減(%),"
+            "營業收入-去年同月增減(%),累計營業收入-當月累計營收,累計營業收入-去年累計營收,"
+            "累計營業收入-前期比較增減(%),備註\n"
+            "115/06/13,115/5,7689,大鵬科CLMX,通信網路業,493262,703035,413600,"
+            "-29.83820151201576,19.26063829787234,2426717,1767531,37.294169098024305,-\n"
+        )
+        stock_meta = {
+            "7689": raw.StockMeta(
+                stock_code="7689",
+                short_name="大鵬科CLMX",
+                full_name="大鵬科技股份有限公司",
+                market_type="興櫃",
+            )
+        }
+
+        with patch("fetch_stock_monthly_revenue_raw.requests.get", return_value=FakeResponse(csv_text)):
+            records, status = raw.fetch_mops_market_month_records(
+                year=2026,
+                month=5,
+                market_type="興櫃",
+                stock_meta=stock_meta,
+                fetched_at="2026-06-13T00:00:00",
+                run_id="unit",
+            )
+
+        self.assertEqual(status["matched_row_count"], 1)
+        self.assertEqual(records[0].source_mom_pct, -29.84)
+        self.assertEqual(records[0].source_yoy_pct, 19.26)
+
+    def test_wantgoo_parser_does_not_require_mops_percentage_columns(self) -> None:
+        meta = raw.StockMeta(
+            stock_code="7689",
+            short_name="大鵬科CLMX",
+            full_name="大鵬科技股份有限公司",
+            market_type="興櫃",
+        )
+
+        records = raw.parse_wantgoo_table_text(
+            text="2026/5\t493262\n",
+            code="7689",
+            meta=meta,
+            start_month=(2026, 5),
+            end_month=(2026, 5),
+            fetched_at="2026-06-13T00:00:00",
+            run_id="unit",
+            source_url="https://www.wantgoo.com/stock/7689/financial-statements/monthly-revenue",
+        )
+
+        self.assertEqual(len(records), 1)
+        self.assertEqual(records[0].revenue_amount, 493262)
+        self.assertIsNone(records[0].source_mom_pct)
+        self.assertIsNone(records[0].source_yoy_pct)
+
     def test_emerging_mops_html_parser_deduplicates_nested_table_rows(self) -> None:
         row = """
         <tr>

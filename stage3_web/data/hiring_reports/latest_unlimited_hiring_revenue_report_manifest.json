@@ -1,7 +1,7 @@
 {
   "schema_version": "2026-05-15",
   "report_type": "unlimited_hiring_revenue_report",
-  "generated_at": "2026-06-13T14:44:30",
+  "generated_at": "2026-06-13T15:24:40",
   "report_yyyymmdd": "20260613",
   "report_date": "2026-06-13",
   "previous_date": "2026-06-12",
@@ -14,7 +14,7 @@
   "new_unlimited_count": 6,
   "new_unlimited_rule": "latest_unlimited_codes_minus_previous_unlimited_codes",
   "current_month_revenue_increase_rule": "latest_month_mom_gt_previous_month_mom_and_latest_month_yoy_gt_previous_month_yoy",
-  "current_month_revenue_increase_count": 26,
+  "current_month_revenue_increase_count": 28,
   "revenue_turnaround_rule": "latest_month_yoy_turns_positive_and_latest_month_mom_positive_excluding_current_month_increase",
   "revenue_turnaround_count": 0,
   "revenue_growth_rule": "latest_three_available_months_mom_and_yoy_strictly_increasing",
@@ -22,7 +22,7 @@
   "revenue_covered_count": 90,
   "revenue_missing_count": 0,
   "revenue_missing_codes": [],
-  "revenue_snapshot_row_count": 1134,
+  "revenue_snapshot_row_count": 2320,
   "telegram": {
     "enabled": false,
     "send_attempted": false,
@@ -46,8 +46,8 @@
     "source_table": "monthly_revenue_summary",
     "snapshot_csv_path": "data/revenue_snapshots/monthly_revenue_summary_20260613.csv",
     "snapshot_manifest_path": "data/revenue_snapshots/monthly_revenue_snapshot_manifest_20260613.json",
-    "row_count": 1134,
+    "row_count": 2320,
     "updated_at_min": "2026-04-09 14:06:05",
-    "updated_at_max": "2026-06-13 13:46:29"
+    "updated_at_max": "2026-06-13 15:23:27"
   }
 }

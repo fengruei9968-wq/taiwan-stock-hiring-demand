@@ -136,6 +136,15 @@ def get_stock_codes_from_db() -> list[str]:
         conn.close()
 
 
+def get_stock_codes_from_stock_codes_csv() -> list[str]:
+    """Return all listed / OTC / emerging stock codes from the repo-local Stock_codes CSV."""
+    import fetch_stock_monthly_revenue_raw as raw
+
+    stock_codes_csv = raw.latest_stock_codes_csv(raw.STOCK_CODES_DIR)
+    stock_meta = raw.load_stock_codes(stock_codes_csv, None, market_types={'上市', '上櫃', '興櫃'})
+    return sorted(stock_meta)
+
+
 def fetch_all_revenue(token: str, start_date: str, requested_codes: list[str] | None = None) -> list[dict]:
     """
     逐一抓取 hiring_demand 中的公司月營收（FinMind 不支援全量查詢）。
@@ -242,6 +251,8 @@ def fetch_mops_official_revenue(
                     'revenue_year': record.revenue_year,
                     'revenue_month': record.revenue_month,
                     'revenue': record.revenue_amount,
+                    'mom': record.source_mom_pct,
+                    'yoy': record.source_yoy_pct,
                 })
 
     logger.info(
@@ -258,15 +269,21 @@ def compute_summaries(records: list[dict]) -> dict[str, dict]:
     輸出：{ stock_code: { 'm1': {...}, ... 'm6': {...} } }
             m1 = 最舊，m6 = 最新
     """
-    # 建 lookup: code -> (year, month) -> revenue
+    # 建 lookup: code -> (year, month) -> revenue / source-provided metrics
     lookup: dict[str, dict[tuple, float]] = defaultdict(dict)
+    source_metrics: dict[str, dict[tuple, dict[str, float | None]]] = defaultdict(dict)
     for r in records:
         code = r.get('stock_id', '')
         y = r.get('revenue_year')
         m = r.get('revenue_month')
         rev = r.get('revenue')
         if code and y and m and rev is not None:
-            lookup[code][(int(y), int(m))] = float(rev)
+            key = (int(y), int(m))
+            lookup[code][key] = float(rev)
+            source_metrics[code][key] = {
+                'mom': r.get('mom'),
+                'yoy': r.get('yoy'),
+            }
 
     summaries: dict[str, dict] = {}
 
@@ -292,13 +309,19 @@ def compute_summaries(records: list[dict]) -> dict[str, dict]:
                 prev_m = 12
                 prev_y -= 1
             prev = rev_map.get((prev_y, prev_m))
-            mom = round((curr - prev) / prev * 100, 2) \
+            source_mom = source_metrics.get(code, {}).get((py, pm), {}).get('mom')
+            mom = round(float(source_mom), 2) if source_mom is not None else (
+                round((curr - prev) / prev * 100, 2)
                 if (curr is not None and prev and prev != 0) else None
+            )
 
             # YoY%
             ly_val = rev_map.get((py - 1, pm))
-            yoy = round((curr - ly_val) / ly_val * 100, 2) \
+            source_yoy = source_metrics.get(code, {}).get((py, pm), {}).get('yoy')
+            yoy = round(float(source_yoy), 2) if source_yoy is not None else (
+                round((curr - ly_val) / ly_val * 100, 2)
                 if (curr is not None and ly_val and ly_val != 0) else None
+            )
 
             result[key] = {
                 'label': f'{py}/{pm}',
@@ -398,6 +421,8 @@ def write_receipt(
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description='Fetch monthly revenue summary into investment.db.')
     parser.add_argument('--codes', default='', help='Comma-separated stock codes to fetch. Empty means all hiring_demand codes.')
+    parser.add_argument('--all-stock-codes', action='store_true', help='Fetch all repo-local listed / OTC / emerging stock codes instead of only hiring_demand codes.')
+    parser.add_argument('--source', choices=['auto', 'finmind', 'mops'], default='auto', help='Revenue source. auto uses FinMind when token exists, otherwise MOPS.')
     parser.add_argument('--skip-git', action='store_true', help='Do not git commit/push after updating investment.db.')
     parser.add_argument('--output-receipt', default='', help='Optional JSON receipt path.')
     return parser
@@ -409,6 +434,8 @@ def main(argv: list[str] | None = None):
     logger.info('=== fetch_monthly_revenue 開始 ===')
     started_at = datetime.now().isoformat(timespec='seconds')
     requested_codes = parse_codes(args.codes)
+    if args.all_stock_codes and not requested_codes:
+        requested_codes = get_stock_codes_from_stock_codes_csv()
 
     now = datetime.now()
     # 抓前兩年起到今天，確保近六月即使跨年也有去年同月資料可算 YoY。
@@ -416,12 +443,28 @@ def main(argv: list[str] | None = None):
     start_date = f'{start_year}-01-01'
 
     token = load_token()
-    if token:
+    if args.source == 'mops':
+        logger.info('使用 MOPS 官方月營收來源')
+        start_month = (start_year, 1)
+        end_month = (now.year, now.month)
+        try:
+            records = fetch_mops_official_revenue(
+                requested_codes=requested_codes,
+                start_month=start_month,
+                end_month=end_month,
+            )
+        except Exception as e:
+            logger.error(f'MOPS 抓取失敗: {e}')
+            sys.exit(1)
+    elif token and args.source != 'mops':
         try:
             records = fetch_all_revenue(token, start_date, requested_codes=requested_codes)
         except Exception as e:
             logger.error(f'FinMind 抓取失敗: {e}')
             sys.exit(1)
+    elif args.source == 'finmind':
+        logger.error('指定 source=finmind 但找不到 FINMIND_TOKEN')
+        sys.exit(1)
     else:
         logger.warning('找不到 FINMIND_TOKEN，改用 MOPS 官方月營收 fallback')
         start_month = (start_year, 1)
