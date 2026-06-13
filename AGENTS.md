@@ -62,6 +62,13 @@ Daily deployable web data is limited to:
 - Do not run two writers against the same Stock_codes output directory. The old `com.stock.updater` may stay installed during transition only because it writes to a different D-slot directory.
 - `data/stock_codes/**` is local runtime input data and should not be committed unless the user explicitly authorizes a snapshot.
 
+## Monthly Revenue Scheduler Rule
+
+- Raw monthly revenue LaunchAgents must use the same internal-disk local launcher pattern as the main scraper; launchd must not execute SSD `run_stock_monthly_revenue_raw.sh` directly.
+- The raw monthly revenue modes are `run-raw-revenue-listed-otc`, `run-raw-revenue-emerging`, and `run-raw-revenue-missing-retry`.
+- Raw monthly revenue updates may write protected local `stage3_web/investment.db`, ignored `data/stock_monthly_revenue_raw/**`, and deployable JSON under `stage3_web/hiring_reports/**` only through explicit publication steps.
+- Do not commit or push protected DB files to refresh monthly revenue on the website; publish deployable JSON artifacts instead.
+
 ## Path Boundary Rule
 
 - In this independent repo, relative runtime paths in `config.yaml` must resolve from this folder, not from the parent `台股投資資訊系統_完整專案` folder.

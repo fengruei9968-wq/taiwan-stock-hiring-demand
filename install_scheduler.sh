@@ -23,6 +23,7 @@ LOCAL_LAUNCHER_PATH="${HIRING_LOCAL_LAUNCHER_PATH:-$LOCAL_LAUNCHER_DIR/run_hirin
 LOCAL_MAIN_WRAPPER_PATH="${HIRING_LOCAL_MAIN_WRAPPER_PATH:-$LOCAL_LAUNCHER_DIR/run_hiring_demand.sh}"
 LOCAL_PROBE_WRAPPER_PATH="${HIRING_LOCAL_PROBE_WRAPPER_PATH:-$LOCAL_LAUNCHER_DIR/run_telegram_recipient_probe.sh}"
 LOCAL_STOCK_CODES_WRAPPER_PATH="${HIRING_LOCAL_STOCK_CODES_WRAPPER_PATH:-$LOCAL_LAUNCHER_DIR/run_stock_codes_update.sh}"
+LOCAL_RAW_REVENUE_WRAPPER_PATH="${HIRING_LOCAL_RAW_REVENUE_WRAPPER_PATH:-$LOCAL_LAUNCHER_DIR/run_stock_monthly_revenue_raw.sh}"
 LOCAL_LOG_DIR="${HIRING_LOCAL_LOG_DIR:-$HOME/Library/Logs/HiringDemand}"
 LOCAL_VENV_DIR="${HIRING_LOCAL_VENV_DIR:-$LOCAL_LAUNCHER_DIR/venv}"
 LOCAL_VENV_PYTHON="${HIRING_LOCAL_VENV_PYTHON:-$LOCAL_VENV_DIR/bin/python3}"
@@ -78,6 +79,7 @@ render_launcher_template() {
         -e "s|__LOCAL_MAIN_WRAPPER__|$LOCAL_MAIN_WRAPPER_PATH|g" \
         -e "s|__LOCAL_PROBE_WRAPPER__|$LOCAL_PROBE_WRAPPER_PATH|g" \
         -e "s|__LOCAL_STOCK_CODES_WRAPPER__|$LOCAL_STOCK_CODES_WRAPPER_PATH|g" \
+        -e "s|__LOCAL_RAW_REVENUE_WRAPPER__|$LOCAL_RAW_REVENUE_WRAPPER_PATH|g" \
         "$LOCAL_LAUNCHER_TEMPLATE" > "$dest"
     chmod 755 "$dest"
 }
@@ -86,19 +88,23 @@ install_local_wrapper_copies() {
     local main_dest="$LOCAL_MAIN_WRAPPER_PATH"
     local probe_dest="$LOCAL_PROBE_WRAPPER_PATH"
     local stock_codes_dest="$LOCAL_STOCK_CODES_WRAPPER_PATH"
+    local raw_revenue_dest="$LOCAL_RAW_REVENUE_WRAPPER_PATH"
     if [ "$RENDER_ONLY" = "1" ]; then
         main_dest="$SCHEDULER_RENDER_DIR/$(basename "$LOCAL_MAIN_WRAPPER_PATH")"
         probe_dest="$SCHEDULER_RENDER_DIR/$(basename "$LOCAL_PROBE_WRAPPER_PATH")"
         stock_codes_dest="$SCHEDULER_RENDER_DIR/$(basename "$LOCAL_STOCK_CODES_WRAPPER_PATH")"
+        raw_revenue_dest="$SCHEDULER_RENDER_DIR/$(basename "$LOCAL_RAW_REVENUE_WRAPPER_PATH")"
     fi
     mkdir -p "$(dirname "$main_dest")"
     install -m 755 "$HIRING_DIR/run_hiring_demand.sh" "$main_dest"
     install -m 755 "$HIRING_DIR/run_telegram_recipient_probe.sh" "$probe_dest"
     install -m 755 "$HIRING_DIR/run_stock_codes_update.sh" "$stock_codes_dest"
+    install -m 755 "$HIRING_DIR/run_stock_monthly_revenue_raw.sh" "$raw_revenue_dest"
     if [ "$RENDER_ONLY" = "1" ]; then
         echo "render-only: $main_dest"
         echo "render-only: $probe_dest"
         echo "render-only: $stock_codes_dest"
+        echo "render-only: $raw_revenue_dest"
     fi
 }
 
@@ -174,13 +180,13 @@ show_help() {
     echo "  uninstall-stock-codes - 移除徵人需求度專用 Stock_codes 更新"
     echo "  status-stock-codes    - 查看徵人需求度專用 Stock_codes 更新狀態"
     echo "  run-stock-codes       - 立即執行一次徵人需求度專用 Stock_codes 更新"
-    echo "  install-all-local - 安裝本機 launcher + 主排程 + Telegram recipient probe"
+    echo "  install-all-local - 安裝本機 launcher + 主排程 + Telegram recipient probe + 月營收 raw 排程"
     echo "  doctor           - 檢查本機 launcher / LaunchAgent 是否正確安裝（可加 --notify-ntfy）"
     echo "  install-artifact-backup   - 安裝每日產物 SSD 備份（每月 5 號 20:00）"
     echo "  uninstall-artifact-backup - 移除每日產物 SSD 備份"
     echo "  status-artifact-backup    - 查看每日產物 SSD 備份狀態"
     echo "  run-artifact-backup       - 立即執行一次每日產物 SSD 備份"
-    echo "  install-raw-revenue   - 安裝月營收 raw 更新（5 號上市/上櫃、10 號興櫃、15 號缺月補跑）"
+    echo "  install-raw-revenue   - 安裝月營收 raw 更新（本機 launcher；5 號上市/上櫃、10 號興櫃、15 號缺月補跑）"
     echo "  uninstall-raw-revenue - 移除月營收 raw 更新"
     echo "  status-raw-revenue    - 查看月營收 raw 更新狀態"
     echo "  run-raw-revenue       - 立即執行一次月營收 raw 更新"
@@ -212,6 +218,7 @@ install_scheduler() {
     echo "  - local main wrapper: $LOCAL_MAIN_WRAPPER_PATH"
     echo "  - local probe wrapper: $LOCAL_PROBE_WRAPPER_PATH"
     echo "  - local stock codes wrapper: $LOCAL_STOCK_CODES_WRAPPER_PATH"
+    echo "  - local raw revenue wrapper: $LOCAL_RAW_REVENUE_WRAPPER_PATH"
     echo "  - local scheduler venv: $LOCAL_VENV_DIR"
     echo "  - 設定檔: $PLIST_DEST"
     echo ""
@@ -387,6 +394,7 @@ install_all_local() {
     install_stock_codes_scheduler
     install_scheduler
     install_probe_scheduler
+    install_raw_revenue_scheduler
     doctor_scheduler
 }
 
@@ -475,6 +483,7 @@ install_raw_revenue_scheduler() {
     if [ "$RENDER_ONLY" != "1" ]; then
         mkdir -p "$HOME/Library/LaunchAgents"
     fi
+    install_local_launcher
     for plist_name in "${RAW_REVENUE_PLIST_NAMES[@]}"; do
         plist_source="${SCHEDULER_TEMPLATE_DIR}/${plist_name}.template"
         plist_dest="$HOME/Library/LaunchAgents/${plist_name}"
@@ -486,6 +495,8 @@ install_raw_revenue_scheduler() {
     fi
     echo "月營收 raw 更新排程已安裝！"
     echo "  - 執行時間: 每月 5 號上市/上櫃、10 號興櫃、15 號缺月補跑"
+    echo "  - local launcher: $LOCAL_LAUNCHER_PATH"
+    echo "  - local raw revenue wrapper: $LOCAL_RAW_REVENUE_WRAPPER_PATH"
     echo "  - 設定檔:"
     for plist_name in "${RAW_REVENUE_PLIST_NAMES[@]}"; do
         echo "    - $HOME/Library/LaunchAgents/${plist_name}"

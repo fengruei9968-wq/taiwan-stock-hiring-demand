@@ -222,9 +222,12 @@ class HiringPipelinePathContractTest(unittest.TestCase):
         emerging = (EXPECTED_HIRING_DIR / "scheduler_templates" / "com.stock.monthly.revenue.raw.emerging.updater.plist.template").read_text(encoding="utf-8")
         missing_retry = (EXPECTED_HIRING_DIR / "scheduler_templates" / "com.stock.monthly.revenue.raw.missing.retry.plist.template").read_text(encoding="utf-8")
 
-        self.assertIn("__HIRING_DIR__", listed_otc)
-        self.assertIn("__HIRING_DIR__", emerging)
-        self.assertIn("__HIRING_DIR__", missing_retry)
+        self.assertIn("__LOCAL_LAUNCHER_PATH__", listed_otc)
+        self.assertIn("__LOCAL_LAUNCHER_PATH__", emerging)
+        self.assertIn("__LOCAL_LAUNCHER_PATH__", missing_retry)
+        self.assertIn("run-raw-revenue-listed-otc", listed_otc)
+        self.assertIn("run-raw-revenue-emerging", emerging)
+        self.assertIn("run-raw-revenue-missing-retry", missing_retry)
 
         self.assertIn("<integer>5</integer>", listed_otc)
         self.assertIn("<key>RAW_REVENUE_MARKET_TYPES</key>", listed_otc)
@@ -274,6 +277,9 @@ class HiringPipelinePathContractTest(unittest.TestCase):
                 "com.hiring.demand.updater.plist.template",
                 "com.hiring.telegram.recipient.probe.plist.template",
                 "com.hiring.stock.codes.updater.plist.template",
+                "com.stock.monthly.revenue.raw.updater.plist.template",
+                "com.stock.monthly.revenue.raw.emerging.updater.plist.template",
+                "com.stock.monthly.revenue.raw.missing.retry.plist.template",
             }:
                 self.assertIn("__LOCAL_LAUNCHER_PATH__", text)
             else:

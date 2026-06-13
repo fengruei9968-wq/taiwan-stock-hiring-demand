@@ -7,12 +7,12 @@
 
     <key>ProgramArguments</key>
     <array>
-        <string>/bin/bash</string>
-        <string>__HIRING_DIR__/run_stock_monthly_revenue_raw.sh</string>
+        <string>__LOCAL_LAUNCHER_PATH__</string>
+        <string>run-raw-revenue-emerging</string>
     </array>
 
     <key>WorkingDirectory</key>
-    <string>__HIRING_DIR__</string>
+    <string>__LOCAL_LAUNCHER_DIR__</string>
 
     <!-- 每月 10 號 10:10，更新興櫃月營收 -->
     <key>StartCalendarInterval</key>
@@ -26,10 +26,10 @@
     </dict>
 
     <key>StandardOutPath</key>
-    <string>__HIRING_DIR__/launchd_stock_monthly_revenue_raw_emerging_stdout.log</string>
+    <string>__LOCAL_LOG_DIR__/stock_monthly_revenue_raw_emerging_stdout.log</string>
 
     <key>StandardErrorPath</key>
-    <string>__HIRING_DIR__/launchd_stock_monthly_revenue_raw_emerging_stderr.log</string>
+    <string>__LOCAL_LOG_DIR__/stock_monthly_revenue_raw_emerging_stderr.log</string>
 
     <key>EnvironmentVariables</key>
     <dict>

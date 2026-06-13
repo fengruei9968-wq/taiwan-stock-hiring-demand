@@ -38,6 +38,8 @@ class SchedulerLocalRuntimeTests(unittest.TestCase):
             env["HIRING_LOCAL_LAUNCHER_PATH"] = str(local_dir / "run_hiring_demand_launcher.sh")
             env["HIRING_LOCAL_MAIN_WRAPPER_PATH"] = str(local_dir / "run_hiring_demand.sh")
             env["HIRING_LOCAL_PROBE_WRAPPER_PATH"] = str(local_dir / "run_telegram_recipient_probe.sh")
+            env["HIRING_LOCAL_STOCK_CODES_WRAPPER_PATH"] = str(local_dir / "run_stock_codes_update.sh")
+            env["HIRING_LOCAL_RAW_REVENUE_WRAPPER_PATH"] = str(local_dir / "run_stock_monthly_revenue_raw.sh")
             env["HIRING_LOCAL_VENV_DIR"] = str(local_dir / "venv")
             proc = subprocess.run(
                 ["bash", "install_scheduler.sh", "--render-only", "install"],
@@ -53,17 +55,24 @@ class SchedulerLocalRuntimeTests(unittest.TestCase):
             self.assertIn(f'LOCAL_VENV_PYTHON="{local_dir / "venv" / "bin" / "python3"}"', text)
             self.assertIn(f'LOCAL_MAIN_WRAPPER="{local_dir / "run_hiring_demand.sh"}"', text)
             self.assertIn(f'LOCAL_PROBE_WRAPPER="{local_dir / "run_telegram_recipient_probe.sh"}"', text)
+            self.assertIn(f'LOCAL_STOCK_CODES_WRAPPER="{local_dir / "run_stock_codes_update.sh"}"', text)
+            self.assertIn(f'LOCAL_RAW_REVENUE_WRAPPER="{local_dir / "run_stock_monthly_revenue_raw.sh"}"', text)
             self.assertIn('export HIRING_PYTHON="$LOCAL_VENV_PYTHON"', text)
             self.assertIn('export HIRING_SCRIPT_DIR="$HIRING_DIR"', text)
             self.assertNotIn('exec "$HIRING_DIR/run_hiring_demand.sh"', text)
             self.assertTrue((render_dir / "run_hiring_demand.sh").exists())
             self.assertTrue((render_dir / "run_telegram_recipient_probe.sh").exists())
+            self.assertTrue((render_dir / "run_stock_codes_update.sh").exists())
+            self.assertTrue((render_dir / "run_stock_monthly_revenue_raw.sh").exists())
 
     def test_wrappers_support_internal_disk_copy_with_ssd_script_dir_override(self) -> None:
-        for wrapper_name in ["run_hiring_demand.sh", "run_telegram_recipient_probe.sh"]:
+        for wrapper_name in ["run_hiring_demand.sh", "run_telegram_recipient_probe.sh", "run_stock_monthly_revenue_raw.sh"]:
             text = (ROOT / wrapper_name).read_text(encoding="utf-8")
             self.assertIn("SCRIPT_SELF_DIR=", text)
-            self.assertIn('SCRIPT_DIR="${HIRING_SCRIPT_DIR:-$SCRIPT_SELF_DIR}"', text)
+            self.assertTrue(
+                'SCRIPT_DIR="${HIRING_SCRIPT_DIR:-$SCRIPT_SELF_DIR}"' in text
+                or 'HIRING_DIR="${HIRING_SCRIPT_DIR:-$SCRIPT_SELF_DIR}"' in text
+            )
 
     def test_scheduler_doctor_fails_when_local_scheduler_venv_is_missing(self) -> None:
         with tempfile.TemporaryDirectory(dir=ROOT / "_test_runtime") as tmp:

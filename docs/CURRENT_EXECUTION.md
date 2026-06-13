@@ -55,6 +55,27 @@ This document is the short active-truth entrypoint. Detailed legacy rules remain
 
 Treat the hiring-demand project as functionally complete pending observation of the next normal Stock_codes 05:00 run and the next normal 11:30 main crawler run. Do not run another live 104 benchmark until the main LaunchAgent benchmark isolation preflight is used.
 
+## 2026-06-13 Raw Monthly Revenue Launcher Closeout
+
+Plain status: raw monthly revenue scheduling now follows the same local-launcher pattern as the main hiring scraper. launchd no longer executes the raw monthly revenue SSD shell script directly.
+
+Current installed raw monthly revenue scheduler state verified at 2026-06-13 14:10 Asia/Taipei:
+
+- `com.stock.monthly.revenue.raw.updater`: loaded, not running, local launcher mode `run-raw-revenue-listed-otc`, day 5 10:10.
+- `com.stock.monthly.revenue.raw.emerging.updater`: loaded, not running, local launcher mode `run-raw-revenue-emerging`, day 10 10:10.
+- `com.stock.monthly.revenue.raw.missing.retry`: loaded, not running, local launcher mode `run-raw-revenue-missing-retry`, day 15 10:10.
+- Local launcher path: `/Users/chiufengjui/Library/Application Support/HiringDemandLauncher/run_hiring_demand_launcher.sh`.
+- Local raw revenue wrapper copy: `/Users/chiufengjui/Library/Application Support/HiringDemandLauncher/run_stock_monthly_revenue_raw.sh`.
+- Local launchd stdout/stderr paths now live under `/Users/chiufengjui/Library/Logs/HiringDemand/`.
+- No raw monthly revenue fetch was triggered by this scheduler installation.
+
+Verification for this closeout:
+
+- Local launcher self-test PASS.
+- `check_scheduler_installation.py --root .` PASS with raw revenue plist checks.
+- Render-only raw revenue plist lint PASS.
+- Targeted scheduler/path tests PASS.
+
 ## 2026-06-13 Scheduler Trigger Closeout
 
 Plain status: the off-schedule repeated hiring-demand runs were traced to filesystem-triggered launchd behavior, not to 104 blocking or Python restarting itself. The main and Stock_codes LaunchAgents have been corrected to calendar-only triggers.

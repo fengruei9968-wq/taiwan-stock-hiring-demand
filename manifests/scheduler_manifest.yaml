@@ -16,10 +16,12 @@ local_wrapper_copies:
   main: /Users/chiufengjui/Library/Application Support/HiringDemandLauncher/run_hiring_demand.sh
   telegram_probe: /Users/chiufengjui/Library/Application Support/HiringDemandLauncher/run_telegram_recipient_probe.sh
   stock_codes: /Users/chiufengjui/Library/Application Support/HiringDemandLauncher/run_stock_codes_update.sh
+  raw_monthly_revenue: /Users/chiufengjui/Library/Application Support/HiringDemandLauncher/run_stock_monthly_revenue_raw.sh
   source_scripts:
     main: run_hiring_demand.sh
     telegram_probe: run_telegram_recipient_probe.sh
     stock_codes: run_stock_codes_update.sh
+    raw_monthly_revenue: run_stock_monthly_revenue_raw.sh
   repo_pointer_env: HIRING_SCRIPT_DIR
   reason: local wrapper copies execute from internal disk and point back to SSD repo through HIRING_SCRIPT_DIR
 
@@ -70,6 +72,49 @@ launch_agents:
     live_effects: official TWSE/TPEx API fetch; writes local Stock_codes CSV and receipt only
     old_scheduler_transition: old com.stock.updater may remain loaded only while it writes to a different D-slot output directory
 
+  raw_monthly_revenue_listed_otc:
+    label: com.stock.monthly.revenue.raw.updater
+    plist: /Users/chiufengjui/Library/LaunchAgents/com.stock.monthly.revenue.raw.updater.plist
+    template: scheduler_templates/com.stock.monthly.revenue.raw.updater.plist.template
+    schedule: monthly day 5 10:10 Asia/Taipei
+    program_arguments:
+      - /Users/chiufengjui/Library/Application Support/HiringDemandLauncher/run_hiring_demand_launcher.sh
+      - run-raw-revenue-listed-otc
+    delegated_script: run_stock_monthly_revenue_raw.sh
+    delegated_local_wrapper: /Users/chiufengjui/Library/Application Support/HiringDemandLauncher/run_stock_monthly_revenue_raw.sh
+    trigger_policy: calendar_only_no_StartOnMount_WatchPaths_QueueDirectories
+    market_types: 上市,上櫃
+    live_effects: official MOPS monthly revenue fetch; writes protected local DB stock_monthly_revenue and ignored raw receipts only
+
+  raw_monthly_revenue_emerging:
+    label: com.stock.monthly.revenue.raw.emerging.updater
+    plist: /Users/chiufengjui/Library/LaunchAgents/com.stock.monthly.revenue.raw.emerging.updater.plist
+    template: scheduler_templates/com.stock.monthly.revenue.raw.emerging.updater.plist.template
+    schedule: monthly day 10 10:10 Asia/Taipei
+    program_arguments:
+      - /Users/chiufengjui/Library/Application Support/HiringDemandLauncher/run_hiring_demand_launcher.sh
+      - run-raw-revenue-emerging
+    delegated_script: run_stock_monthly_revenue_raw.sh
+    delegated_local_wrapper: /Users/chiufengjui/Library/Application Support/HiringDemandLauncher/run_stock_monthly_revenue_raw.sh
+    trigger_policy: calendar_only_no_StartOnMount_WatchPaths_QueueDirectories
+    market_types: 興櫃
+    live_effects: official MOPS monthly revenue fetch; writes protected local DB stock_monthly_revenue and ignored raw receipts only
+
+  raw_monthly_revenue_missing_retry:
+    label: com.stock.monthly.revenue.raw.missing.retry
+    plist: /Users/chiufengjui/Library/LaunchAgents/com.stock.monthly.revenue.raw.missing.retry.plist
+    template: scheduler_templates/com.stock.monthly.revenue.raw.missing.retry.plist.template
+    schedule: monthly day 15 10:10 Asia/Taipei
+    program_arguments:
+      - /Users/chiufengjui/Library/Application Support/HiringDemandLauncher/run_hiring_demand_launcher.sh
+      - run-raw-revenue-missing-retry
+    delegated_script: run_stock_monthly_revenue_raw.sh
+    delegated_local_wrapper: /Users/chiufengjui/Library/Application Support/HiringDemandLauncher/run_stock_monthly_revenue_raw.sh
+    trigger_policy: calendar_only_no_StartOnMount_WatchPaths_QueueDirectories
+    market_types: 上市,上櫃,興櫃
+    missing_only: true
+    live_effects: official MOPS monthly revenue gap fill; writes protected local DB stock_monthly_revenue and ignored raw receipts only
+
 new_machine_first_run:
   command: ./install_scheduler.sh doctor --notify-ntfy
   expected_if_missing: checker fails and sends ntfy alert when local launcher, local scheduler venv, or LaunchAgents are missing and NTFY_TOPIC is available
@@ -103,7 +148,8 @@ forbidden:
   - launchd main/probe plist contains old /Users/chiufengjui/D槽 path
   - com.hiring.stock.codes.updater writes to the old D-slot Stock_codes output directory
   - both com.stock.updater and com.hiring.stock.codes.updater write to the same Stock_codes directory
-  - main or Stock_codes LaunchAgent contains StartOnMount, WatchPaths, or QueueDirectories
+  - main, Stock_codes, or raw monthly revenue LaunchAgent contains StartOnMount, WatchPaths, or QueueDirectories
+  - raw monthly revenue LaunchAgent points directly to /Volumes/Extreme SSD scripts instead of the local launcher
   - local launcher points scheduled HIRING_PYTHON at SSD venv/bin/python3
   - launcher template sends Telegram PNG directly
   - launcher self-test runs the formal crawler

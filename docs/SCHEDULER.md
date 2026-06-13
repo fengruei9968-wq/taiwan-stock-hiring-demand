@@ -79,11 +79,12 @@ Check installed scheduler state:
 ./install_scheduler.sh status
 ./install_scheduler.sh status-probe
 ./install_scheduler.sh status-stock-codes
+./install_scheduler.sh status-raw-revenue
 ```
 
 The Stock_codes job should be `05:00` and point to the local launcher with argument `run-stock-codes`. The main daily job should be `11:30` and should point to the local launcher with argument `run-main`; keep this order so the scraper reads a complete Stock_codes CSV.
 
-The main and Stock_codes LaunchAgents must be calendar-only jobs. Do not add `StartOnMount`, `WatchPaths`, or `QueueDirectories`, because external SSD mount events can trigger duplicate formal runs outside the expected 05:00 and 11:30 windows.
+The main, Stock_codes, and raw monthly revenue LaunchAgents must be calendar-only jobs. Do not add `StartOnMount`, `WatchPaths`, or `QueueDirectories`, because external SSD mount events can trigger duplicate formal runs outside the expected schedule windows.
 
 The local launcher should export:
 
@@ -93,6 +94,16 @@ HIRING_SCRIPT_DIR="/Volumes/Extreme SSD/Python/台股子公司投資資訊擷取
 ```
 
 The Telegram recipient probe should point to the same local launcher with argument `run-probe`.
+
+Raw monthly revenue jobs also point to the same local launcher:
+
+```text
+com.stock.monthly.revenue.raw.updater -> run-raw-revenue-listed-otc -> day 5 10:10
+com.stock.monthly.revenue.raw.emerging.updater -> run-raw-revenue-emerging -> day 10 10:10
+com.stock.monthly.revenue.raw.missing.retry -> run-raw-revenue-missing-retry -> day 15 10:10
+```
+
+These jobs update local/protected monthly revenue storage under the SSD repo, but launchd executes only the internal-disk launcher and wrapper copy.
 
 ## Stock Codes Scheduler
 

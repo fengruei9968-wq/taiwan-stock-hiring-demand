@@ -16,6 +16,7 @@ LOCAL_VENV_PYTHON="__LOCAL_VENV_PYTHON__"
 LOCAL_MAIN_WRAPPER="__LOCAL_MAIN_WRAPPER__"
 LOCAL_PROBE_WRAPPER="__LOCAL_PROBE_WRAPPER__"
 LOCAL_STOCK_CODES_WRAPPER="__LOCAL_STOCK_CODES_WRAPPER__"
+LOCAL_RAW_REVENUE_WRAPPER="__LOCAL_RAW_REVENUE_WRAPPER__"
 LOCAL_LOG_FILE="$LOCAL_LOG_DIR/launcher.log"
 MODE="${1:-run-main}"
 
@@ -66,14 +67,25 @@ run_stock_codes() {
     exec "$LOCAL_STOCK_CODES_WRAPPER"
 }
 
+run_raw_revenue() {
+    check_common
+    [ -x "$LOCAL_RAW_REVENUE_WRAPPER" ] || fail "local raw revenue wrapper missing or not executable: $LOCAL_RAW_REVENUE_WRAPPER"
+    [ -f "$HIRING_DIR/run_stock_monthly_revenue_raw.sh" ] || fail "SSD raw revenue wrapper missing: $HIRING_DIR/run_stock_monthly_revenue_raw.sh"
+    log "delegating to local raw revenue wrapper: $LOCAL_RAW_REVENUE_WRAPPER mode=$MODE with HIRING_SCRIPT_DIR=$HIRING_DIR"
+    cd "$HIRING_DIR"
+    exec "$LOCAL_RAW_REVENUE_WRAPPER"
+}
+
 self_test() {
     check_common
     [ -x "$LOCAL_MAIN_WRAPPER" ] || fail "local main wrapper missing or not executable: $LOCAL_MAIN_WRAPPER"
     [ -x "$LOCAL_PROBE_WRAPPER" ] || fail "local probe wrapper missing or not executable: $LOCAL_PROBE_WRAPPER"
     [ -x "$LOCAL_STOCK_CODES_WRAPPER" ] || fail "local stock codes wrapper missing or not executable: $LOCAL_STOCK_CODES_WRAPPER"
+    [ -x "$LOCAL_RAW_REVENUE_WRAPPER" ] || fail "local raw revenue wrapper missing or not executable: $LOCAL_RAW_REVENUE_WRAPPER"
     [ -f "$HIRING_DIR/run_hiring_demand.sh" ] || fail "SSD main wrapper missing: $HIRING_DIR/run_hiring_demand.sh"
     [ -f "$HIRING_DIR/run_telegram_recipient_probe.sh" ] || fail "SSD probe wrapper missing: $HIRING_DIR/run_telegram_recipient_probe.sh"
     [ -f "$HIRING_DIR/run_stock_codes_update.sh" ] || fail "SSD stock codes wrapper missing: $HIRING_DIR/run_stock_codes_update.sh"
+    [ -f "$HIRING_DIR/run_stock_monthly_revenue_raw.sh" ] || fail "SSD raw revenue wrapper missing: $HIRING_DIR/run_stock_monthly_revenue_raw.sh"
     log "SELF_TEST PASS"
     printf 'SELF_TEST PASS: %s\n' "$HIRING_DIR"
 }
@@ -87,6 +99,9 @@ case "$MODE" in
         ;;
     run-stock-codes)
         run_stock_codes
+        ;;
+    run-raw-revenue-listed-otc|run-raw-revenue-emerging|run-raw-revenue-missing-retry)
+        run_raw_revenue
         ;;
     self-test)
         self_test

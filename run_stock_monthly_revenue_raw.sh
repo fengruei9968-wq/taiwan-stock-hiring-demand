@@ -10,7 +10,8 @@
 
 set -euo pipefail
 
-HIRING_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+SCRIPT_SELF_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+HIRING_DIR="${HIRING_SCRIPT_DIR:-$SCRIPT_SELF_DIR}"
 PROJECT_ROOT="${HIRING_PROJECT_ROOT:-$(cd "$HIRING_DIR/.." && pwd -P)}"
 STAGE3_DIR="${HIRING_STAGE3_DIR:-$HIRING_DIR/stage3_web}"
 PYTHON="${HIRING_REVENUE_PYTHON:-$HIRING_DIR/venv/bin/python3}"

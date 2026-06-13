@@ -16,6 +16,14 @@ from pathlib import Path
 LABEL_MAIN = "com.hiring.demand.updater"
 LABEL_PROBE = "com.hiring.telegram.recipient.probe"
 LABEL_STOCK_CODES = "com.hiring.stock.codes.updater"
+LABEL_RAW_REVENUE_LISTED_OTC = "com.stock.monthly.revenue.raw.updater"
+LABEL_RAW_REVENUE_EMERGING = "com.stock.monthly.revenue.raw.emerging.updater"
+LABEL_RAW_REVENUE_MISSING_RETRY = "com.stock.monthly.revenue.raw.missing.retry"
+RAW_REVENUE_LABELS = (
+    LABEL_RAW_REVENUE_LISTED_OTC,
+    LABEL_RAW_REVENUE_EMERGING,
+    LABEL_RAW_REVENUE_MISSING_RETRY,
+)
 OLD_D_DRIVE = "/Users/chiufengjui/D槽/Python"
 MAIN_CRAWLER_PROCESS_MARKERS = (
     "HiringDemandLauncher",
@@ -39,6 +47,10 @@ def default_local_probe_wrapper_path() -> Path:
 
 def default_local_stock_codes_wrapper_path() -> Path:
     return Path.home() / "Library/Application Support/HiringDemandLauncher/run_stock_codes_update.sh"
+
+
+def default_local_raw_revenue_wrapper_path() -> Path:
+    return Path.home() / "Library/Application Support/HiringDemandLauncher/run_stock_monthly_revenue_raw.sh"
 
 
 def default_log_dir() -> Path:
@@ -310,6 +322,7 @@ def main() -> int:
     local_main_wrapper = default_local_main_wrapper_path()
     local_probe_wrapper = default_local_probe_wrapper_path()
     local_stock_codes_wrapper = default_local_stock_codes_wrapper_path()
+    local_raw_revenue_wrapper = default_local_raw_revenue_wrapper_path()
     log_dir = default_log_dir()
     local_venv_dir = default_local_venv_dir()
     local_venv_python = local_venv_dir / "bin/python3"
@@ -372,6 +385,7 @@ def main() -> int:
             (local_main_wrapper, "launcher_local_main_wrapper_mismatch"),
             (local_probe_wrapper, "launcher_local_probe_wrapper_mismatch"),
             (local_stock_codes_wrapper, "launcher_local_stock_codes_wrapper_mismatch"),
+            (local_raw_revenue_wrapper, "launcher_local_raw_revenue_wrapper_mismatch"),
         ]:
             if str(wrapper_path) not in text:
                 add_finding(findings, "FAIL", check_id, f"Launcher does not reference local wrapper: {wrapper_path}")
@@ -389,6 +403,7 @@ def main() -> int:
         (local_main_wrapper, "local_main_wrapper_missing"),
         (local_probe_wrapper, "local_probe_wrapper_missing"),
         (local_stock_codes_wrapper, "local_stock_codes_wrapper_missing"),
+        (local_raw_revenue_wrapper, "local_raw_revenue_wrapper_missing"),
     ]:
         if not wrapper_path.exists():
             add_finding(findings, "FAIL", check_id, f"Missing local wrapper copy: {wrapper_path}")
@@ -436,9 +451,33 @@ def main() -> int:
         "run-stock-codes",
         {"Hour": 5, "Minute": 0},
     )
+    check_plist(
+        findings,
+        agents / f"{LABEL_RAW_REVENUE_LISTED_OTC}.plist",
+        LABEL_RAW_REVENUE_LISTED_OTC,
+        launcher,
+        "run-raw-revenue-listed-otc",
+        {"Day": 5, "Hour": 10, "Minute": 10},
+    )
+    check_plist(
+        findings,
+        agents / f"{LABEL_RAW_REVENUE_EMERGING}.plist",
+        LABEL_RAW_REVENUE_EMERGING,
+        launcher,
+        "run-raw-revenue-emerging",
+        {"Day": 10, "Hour": 10, "Minute": 10},
+    )
+    check_plist(
+        findings,
+        agents / f"{LABEL_RAW_REVENUE_MISSING_RETRY}.plist",
+        LABEL_RAW_REVENUE_MISSING_RETRY,
+        launcher,
+        "run-raw-revenue-missing-retry",
+        {"Day": 15, "Hour": 10, "Minute": 10},
+    )
 
     loaded = launchctl_labels()
-    for label in [LABEL_MAIN, LABEL_PROBE, LABEL_STOCK_CODES]:
+    for label in [LABEL_MAIN, LABEL_PROBE, LABEL_STOCK_CODES, *RAW_REVENUE_LABELS]:
         if label not in loaded:
             add_finding(findings, "WARN", f"{label}_not_loaded", f"LaunchAgent not loaded: {label}")
 
@@ -452,6 +491,7 @@ def main() -> int:
         "local_main_wrapper_path": str(local_main_wrapper),
         "local_probe_wrapper_path": str(local_probe_wrapper),
         "local_stock_codes_wrapper_path": str(local_stock_codes_wrapper),
+        "local_raw_revenue_wrapper_path": str(local_raw_revenue_wrapper),
         "local_log_dir": str(log_dir),
         "local_scheduler_venv_dir": str(local_venv_dir),
         "local_scheduler_venv_python": str(local_venv_python),
